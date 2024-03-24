@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'go_router.dart';
+import 'splash/provider/go_router.dart';
 
 void main() {
   runApp(

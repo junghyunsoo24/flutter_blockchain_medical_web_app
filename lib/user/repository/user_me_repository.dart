@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart' hide Headers;
 import '../../data.dart';
-import '../../dio.dart';
 import 'package:retrofit/http.dart';
+import '../../login/dio/dio.dart';
 import '../model/user_model.dart';
 
 part 'user_me_repository.g.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../data.dart';
-import '../../secure_storage.dart';
+import '../../login/secure_storage/secure_storage.dart';
 import '../model/user_model.dart';
 import '../repository/auth_repository.dart';
 import '../repository/user_me_repository.dart';

@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../data.dart';
 import '../../data_utils.dart';
-import '../../dio.dart';
+import '../../login/dio/dio.dart';
 import '../../login/model/login_response.dart';
 import '../../login/model/token_response.dart';
 

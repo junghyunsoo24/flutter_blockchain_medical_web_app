@@ -7,7 +7,6 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/user/provider/user_
 import '../../home/view/root_tab.dart';
 import '../../login/view/login_screen.dart';
 import '../../splash/view/splash_screen.dart';
-import '../../restaurantDetailScreen.dart';
 import '../model/user_model.dart';
 
 final authProvider = ChangeNotifierProvider<AuthProvider>((ref) {
@@ -32,15 +31,6 @@ class AuthProvider extends ChangeNotifier {
       path: '/',
       name: RootTab.routeName,
       builder: (_, __) => const RootTab(),
-      routes: [
-        GoRoute(
-          path: 'restaurant/:rid',
-          name: RestaurantDetailScreen.routeName,
-          builder: (_, state) => RestaurantDetailScreen(
-            id: state.pathParameters['rid']!,
-          ),
-        ),
-      ],
     ),
     GoRoute(
       path: '/splash',

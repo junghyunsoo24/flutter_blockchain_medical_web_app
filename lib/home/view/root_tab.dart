@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/mypage/profile_screen.dart';

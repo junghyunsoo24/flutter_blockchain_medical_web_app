@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 
 const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN';

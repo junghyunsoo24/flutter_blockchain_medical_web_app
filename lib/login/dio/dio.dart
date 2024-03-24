@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/secure_storage.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/user/provider/auth_provider.dart';
 import 'package:dio/dio.dart';
-import 'data.dart';
+import '../../data.dart';
+import '../secure_storage/secure_storage.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
