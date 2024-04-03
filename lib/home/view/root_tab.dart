@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/custom_app_bar.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/mypage/profile_screen.dart';
 import '../../colors.dart';
 import '../layout/default_layout.dart';
@@ -45,7 +46,7 @@ class _RootTabState extends State<RootTab>
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: '나만의 건강 블록',
+      appBar:CustomAppBar(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: PRIMARY_COLOR,
         unselectedItemColor: BODY_TEXT_COLOR,

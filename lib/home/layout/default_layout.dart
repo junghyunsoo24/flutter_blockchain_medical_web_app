@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DefaultLayout extends StatelessWidget {
+  final PreferredSizeWidget? appBar;
   final Color? backgroundColor;
   final Widget child;
   final String? title;
@@ -14,6 +15,7 @@ class DefaultLayout extends StatelessWidget {
     this.title,
     this.bottomNavigationBar,
     this.floatingActionButton,
+    this.appBar,
     Key? key,
   }) : super(key: key);
 
@@ -21,7 +23,8 @@ class DefaultLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
-      appBar: renderAppBar(),
+      // appBar: renderAppBar(),
+      appBar: appBar,
       body: child,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
