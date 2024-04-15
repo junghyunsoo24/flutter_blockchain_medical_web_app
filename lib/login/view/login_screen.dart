@@ -38,7 +38,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 16.0),
                 const _SubTitle(),
                 Image.asset(
-                  'asset/img/misc/logo.png',
+                  'asset/img/logo/mainLogo.png',
                   width: MediaQuery.of(context).size.width / 3 * 2,
                 ),
                 CustomTextFormField(
