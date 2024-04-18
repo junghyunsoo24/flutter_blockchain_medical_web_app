@@ -20,6 +20,7 @@ class HomeScreen extends ConsumerWidget {
               width: 2, // 테두리 두께 설정
             ),
             borderRadius: BorderRadius.circular(20), // 모서리 둥글기 설정
+            // color: Color(0xFFE1F5FE)
           ),
           child: Padding(
             padding: EdgeInsets.all(3.0), // 내부 여백 설정
@@ -165,22 +166,22 @@ class HomeScreen extends ConsumerWidget {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.lightBlueAccent),
-                          borderRadius: BorderRadius.circular(250),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withOpacity(0.5), // 흰색 그림자
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                            ),
-                            BoxShadow(
-                              color: Colors.blue.withOpacity(0.5), // 파란색 그림자
-                              spreadRadius: 1,
-                              blurRadius: 40,
-                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                            ),
-                          ],
+                          border: Border.all(color: Colors.lightBlueAccent),
+                          borderRadius: BorderRadius.circular(20),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.white.withOpacity(0.5), // 흰색 그림자
+                          //     spreadRadius: 1,
+                          //     blurRadius: 10,
+                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                          //   ),
+                          //   BoxShadow(
+                          //     color: Colors.blue.withOpacity(0.5), // 파란색 그림자
+                          //     spreadRadius: 1,
+                          //     blurRadius: 40,
+                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                          //   ),
+                          //],
                         ),
                         margin: EdgeInsets.all(5.0),
                         child: Stack(
@@ -210,22 +211,22 @@ class HomeScreen extends ConsumerWidget {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.lightBlueAccent),
-                          borderRadius: BorderRadius.circular(250),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withOpacity(0.5), // 흰색 그림자
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                            ),
-                            BoxShadow(
-                              color: Colors.blue.withOpacity(0.5), // 파란색 그림자
-                              spreadRadius: 1,
-                              blurRadius: 40,
-                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                            ),
-                          ],
+                          border: Border.all(color: Colors.lightBlueAccent),
+                          borderRadius: BorderRadius.circular(20),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.white.withOpacity(0.5), // 흰색 그림자
+                          //     spreadRadius: 1,
+                          //     blurRadius: 10,
+                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                          //   ),
+                          //   BoxShadow(
+                          //     color: Colors.blue.withOpacity(0.5), // 파란색 그림자
+                          //     spreadRadius: 1,
+                          //     blurRadius: 40,
+                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                          //   ),
+                          // ],
                         ),
                         margin: EdgeInsets.all(5.0),
                         child: Stack(
@@ -255,22 +256,22 @@ class HomeScreen extends ConsumerWidget {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.lightBlueAccent),
-                          borderRadius: BorderRadius.circular(250),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withOpacity(0.5), // 흰색 그림자
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                            ),
-                            BoxShadow(
-                              color: Colors.blue.withOpacity(0.5), // 파란색 그림자
-                              spreadRadius: 1,
-                              blurRadius: 40,
-                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                            ),
-                          ],
+                          border: Border.all(color: Colors.lightBlueAccent),
+                          borderRadius: BorderRadius.circular(20),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.white.withOpacity(0.5), // 흰색 그림자
+                          //     spreadRadius: 1,
+                          //     blurRadius: 10,
+                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                          //   ),
+                          //   BoxShadow(
+                          //     color: Colors.blue.withOpacity(0.5), // 파란색 그림자
+                          //     spreadRadius: 1,
+                          //     blurRadius: 40,
+                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                          //   ),
+                          // ],
 
                         ),
                         margin: EdgeInsets.all(5.0),
