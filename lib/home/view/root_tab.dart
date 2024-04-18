@@ -67,9 +67,14 @@ class _RootTabState extends State<RootTab>
             label: '게시판',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.access_time),
+            label: '복용',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
             label: '마이 페이지',
           ),
+
         ],
       ),
       child: TabBarView(
@@ -78,6 +83,7 @@ class _RootTabState extends State<RootTab>
         children: const [
           HomeScreen(),
           BoardScreen(),
+          HomeScreen(),
           ProfileScreen(),
         ],
       ),
