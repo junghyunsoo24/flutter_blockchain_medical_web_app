@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/view/alarm_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/custom_app_bar.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/mypage/profile_screen.dart';
@@ -83,7 +84,7 @@ class _RootTabState extends State<RootTab>
         children: const [
           HomeScreen(),
           BoardScreen(),
-          HomeScreen(),
+          AlarmListScreen(),
           ProfileScreen(),
         ],
       ),
