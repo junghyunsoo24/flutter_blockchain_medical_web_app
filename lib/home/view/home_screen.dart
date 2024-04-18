@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,7 +61,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
                 SizedBox(
-                  height:150,
+                  height: 150,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlueAccent),
@@ -74,7 +75,7 @@ class HomeScreen extends ConsumerWidget {
                           children: [
                             Icon(
                               Icons.local_hospital_rounded,
-                              color: Colors.pink,
+                              color: Colors.blue,
                             ),
                             SizedBox(width: 8.0),
                             Text(
@@ -100,7 +101,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
                 SizedBox(
-                  height:70,
+                  height: 70,
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -146,15 +147,151 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 150,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.lightBlueAccent),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    margin: EdgeInsets.all(5.0),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 150,
+                    viewportFraction: 0.9,
+                    enableInfiniteScroll: false,
                   ),
+                  items: [
+                    // 첫 번째 카루셀 영역
+                    InkWell(
+                      onTap: () {
+                        // 첫 번째 카루셀 영역 클릭 시 이동할 페이지
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DetailScreen()),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          // border: Border.all(color: Colors.lightBlueAccent),
+                          borderRadius: BorderRadius.circular(250),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.5), // 흰색 그림자
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                            ),
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.5), // 파란색 그림자
+                              spreadRadius: 1,
+                              blurRadius: 40,
+                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                            ),
+                          ],
+                        ),
+                        margin: EdgeInsets.all(5.0),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Text('추가증상 등록', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.sick_rounded, color: Colors.red, size: 50,),
+                              ),
+                            )
+                          ],
+                        ),
+
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // 첫 번째 카루셀 영역 클릭 시 이동할 페이지
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DetailScreen()),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          // border: Border.all(color: Colors.lightBlueAccent),
+                          borderRadius: BorderRadius.circular(250),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.5), // 흰색 그림자
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                            ),
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.5), // 파란색 그림자
+                              spreadRadius: 1,
+                              blurRadius: 40,
+                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                            ),
+                          ],
+                        ),
+                        margin: EdgeInsets.all(5.0),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Text('특이사항 등록', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.pending_actions, color: Colors.red, size: 50,),
+                              ),
+                            )
+                          ],
+                        ),
+
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // 첫 번째 카루셀 영역 클릭 시 이동할 페이지
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DetailScreen()),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          // border: Border.all(color: Colors.lightBlueAccent),
+                          borderRadius: BorderRadius.circular(250),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.5), // 흰색 그림자
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                            ),
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.5), // 파란색 그림자
+                              spreadRadius: 1,
+                              blurRadius: 40,
+                              offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
+                            ),
+                          ],
+
+                        ),
+                        margin: EdgeInsets.all(5.0),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Text('의료진 조회', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.person_2_rounded, color: Colors.red, size: 50,),
+                              ),
+                            )
+                          ],
+                        ),
+
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),
