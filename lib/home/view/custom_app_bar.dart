@@ -14,8 +14,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
-                  Colors.lightBlueAccent,
-                  Colors.blueAccent,
+                  Color(0xFFB9E8FF),
+                  Colors.blue,
                 ]),
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))//appBar borderRadius
           ),

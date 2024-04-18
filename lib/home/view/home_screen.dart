@@ -9,120 +9,158 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // return Center(
-    //   child: ElevatedButton(
-    //     onPressed: (){
-    //       ref.read(userMeProvider.notifier).logout();
-    //     },
-    //     child: const Text('메인 화면'),
-    //   ),
-    // );
-    return Container(
-      margin: EdgeInsets.all(5.0), // 상하좌우 여백 설정
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.white, // 테두리 색상 설정
-          width: 2, // 테두리 두께 설정
-        ),
-        borderRadius: BorderRadius.circular(20), // 모서리 둥글기 설정
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(3.0), // 내부 여백 설정
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.lightBlueAccent),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                margin: EdgeInsets.all(5.0),
-                child: Row(
-                  children: <Widget>[
-
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(Icons.local_hospital_rounded, color: Colors.red),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(5.0), // 상하좌우 여백 설정
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.white, // 테두리 색상 설정
+              width: 2, // 테두리 두께 설정
+            ),
+            borderRadius: BorderRadius.circular(20), // 모서리 둥글기 설정
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(3.0), // 내부 여백 설정
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 150,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlueAccent),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    Expanded(
-                      child: ExpandableText(
-                        '진료 내용',
-                        expandText: '더보기',
-                        maxLines: 2,
-                        linkColor: Colors.blueAccent,
-
+                    margin: EdgeInsets.all(5.0),
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.medication_liquid, color: Colors.red),
+                        ),
+                        Expanded(
+                          child: ExpandableText(
+                            '처방 내역',
+                            expandText: '더보기',
+                            maxLines: 2,
+                            linkColor: Colors.blueAccent,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => DetailScreen()),
+                            );
+                          },
+                          icon: Icon(Icons.arrow_forward),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height:150,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlueAccent),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.local_hospital_rounded,
+                              color: Colors.pink,
+                            ),
+                            SizedBox(width: 8.0),
+                            Text(
+                              '진료내용',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Icon(
+                              Icons.arrow_forward,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height:70,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFB9E8FF),
+                          Colors.blue,
+                        ],
                       ),
-
+                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
                     ),
-
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DetailScreen()),
-                        );
-                      },
-                      icon: Icon(Icons.arrow_forward),
+                    margin: EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.monitor_heart,
+                              color: Colors.pink,
+                            ),
+                            SizedBox(width: 8.0),
+                            Text(
+                              '건강검진 기록',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-
-                  ],
+                  ),
                 ),
-              ),
-
-            ),
-
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.lightBlueAccent),
-                    borderRadius: BorderRadius.circular(20)
+                SizedBox(
+                  height: 150,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlueAccent),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: EdgeInsets.all(5.0),
+                  ),
                 ),
-                margin: EdgeInsets.all(5.0),
-              ),
+              ],
             ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.lightBlueAccent),
-                    borderRadius: BorderRadius.circular(20)
-                ),
-                margin: EdgeInsets.all(5.0),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.lightBlueAccent),
-                    borderRadius: BorderRadius.circular(20)
-                ),
-                margin: EdgeInsets.all(5.0),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
-
-    // return Scaffold(
-    //   appBar: PreferredSize(
-    //     preferredSize: Size.fromHeight(130.0),//appBar 사이즈 조정
-    //     child: AppBar(
-    //       backgroundColor: Colors.transparent,//배경 투명색
-    //       elevation: 0,//appBar 그림자
-    //       flexibleSpace: Container(//배경색 그라데이션
-    //         decoration: BoxDecoration(
-    //           gradient: LinearGradient(
-    //               begin: Alignment.centerLeft,
-    //               end: Alignment.centerRight,
-    //               colors: [
-    //                 Colors.lightBlueAccent,
-    //                 Colors.blueAccent,
-    //               ]
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

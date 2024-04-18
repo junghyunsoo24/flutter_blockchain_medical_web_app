@@ -48,7 +48,7 @@ class _RootTabState extends State<RootTab>
     return DefaultLayout(
       appBar:CustomAppBar(),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: PRIMARY_COLOR,
+        selectedItemColor: Colors.blueAccent,
         unselectedItemColor: BODY_TEXT_COLOR,
         selectedFontSize: 10,
         unselectedFontSize: 10,
