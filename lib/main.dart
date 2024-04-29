@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'splash/provider/go_router.dart';
 
+late MyDatabase database;
 void main() {
+  database = MyDatabase();
   runApp(
       const ProviderScope(
         child: MyApp(),
