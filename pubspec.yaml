@@ -33,6 +33,9 @@ dependencies:
   drift: ^2.8.2
   sqlite3_flutter_libs: ^0.5.0
   path_provider: ^2.0.0
+  firebase_core: ^2.27.0
+  cloud_firestore: ^4.15.8
+  http: ^1.2.0
 
 dev_dependencies:
   drift_dev: ^2.8.3
