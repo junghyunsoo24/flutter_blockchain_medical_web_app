@@ -5,6 +5,7 @@ import 'package:drift/drift.dart';
 import 'dart:io';
 
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/model/alarm.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/model/symptom.dart';
 
 part 'drift_database.g.dart';
 
@@ -20,7 +21,10 @@ LazyDatabase _openConnection() {
   });
 }
 
-@DriftDatabase(tables: [Alarms])
+@DriftDatabase(
+    tables: [
+        Alarms, Symptoms
+])
 class MyDatabase extends _$MyDatabase {
   // we tell the database where to store the data with this constructor
   MyDatabase() : super(_openConnection());
@@ -44,7 +48,24 @@ class MyDatabase extends _$MyDatabase {
     await update(alarms)
         .replace(alarm);
   }
+  Future<int> insertSymptom(Symptom symptom) {
+    return into(symptoms).insert(symptom);
+  }
+
+  Future<void> updateSymptom(Symptom symptom) async {
+    await update(symptoms).replace(symptom);
+  }
+
+  Future<void> deleteSymptom(Symptom symptom) async {
+    await delete(symptoms).delete(symptom);
+  }
+
+  Future<List<Symptom>> getAllSymptoms() async {
+    return await select(symptoms).get();
+  }
+
 
   @override
   int get schemaVersion => 1;
+
 }
