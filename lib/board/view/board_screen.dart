@@ -1,7 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/MedicalView/DetailScreen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
 import '../../user/provider/user_me_provider.dart';
 
 class BoardScreen extends ConsumerWidget {

@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/MedicalView/DetailScreen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_list_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_screen.dart';
 import '../../user/provider/user_me_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -161,7 +163,7 @@ class HomeScreen extends ConsumerWidget {
                         // 첫 번째 카루셀 영역 클릭 시 이동할 페이지
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => DetailScreen()),
+                          MaterialPageRoute(builder: (context) => SymptomListScreen()),
                         );
                       },
                       child: Container(

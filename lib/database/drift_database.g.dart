@@ -292,12 +292,303 @@ class AlarmsCompanion extends UpdateCompanion<Alarm> {
   }
 }
 
+class $SymptomsTable extends Symptoms with TableInfo<$SymptomsTable, Symptom> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SymptomsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _symptomMeta =
+      const VerificationMeta('symptom');
+  @override
+  late final GeneratedColumn<String> symptom = GeneratedColumn<String>(
+      'symptom', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _creationTimeMeta =
+      const VerificationMeta('creationTime');
+  @override
+  late final GeneratedColumn<DateTime> creationTime = GeneratedColumn<DateTime>(
+      'creation_time', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  static const VerificationMeta _startDateMeta =
+      const VerificationMeta('startDate');
+  @override
+  late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
+      'start_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _endDateMeta =
+      const VerificationMeta('endDate');
+  @override
+  late final GeneratedColumn<DateTime> endDate = GeneratedColumn<DateTime>(
+      'end_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, symptom, creationTime, startDate, endDate];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'symptoms';
+  @override
+  VerificationContext validateIntegrity(Insertable<Symptom> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('symptom')) {
+      context.handle(_symptomMeta,
+          symptom.isAcceptableOrUnknown(data['symptom']!, _symptomMeta));
+    } else if (isInserting) {
+      context.missing(_symptomMeta);
+    }
+    if (data.containsKey('creation_time')) {
+      context.handle(
+          _creationTimeMeta,
+          creationTime.isAcceptableOrUnknown(
+              data['creation_time']!, _creationTimeMeta));
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(_startDateMeta,
+          startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta));
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('end_date')) {
+      context.handle(_endDateMeta,
+          endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta));
+    } else if (isInserting) {
+      context.missing(_endDateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Symptom map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Symptom(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      symptom: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}symptom'])!,
+      creationTime: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}creation_time'])!,
+      startDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_date'])!,
+      endDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}end_date'])!,
+    );
+  }
+
+  @override
+  $SymptomsTable createAlias(String alias) {
+    return $SymptomsTable(attachedDatabase, alias);
+  }
+}
+
+class Symptom extends DataClass implements Insertable<Symptom> {
+  final int id;
+  final String symptom;
+  final DateTime creationTime;
+  final DateTime startDate;
+  final DateTime endDate;
+  const Symptom(
+      {required this.id,
+      required this.symptom,
+      required this.creationTime,
+      required this.startDate,
+      required this.endDate});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['symptom'] = Variable<String>(symptom);
+    map['creation_time'] = Variable<DateTime>(creationTime);
+    map['start_date'] = Variable<DateTime>(startDate);
+    map['end_date'] = Variable<DateTime>(endDate);
+    return map;
+  }
+
+  SymptomsCompanion toCompanion(bool nullToAbsent) {
+    return SymptomsCompanion(
+      id: Value(id),
+      symptom: Value(symptom),
+      creationTime: Value(creationTime),
+      startDate: Value(startDate),
+      endDate: Value(endDate),
+    );
+  }
+
+  factory Symptom.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Symptom(
+      id: serializer.fromJson<int>(json['id']),
+      symptom: serializer.fromJson<String>(json['symptom']),
+      creationTime: serializer.fromJson<DateTime>(json['creationTime']),
+      startDate: serializer.fromJson<DateTime>(json['startDate']),
+      endDate: serializer.fromJson<DateTime>(json['endDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'symptom': serializer.toJson<String>(symptom),
+      'creationTime': serializer.toJson<DateTime>(creationTime),
+      'startDate': serializer.toJson<DateTime>(startDate),
+      'endDate': serializer.toJson<DateTime>(endDate),
+    };
+  }
+
+  Symptom copyWith(
+          {int? id,
+          String? symptom,
+          DateTime? creationTime,
+          DateTime? startDate,
+          DateTime? endDate}) =>
+      Symptom(
+        id: id ?? this.id,
+        symptom: symptom ?? this.symptom,
+        creationTime: creationTime ?? this.creationTime,
+        startDate: startDate ?? this.startDate,
+        endDate: endDate ?? this.endDate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Symptom(')
+          ..write('id: $id, ')
+          ..write('symptom: $symptom, ')
+          ..write('creationTime: $creationTime, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, symptom, creationTime, startDate, endDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Symptom &&
+          other.id == this.id &&
+          other.symptom == this.symptom &&
+          other.creationTime == this.creationTime &&
+          other.startDate == this.startDate &&
+          other.endDate == this.endDate);
+}
+
+class SymptomsCompanion extends UpdateCompanion<Symptom> {
+  final Value<int> id;
+  final Value<String> symptom;
+  final Value<DateTime> creationTime;
+  final Value<DateTime> startDate;
+  final Value<DateTime> endDate;
+  const SymptomsCompanion({
+    this.id = const Value.absent(),
+    this.symptom = const Value.absent(),
+    this.creationTime = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.endDate = const Value.absent(),
+  });
+  SymptomsCompanion.insert({
+    this.id = const Value.absent(),
+    required String symptom,
+    this.creationTime = const Value.absent(),
+    required DateTime startDate,
+    required DateTime endDate,
+  })  : symptom = Value(symptom),
+        startDate = Value(startDate),
+        endDate = Value(endDate);
+  static Insertable<Symptom> custom({
+    Expression<int>? id,
+    Expression<String>? symptom,
+    Expression<DateTime>? creationTime,
+    Expression<DateTime>? startDate,
+    Expression<DateTime>? endDate,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (symptom != null) 'symptom': symptom,
+      if (creationTime != null) 'creation_time': creationTime,
+      if (startDate != null) 'start_date': startDate,
+      if (endDate != null) 'end_date': endDate,
+    });
+  }
+
+  SymptomsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? symptom,
+      Value<DateTime>? creationTime,
+      Value<DateTime>? startDate,
+      Value<DateTime>? endDate}) {
+    return SymptomsCompanion(
+      id: id ?? this.id,
+      symptom: symptom ?? this.symptom,
+      creationTime: creationTime ?? this.creationTime,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (symptom.present) {
+      map['symptom'] = Variable<String>(symptom.value);
+    }
+    if (creationTime.present) {
+      map['creation_time'] = Variable<DateTime>(creationTime.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<DateTime>(startDate.value);
+    }
+    if (endDate.present) {
+      map['end_date'] = Variable<DateTime>(endDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SymptomsCompanion(')
+          ..write('id: $id, ')
+          ..write('symptom: $symptom, ')
+          ..write('creationTime: $creationTime, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   late final $AlarmsTable alarms = $AlarmsTable(this);
+  late final $SymptomsTable symptoms = $SymptomsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [alarms];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [alarms, symptoms];
 }
