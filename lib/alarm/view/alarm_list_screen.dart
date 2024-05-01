@@ -27,6 +27,9 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
       medications = medicationsList;
     });
   }
+  Future<void> loadMedications() async {
+    await _loadMedications();
+  }
 
   Future<void> _toggleAlarmStatus(Alarm alarm) async {
     final updatedAlarm = alarm.copyWith(isEnabled: !alarm.isEnabled);
