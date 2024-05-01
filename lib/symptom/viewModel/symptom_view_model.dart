@@ -4,6 +4,8 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_data
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/repository/symptom_repository.dart';
 
 class SymptomViewModel extends ChangeNotifier {
+  final ValueNotifier<List<Symptom>> _symptoms = ValueNotifier<List<Symptom>>([]);
+
   final _repository = SymptomRepository();
   Symptom? _currentSymptom;
   final MyDatabase _database;
@@ -12,6 +14,12 @@ class SymptomViewModel extends ChangeNotifier {
     _currentSymptom = symptom;
     notifyListeners();
   }
+  ValueNotifier<List<Symptom>> get symptoms => _symptoms;
+
+  Future<void> loadSymptoms() async {
+    final symptomsList = await getAllSymptoms();
+    _symptoms.value = symptomsList;
+  }
 
     Future<void> saveSymptom(String symptom, DateTime startDate, DateTime endDate) async {
     await _database.insertSymptom(SymptomsCompanion(
@@ -19,18 +27,17 @@ class SymptomViewModel extends ChangeNotifier {
       startDate: Value(startDate),
       endDate: Value(endDate),
     ));
+    loadSymptoms();
   }
-  // Future<void> saveSymptom(SymptomsCompanion symptom) async {
-  //   await _repository.insertSymptom(symptom);
-  //   _currentSymptom = null;
-  //   notifyListeners();
-  // }
-
   Future<List<Symptom>> getAllSymptoms() async {
     return await _repository.getAllSymptoms();
   }
 
-  // Future<List<Symptom>> getSymptomsByFilter(SymptomFilter filter) async {
-  //   return await _repository.getSymptomsByFilter(filter);
-  // }
+  Future<void> deleteSymptom(Symptom symptom) async {
+    try {
+      await _repository.deleteSymptom(symptom);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

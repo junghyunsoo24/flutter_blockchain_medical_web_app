@@ -79,7 +79,7 @@ class _AlarmSetupScreenState extends State<AlarmSetupScreen> {
                 final database = MyDatabase();
                 await database.addAlarm(alarm);//데이터베이스에 데이터 insert
                 Navigator.pop(context);
-                // _loadMedications(); // 새로운 알람 추가 후 목록 업데이트
+                //_loadMedications(); // 새로운 알람 추가 후 목록 업데이트
               },
               child: Text('저장', style: TextStyle(color: Colors.white)),
             ),

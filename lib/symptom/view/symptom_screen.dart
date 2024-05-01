@@ -50,21 +50,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/viewModel/symptom_view_model.dart';
-
-// class SymptomViewModel {
-//   final MyDatabase _database;
-//
-//   SymptomViewModel(this._database);
-//
-//   Future<void> saveSymptom(String symptom, DateTime startDate, DateTime endDate) async {
-//     await _database.insertSymptom(SymptomsCompanion(
-//       symptom: Value(symptom),
-//       startDate: Value(startDate),
-//       endDate: Value(endDate),
-//     ));
-//   }
-// }
 
 class SymptomScreen extends StatefulWidget {
   SymptomScreen({Key? key}) : super(key: key);
@@ -160,6 +147,7 @@ class _SymptomScreenState extends State<SymptomScreen> {
                     String formattedDate = DateFormat('yyyy-MM-dd').format(picked);
                     _endDateController.text = formattedDate;
                   }
+
                 },
               ),
               const SizedBox(height: 20),
@@ -179,6 +167,7 @@ class _SymptomScreenState extends State<SymptomScreen> {
                           duration: Duration(seconds: 3),
                         ),
                       );
+                      Navigator.pop(context);
                     }
                   }
                 },
