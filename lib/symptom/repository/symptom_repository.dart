@@ -3,7 +3,7 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_data
 class SymptomRepository{
   final _databaseService = MyDatabase();
 
-  Future<void> insertSymptom(Symptom symptom) async {
+  Future<void> insertSymptom(SymptomsCompanion symptom) async {
     await _databaseService.insertSymptom(symptom);
   }
 
