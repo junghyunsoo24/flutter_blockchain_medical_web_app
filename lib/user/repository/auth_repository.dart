@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data.dart';
 import '../../data_utils.dart';
+import '../../login/dio/dio.dart';
 import '../../login/model/login_response.dart';
 import '../../login/model/token_response.dart';
-import '../../login/provider/dio.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final dio = ref.watch(dioProvider);
