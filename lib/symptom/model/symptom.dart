@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 
+
 class Symptoms extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get symptom => text()();

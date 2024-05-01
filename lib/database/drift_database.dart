@@ -48,8 +48,12 @@ class MyDatabase extends _$MyDatabase {
     await update(alarms)
         .replace(alarm);
   }
-  Future<int> insertSymptom(Symptom symptom) {
-    return into(symptoms).insert(symptom);
+  // Future<int> insertSymptom(Symptom symptom) {
+  //   return into(symptoms).insert(symptom);
+  // }
+
+  Future<int> insertSymptom(SymptomsCompanion symptomsCompanion){
+    return into(symptoms).insert(symptomsCompanion);
   }
 
   Future<void> updateSymptom(Symptom symptom) async {
@@ -66,6 +70,6 @@ class MyDatabase extends _$MyDatabase {
 
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 1; //테이블 변화 감지를 위한 필수 지정
 
 }
