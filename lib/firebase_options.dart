@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'medical-block-app.appspot.com',
     measurementId: 'G-PYMHYJNE1N',
   );
+
 }
