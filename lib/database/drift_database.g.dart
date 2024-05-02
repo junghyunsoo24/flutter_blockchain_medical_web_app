@@ -582,13 +582,343 @@ class SymptomsCompanion extends UpdateCompanion<Symptom> {
   }
 }
 
+class $PersonalMedicinesTable extends PersonalMedicines
+    with TableInfo<$PersonalMedicinesTable, PersonalMedicine> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PersonalMedicinesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _pillNameMeta =
+      const VerificationMeta('pillName');
+  @override
+  late final GeneratedColumn<String> pillName = GeneratedColumn<String>(
+      'pill_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _creationTimeMeta =
+      const VerificationMeta('creationTime');
+  @override
+  late final GeneratedColumn<DateTime> creationTime = GeneratedColumn<DateTime>(
+      'creation_time', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  static const VerificationMeta _startDateMeta =
+      const VerificationMeta('startDate');
+  @override
+  late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
+      'start_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _endDateMeta =
+      const VerificationMeta('endDate');
+  @override
+  late final GeneratedColumn<DateTime> endDate = GeneratedColumn<DateTime>(
+      'end_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _dosageMeta = const VerificationMeta('dosage');
+  @override
+  late final GeneratedColumn<String> dosage = GeneratedColumn<String>(
+      'dosage', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, pillName, creationTime, startDate, endDate, dosage];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'personal_medicines';
+  @override
+  VerificationContext validateIntegrity(Insertable<PersonalMedicine> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('pill_name')) {
+      context.handle(_pillNameMeta,
+          pillName.isAcceptableOrUnknown(data['pill_name']!, _pillNameMeta));
+    } else if (isInserting) {
+      context.missing(_pillNameMeta);
+    }
+    if (data.containsKey('creation_time')) {
+      context.handle(
+          _creationTimeMeta,
+          creationTime.isAcceptableOrUnknown(
+              data['creation_time']!, _creationTimeMeta));
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(_startDateMeta,
+          startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta));
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('end_date')) {
+      context.handle(_endDateMeta,
+          endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta));
+    } else if (isInserting) {
+      context.missing(_endDateMeta);
+    }
+    if (data.containsKey('dosage')) {
+      context.handle(_dosageMeta,
+          dosage.isAcceptableOrUnknown(data['dosage']!, _dosageMeta));
+    } else if (isInserting) {
+      context.missing(_dosageMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PersonalMedicine map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PersonalMedicine(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      pillName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pill_name'])!,
+      creationTime: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}creation_time'])!,
+      startDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_date'])!,
+      endDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}end_date'])!,
+      dosage: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}dosage'])!,
+    );
+  }
+
+  @override
+  $PersonalMedicinesTable createAlias(String alias) {
+    return $PersonalMedicinesTable(attachedDatabase, alias);
+  }
+}
+
+class PersonalMedicine extends DataClass
+    implements Insertable<PersonalMedicine> {
+  final int id;
+  final String pillName;
+  final DateTime creationTime;
+  final DateTime startDate;
+  final DateTime endDate;
+  final String dosage;
+  const PersonalMedicine(
+      {required this.id,
+      required this.pillName,
+      required this.creationTime,
+      required this.startDate,
+      required this.endDate,
+      required this.dosage});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['pill_name'] = Variable<String>(pillName);
+    map['creation_time'] = Variable<DateTime>(creationTime);
+    map['start_date'] = Variable<DateTime>(startDate);
+    map['end_date'] = Variable<DateTime>(endDate);
+    map['dosage'] = Variable<String>(dosage);
+    return map;
+  }
+
+  PersonalMedicinesCompanion toCompanion(bool nullToAbsent) {
+    return PersonalMedicinesCompanion(
+      id: Value(id),
+      pillName: Value(pillName),
+      creationTime: Value(creationTime),
+      startDate: Value(startDate),
+      endDate: Value(endDate),
+      dosage: Value(dosage),
+    );
+  }
+
+  factory PersonalMedicine.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PersonalMedicine(
+      id: serializer.fromJson<int>(json['id']),
+      pillName: serializer.fromJson<String>(json['pillName']),
+      creationTime: serializer.fromJson<DateTime>(json['creationTime']),
+      startDate: serializer.fromJson<DateTime>(json['startDate']),
+      endDate: serializer.fromJson<DateTime>(json['endDate']),
+      dosage: serializer.fromJson<String>(json['dosage']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'pillName': serializer.toJson<String>(pillName),
+      'creationTime': serializer.toJson<DateTime>(creationTime),
+      'startDate': serializer.toJson<DateTime>(startDate),
+      'endDate': serializer.toJson<DateTime>(endDate),
+      'dosage': serializer.toJson<String>(dosage),
+    };
+  }
+
+  PersonalMedicine copyWith(
+          {int? id,
+          String? pillName,
+          DateTime? creationTime,
+          DateTime? startDate,
+          DateTime? endDate,
+          String? dosage}) =>
+      PersonalMedicine(
+        id: id ?? this.id,
+        pillName: pillName ?? this.pillName,
+        creationTime: creationTime ?? this.creationTime,
+        startDate: startDate ?? this.startDate,
+        endDate: endDate ?? this.endDate,
+        dosage: dosage ?? this.dosage,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PersonalMedicine(')
+          ..write('id: $id, ')
+          ..write('pillName: $pillName, ')
+          ..write('creationTime: $creationTime, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('dosage: $dosage')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, pillName, creationTime, startDate, endDate, dosage);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PersonalMedicine &&
+          other.id == this.id &&
+          other.pillName == this.pillName &&
+          other.creationTime == this.creationTime &&
+          other.startDate == this.startDate &&
+          other.endDate == this.endDate &&
+          other.dosage == this.dosage);
+}
+
+class PersonalMedicinesCompanion extends UpdateCompanion<PersonalMedicine> {
+  final Value<int> id;
+  final Value<String> pillName;
+  final Value<DateTime> creationTime;
+  final Value<DateTime> startDate;
+  final Value<DateTime> endDate;
+  final Value<String> dosage;
+  const PersonalMedicinesCompanion({
+    this.id = const Value.absent(),
+    this.pillName = const Value.absent(),
+    this.creationTime = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.endDate = const Value.absent(),
+    this.dosage = const Value.absent(),
+  });
+  PersonalMedicinesCompanion.insert({
+    this.id = const Value.absent(),
+    required String pillName,
+    this.creationTime = const Value.absent(),
+    required DateTime startDate,
+    required DateTime endDate,
+    required String dosage,
+  })  : pillName = Value(pillName),
+        startDate = Value(startDate),
+        endDate = Value(endDate),
+        dosage = Value(dosage);
+  static Insertable<PersonalMedicine> custom({
+    Expression<int>? id,
+    Expression<String>? pillName,
+    Expression<DateTime>? creationTime,
+    Expression<DateTime>? startDate,
+    Expression<DateTime>? endDate,
+    Expression<String>? dosage,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (pillName != null) 'pill_name': pillName,
+      if (creationTime != null) 'creation_time': creationTime,
+      if (startDate != null) 'start_date': startDate,
+      if (endDate != null) 'end_date': endDate,
+      if (dosage != null) 'dosage': dosage,
+    });
+  }
+
+  PersonalMedicinesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? pillName,
+      Value<DateTime>? creationTime,
+      Value<DateTime>? startDate,
+      Value<DateTime>? endDate,
+      Value<String>? dosage}) {
+    return PersonalMedicinesCompanion(
+      id: id ?? this.id,
+      pillName: pillName ?? this.pillName,
+      creationTime: creationTime ?? this.creationTime,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      dosage: dosage ?? this.dosage,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (pillName.present) {
+      map['pill_name'] = Variable<String>(pillName.value);
+    }
+    if (creationTime.present) {
+      map['creation_time'] = Variable<DateTime>(creationTime.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<DateTime>(startDate.value);
+    }
+    if (endDate.present) {
+      map['end_date'] = Variable<DateTime>(endDate.value);
+    }
+    if (dosage.present) {
+      map['dosage'] = Variable<String>(dosage.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PersonalMedicinesCompanion(')
+          ..write('id: $id, ')
+          ..write('pillName: $pillName, ')
+          ..write('creationTime: $creationTime, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('dosage: $dosage')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   late final $AlarmsTable alarms = $AlarmsTable(this);
   late final $SymptomsTable symptoms = $SymptomsTable(this);
+  late final $PersonalMedicinesTable personalMedicines =
+      $PersonalMedicinesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [alarms, symptoms];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [alarms, symptoms, personalMedicines];
 }

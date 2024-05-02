@@ -5,6 +5,7 @@ import 'package:drift/drift.dart';
 import 'dart:io';
 
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/model/alarm.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/model/personal_medicine.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/model/symptom.dart';
 
 part 'drift_database.g.dart';
@@ -23,7 +24,7 @@ LazyDatabase _openConnection() {
 
 @DriftDatabase(
     tables: [
-        Alarms, Symptoms
+        Alarms, Symptoms, PersonalMedicines
 ])
 class MyDatabase extends _$MyDatabase {
   // we tell the database where to store the data with this constructor
@@ -68,6 +69,22 @@ class MyDatabase extends _$MyDatabase {
     return await select(symptoms).get();
   }
 
+
+  Future<int> insertPersonalMedicine(PersonalMedicinesCompanion personalmedicinesCompanion){
+    return into(personalMedicines).insert(personalmedicinesCompanion);
+  }
+
+  Future<void> updatePersonalMedicine(PersonalMedicine personalMedicine) async {
+    await update(personalMedicines).replace(personalMedicine);
+  }
+
+  Future<void> deletePersonalMedicine(PersonalMedicine personalMedicine) async {
+    await delete(personalMedicines).delete(personalMedicine);
+  }
+
+  Future<List<PersonalMedicine>> getAllPersonalMedicines() async {
+    return await select(personalMedicines).get();
+  }
 
   @override
   int get schemaVersion => 1; //테이블 변화 감지를 위한 필수 지정

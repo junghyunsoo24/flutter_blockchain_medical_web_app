@@ -2,37 +2,39 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/viewModel/personal_medicine_view_model.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/viewModel/symptom_view_model.dart';
 
-class SymptomScreen extends StatefulWidget {
-  SymptomScreen({Key? key}) : super(key: key);
+class PersonalMedicineScreen extends StatefulWidget {
+  PersonalMedicineScreen({Key? key}) : super(key: key);
 
   @override
-  _SymptomScreenState createState() => _SymptomScreenState();
+  _PersonalMedicineScreen createState() => _PersonalMedicineScreen();
 }
 
-class _SymptomScreenState extends State<SymptomScreen> {
+class _PersonalMedicineScreen extends State<PersonalMedicineScreen> {
   final borderside = OutlineInputBorder(borderSide: BorderSide(color: Colors.grey));
 
-  TextEditingController _symptomController = TextEditingController();
+  TextEditingController _pillNameController = TextEditingController();
   TextEditingController _startDateController = TextEditingController();
   TextEditingController _endDateController = TextEditingController();
+  TextEditingController _dosageController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  late final SymptomViewModel _viewModel;
+  late final PersonalMedicineViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = SymptomViewModel(MyDatabase());
+    _viewModel = PersonalMedicineViewModel(MyDatabase());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("추가 증상 등록"),
+        title: Text("추가 의약품 증상 등록"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -43,25 +45,37 @@ class _SymptomScreenState extends State<SymptomScreen> {
             children: [
               const SizedBox(height: 10),
               TextFormField(
-                decoration: InputDecoration(hintText: "증상을 입력해주세요", border: borderside),
-                controller: _symptomController,
-                validator: (symptom) {
-                  if (symptom != null && symptom.isNotEmpty) {
+                decoration: InputDecoration(hintText: "의약품 이름을 입력해주세요", border: borderside),
+                controller: _pillNameController,
+                validator: (medicine) {
+                  if (medicine != null && medicine.isNotEmpty) {
                     return null;
                   } else {
-                    return "증상을 입력해주세요";
+                    return "의약품 이름을 입력해주세요";
                   }
                 },
               ),
               const SizedBox(height: 20),
               TextFormField(
-                decoration: InputDecoration(hintText: "증상 시작 날짜를 입력해주세요", border: borderside),
+                decoration: InputDecoration(hintText: "복용 용량을 입력해주세요", border: borderside),
+                controller: _dosageController,
+                validator: (dosage) {
+                  if (dosage != null && dosage.isNotEmpty) {
+                    return null;
+                  } else {
+                    return "복용 용량을 입력해주세요";
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                decoration: InputDecoration(hintText: "의약품 복용 시작 날짜를 입력해주세요", border: borderside),
                 controller: _startDateController,
                 validator: (startDate) {
                   if (startDate != null && startDate.isNotEmpty) {
                     return null;
                   } else {
-                    return "증상 시작 날짜를 입력해주세요";
+                    return "의약품 복용 시작 날짜를 입력해주세요";
                   }
                 },
                 onTap: () async {
@@ -77,15 +91,16 @@ class _SymptomScreenState extends State<SymptomScreen> {
                   }
                 },
               ),
+
               const SizedBox(height: 20),
               TextFormField(
-                decoration: InputDecoration(hintText: "증상 종료 날짜를 입력해주세요", border: borderside),
+                decoration: InputDecoration(hintText: "의약품 복용 종료 날짜를 입력해주세요", border: borderside),
                 controller: _endDateController,
                 validator: (endDate) {
                   if (endDate != null && endDate.isNotEmpty) {
                     return null;
                   } else {
-                    return "증상 종료 날짜를 입력해주세요";
+                    return "의약품 복용 종료 날짜를 입력해주세요";
                   }
                 },
                 onTap: () async {
@@ -108,14 +123,15 @@ class _SymptomScreenState extends State<SymptomScreen> {
                   if (_formKey.currentState != null) {
                     bool passed = _formKey.currentState!.validate();
                     if (passed) {
-                      await _viewModel.saveSymptom(
-                        _symptomController.text,
+                      await _viewModel.savePersoanlMedicine(
+                        _pillNameController.text,
                         DateTime.parse(_startDateController.text),
                         DateTime.parse(_endDateController.text),
+                        _dosageController.text
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text("증상이 저장되었습니다."),
+                          content: Text("개인 의약품 등록이 저장되었습니다."),
                           duration: Duration(seconds: 3),
                         ),
                       );
