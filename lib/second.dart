@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
-class SecondPage extends StatefulWidget {
-  const SecondPage({super.key});
+class SecondPage extends StatelessWidget {
+  final Map<String, dynamic> payload;
 
-  @override
-  State<SecondPage> createState() => _SecondPageState();
-}
+  const SecondPage({Key? key, required this.payload}) : super(key: key);
 
-class _SecondPageState extends State<SecondPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        title: const Text("SECOND PAGE"),
+        title: const Text('Second Page'),
       ),
-      body: const Center(
-        child: Text("SECOND PAGE"),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Title: ${payload['title']}'),
+            Text('Body: ${payload['body']}'),
+            Text('Sender: ${payload['sender']}'),
+          ],
+        ),
       ),
     );
   }
