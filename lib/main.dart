@@ -3,8 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'splash/provider/go_router.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/firebase_options.dart';
+
 late MyDatabase database;
-void main() {
+void main() async{
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform);
+
   database = MyDatabase();
   runApp(
       const ProviderScope(
