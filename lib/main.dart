@@ -38,72 +38,75 @@
 //   }
 // }
 
-import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/second.dart';
 import 'notification.dart';
-
-StreamController<String> streamController = StreamController.broadcast(); //Notification을 위한 StreamController 전역 변수 선언
+import 'second.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
 
-  FlutterLocalNotification.onBackgroundNotificationResponse(); //Background에서 Notification를 탭해서 앱을 여는 경우를 위한 메소드
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  runApp(const MaterialApp(
-    title: 'Flutter App',
-    home: HomePage(),
-  ));
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      home: HomePage(),
+    );
+  }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    FlutterLocalNotification.init();
+  final Stream<QuerySnapshot> _messagesStream =
+  FirebaseFirestore.instance.collection('messages').snapshots();
 
-    Future.delayed(const Duration(seconds: 3), FlutterLocalNotification.requestNotificationPermission());
-
-    super.initState();
+  void getMyDeviceToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    print("내 디바이스 토큰: $token");
   }
 
   @override
-  void dispose() {
-    streamController.close();
-
-    super.dispose();
+  void initState() {
+    getMyDeviceToken();
+    super.initState();
+    FlutterLocalNotification.init();
+    _messagesStream.listen((querySnapshot) {
+      querySnapshot.docChanges.forEach((change) {
+        if (change.type == DocumentChangeType.added) {
+          Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
+          FlutterLocalNotification.showNotification(data);
+        }
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<String>(//Stream 전달
-          stream: streamController.stream, builder: (context, snapshot) {//snapshot을 통해 데이터를 확인
-            if (snapshot.hasData) {
-              if (snapshot.data == 'HELLOWORLD') {
-                WidgetsBinding.instance.addPostFrameCallback((_) {//빌드가 먼저 완료된 후에 호출하기 위해 addPostFrameCallback 사용
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                    return const SecondPage();
-                  }));
-                });
-              }
-            }
-
-            return Center(
-              child: TextButton(
-                onPressed: () {//알림 전송
-                  FlutterLocalNotification.showNotification();
-                },
-                child: const Text("알림 보내기"),
-              ),
-            );
-          }),
+      body: Center(
+        child: TextButton(
+          child: const Text('Send Data'),
+          onPressed: () {
+            FirebaseFirestore.instance.collection('messages').add({
+              'title': '테스트테스트',
+              'body': 'This is a new message',
+              'sender': 'Your Name',
+            });
+          },
+        ),
+      ),
     );
   }
 }
