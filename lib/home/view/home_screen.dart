@@ -3,6 +3,7 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/prescription_history_list.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_screen.dart';
@@ -55,7 +56,7 @@ class HomeScreen extends ConsumerWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => DetailScreen()),
+                              MaterialPageRoute(builder: (context) => PrescriptionHistoryListScreen()),
                             );
                           },
                           icon: Icon(Icons.arrow_forward),

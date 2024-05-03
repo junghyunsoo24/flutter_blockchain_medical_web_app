@@ -5,6 +5,7 @@ import 'package:drift/drift.dart';
 import 'dart:io';
 
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/model/alarm.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/medication/model/prescription.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/model/personal_medicine.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/model/symptom.dart';
 
@@ -24,7 +25,7 @@ LazyDatabase _openConnection() {
 
 @DriftDatabase(
     tables: [
-        Alarms, Symptoms, PersonalMedicines
+        Alarms, Symptoms, PersonalMedicines, Prescriptions
 ])
 class MyDatabase extends _$MyDatabase {
   // we tell the database where to store the data with this constructor
@@ -33,7 +34,7 @@ class MyDatabase extends _$MyDatabase {
   // you should bump this number whenever you change or add a table definition. Migrations
   // are covered later in this readme.
 
-  Future<int> addAlarm(Alarm alarm) {
+  Future<int> addAlarm(Alarm alarm) { //알람
     return into(alarms).insert(alarm);
   }
 
@@ -53,7 +54,7 @@ class MyDatabase extends _$MyDatabase {
   //   return into(symptoms).insert(symptom);
   // }
 
-  Future<int> insertSymptom(SymptomsCompanion symptomsCompanion){
+  Future<int> insertSymptom(SymptomsCompanion symptomsCompanion){ //추가 증상
     return into(symptoms).insert(symptomsCompanion);
   }
 
@@ -70,7 +71,7 @@ class MyDatabase extends _$MyDatabase {
   }
 
 
-  Future<int> insertPersonalMedicine(PersonalMedicinesCompanion personalmedicinesCompanion){
+  Future<int> insertPersonalMedicine(PersonalMedicinesCompanion personalmedicinesCompanion){ //개인 구매 의약품
     return into(personalMedicines).insert(personalmedicinesCompanion);
   }
 
@@ -84,6 +85,14 @@ class MyDatabase extends _$MyDatabase {
 
   Future<List<PersonalMedicine>> getAllPersonalMedicines() async {
     return await select(personalMedicines).get();
+  }
+
+  Future<int> insertPrescription(PrescriptionsCompanion prescriptionsCompanion){
+    return into(prescriptions).insert(prescriptionsCompanion);
+  }
+
+  Future<List<Prescription>> getAllPrescriptions() async {
+    return await select(prescriptions).get();
   }
 
   @override
