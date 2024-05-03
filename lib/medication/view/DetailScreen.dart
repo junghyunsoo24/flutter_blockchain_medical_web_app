@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_list_screen.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // 예시 데이터 리스트
-    final List<String> entries = <String>['A', 'B', 'C'];
-    final List<String> dates = <String>['2023-04-01', '2023-04-02', '2023-04-03'];
-    final List<String> pillName = <String>['타이레놀 외 3종', '영진세파클러캅셀 외 4종', '팜피린 외 2종'];
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('카카오톡 인증', style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text('처방 내용 불러오기', style: TextStyle(fontWeight: FontWeight.bold),),
       ),
       body: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +30,17 @@ class DetailScreen extends StatelessWidget {
             ),)
         ],
       ),
-
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the medication setup screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PersonalMedicineListScreen()),
+          );
+        },
+        child: Icon(Icons.double_arrow_rounded, color: Colors.white70),
+        backgroundColor: Colors.red,
+      ),
     );
     // return Scaffold(
     //   appBar: AppBar(

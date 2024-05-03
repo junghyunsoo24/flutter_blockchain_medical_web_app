@@ -74,69 +74,69 @@ class BoardScreen extends ConsumerWidget {
               ),
             ),
           ),
-          SizedBox(height: 10),
-          SizedBox(
-            height: 60,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DetailScreen()),
-                );
-              },
-              child: Container(
-                // decoration: BoxDecoration(
-                //   boxShadow: [
-                //     BoxShadow(
-                //       color: Colors.white54.withOpacity(0.2), // 시작 색상
-                //       offset: Offset(0, 2), // 그림자 위치 (x, y)
-                //       blurRadius: 90, // 그림자 흐림 정도
-                //       spreadRadius: 0, // 그림자 크기
-                //     ),
-                //     BoxShadow(
-                //       color: Colors.blue.withOpacity(0.8), // 끝 색상
-                //       offset: Offset(0, 2), // 그림자 위치 (x, y)
-                //       blurRadius: 50, // 그림자 흐림 정도
-                //       spreadRadius: 0, // 그림자 크기
-                //     ),
-                //   ],
-                //   borderRadius: BorderRadius.circular(10),
-                //
-                // ),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.blue.withOpacity(0.8), // 그림자 색상
-                      width: 2.0, // 그림자 두께
-                      style: BorderStyle.solid, // 그림자 스타일
-                      // 그림자 속성
-                      // offset: Offset(0, 2), // 그림자 위치 (x, y)
-                      // blurRadius: 50, // 그림자 흐림 정도
-                      // spreadRadius: 0, // 그림자 크기
-                    ),
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.child_care_rounded, color: Colors.blueAccent, size:35),
-                    SizedBox(width: 8),
-                    Text(
-                      '영유아 게시판',
-                      style: TextStyle(
-                        fontFamily: 'NotoSans',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          // SizedBox(height: 10),
+          // SizedBox(
+          //   height: 60,
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => DetailScreen()),
+          //       );
+          //     },
+          //     child: Container(
+          //       // decoration: BoxDecoration(
+          //       //   boxShadow: [
+          //       //     BoxShadow(
+          //       //       color: Colors.white54.withOpacity(0.2), // 시작 색상
+          //       //       offset: Offset(0, 2), // 그림자 위치 (x, y)
+          //       //       blurRadius: 90, // 그림자 흐림 정도
+          //       //       spreadRadius: 0, // 그림자 크기
+          //       //     ),
+          //       //     BoxShadow(
+          //       //       color: Colors.blue.withOpacity(0.8), // 끝 색상
+          //       //       offset: Offset(0, 2), // 그림자 위치 (x, y)
+          //       //       blurRadius: 50, // 그림자 흐림 정도
+          //       //       spreadRadius: 0, // 그림자 크기
+          //       //     ),
+          //       //   ],
+          //       //   borderRadius: BorderRadius.circular(10),
+          //       //
+          //       // ),
+          //       decoration: BoxDecoration(
+          //         border: Border(
+          //           bottom: BorderSide(
+          //             color: Colors.blue.withOpacity(0.8), // 그림자 색상
+          //             width: 2.0, // 그림자 두께
+          //             style: BorderStyle.solid, // 그림자 스타일
+          //             // 그림자 속성
+          //             // offset: Offset(0, 2), // 그림자 위치 (x, y)
+          //             // blurRadius: 50, // 그림자 흐림 정도
+          //             // spreadRadius: 0, // 그림자 크기
+          //           ),
+          //         ),
+          //         borderRadius: BorderRadius.circular(10),
+          //       ),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.start,
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         children: [
+          //           Icon(Icons.child_care_rounded, color: Colors.blueAccent, size:35),
+          //           SizedBox(width: 8),
+          //           Text(
+          //             '영유아 게시판',
+          //             style: TextStyle(
+          //               fontFamily: 'NotoSans',
+          //               fontWeight: FontWeight.w700,
+          //               fontSize: 20,
+          //               color: Colors.blueGrey,
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
           SizedBox(height: 10),
           SizedBox(
             height: 60,
