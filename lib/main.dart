@@ -42,12 +42,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/firebase_options.dart';
 import 'notification.dart';
-import 'second.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(const MyApp());
 }
 
@@ -58,6 +60,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: FlutterLocalNotification.navigatorKey,
       home: HomePage(),
     );
   }
@@ -100,9 +103,9 @@ class _HomePageState extends State<HomePage> {
           child: const Text('Send Data'),
           onPressed: () {
             FirebaseFirestore.instance.collection('messages').add({
-              'title': '테스트테스트',
-              'body': 'This is a new message',
-              'sender': 'Your Name',
+              'title': '긴급 데이터',
+              'body': '환자는 rh- 혈액형이 필요합니다',
+              'sender': '의사 김정민',
             });
           },
         ),
