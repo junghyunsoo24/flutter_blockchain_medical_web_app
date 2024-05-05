@@ -43,9 +43,15 @@ class $AlarmsTable extends Alarms with TableInfo<$AlarmsTable, Alarm> {
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("is_enabled" IN (0, 1))'),
       defaultValue: const Constant(true));
+  static const VerificationMeta _takeTimeMeta =
+      const VerificationMeta('takeTime');
+  @override
+  late final GeneratedColumn<DateTime> takeTime = GeneratedColumn<DateTime>(
+      'take_time', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, medicationName, dosage, time, isEnabled];
+      [id, medicationName, dosage, time, isEnabled, takeTime];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -83,6 +89,10 @@ class $AlarmsTable extends Alarms with TableInfo<$AlarmsTable, Alarm> {
       context.handle(_isEnabledMeta,
           isEnabled.isAcceptableOrUnknown(data['is_enabled']!, _isEnabledMeta));
     }
+    if (data.containsKey('take_time')) {
+      context.handle(_takeTimeMeta,
+          takeTime.isAcceptableOrUnknown(data['take_time']!, _takeTimeMeta));
+    }
     return context;
   }
 
@@ -102,6 +112,8 @@ class $AlarmsTable extends Alarms with TableInfo<$AlarmsTable, Alarm> {
           .read(DriftSqlType.dateTime, data['${effectivePrefix}time'])!,
       isEnabled: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_enabled'])!,
+      takeTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}take_time']),
     );
   }
 
@@ -117,12 +129,14 @@ class Alarm extends DataClass implements Insertable<Alarm> {
   final String dosage;
   final DateTime time;
   final bool isEnabled;
+  final DateTime? takeTime;
   const Alarm(
       {required this.id,
       required this.medicationName,
       required this.dosage,
       required this.time,
-      required this.isEnabled});
+      required this.isEnabled,
+      this.takeTime});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -131,6 +145,9 @@ class Alarm extends DataClass implements Insertable<Alarm> {
     map['dosage'] = Variable<String>(dosage);
     map['time'] = Variable<DateTime>(time);
     map['is_enabled'] = Variable<bool>(isEnabled);
+    if (!nullToAbsent || takeTime != null) {
+      map['take_time'] = Variable<DateTime>(takeTime);
+    }
     return map;
   }
 
@@ -141,6 +158,9 @@ class Alarm extends DataClass implements Insertable<Alarm> {
       dosage: Value(dosage),
       time: Value(time),
       isEnabled: Value(isEnabled),
+      takeTime: takeTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(takeTime),
     );
   }
 
@@ -153,6 +173,7 @@ class Alarm extends DataClass implements Insertable<Alarm> {
       dosage: serializer.fromJson<String>(json['dosage']),
       time: serializer.fromJson<DateTime>(json['time']),
       isEnabled: serializer.fromJson<bool>(json['isEnabled']),
+      takeTime: serializer.fromJson<DateTime?>(json['takeTime']),
     );
   }
   @override
@@ -164,6 +185,7 @@ class Alarm extends DataClass implements Insertable<Alarm> {
       'dosage': serializer.toJson<String>(dosage),
       'time': serializer.toJson<DateTime>(time),
       'isEnabled': serializer.toJson<bool>(isEnabled),
+      'takeTime': serializer.toJson<DateTime?>(takeTime),
     };
   }
 
@@ -172,13 +194,15 @@ class Alarm extends DataClass implements Insertable<Alarm> {
           String? medicationName,
           String? dosage,
           DateTime? time,
-          bool? isEnabled}) =>
+          bool? isEnabled,
+          Value<DateTime?> takeTime = const Value.absent()}) =>
       Alarm(
         id: id ?? this.id,
         medicationName: medicationName ?? this.medicationName,
         dosage: dosage ?? this.dosage,
         time: time ?? this.time,
         isEnabled: isEnabled ?? this.isEnabled,
+        takeTime: takeTime.present ? takeTime.value : this.takeTime,
       );
   @override
   String toString() {
@@ -187,13 +211,15 @@ class Alarm extends DataClass implements Insertable<Alarm> {
           ..write('medicationName: $medicationName, ')
           ..write('dosage: $dosage, ')
           ..write('time: $time, ')
-          ..write('isEnabled: $isEnabled')
+          ..write('isEnabled: $isEnabled, ')
+          ..write('takeTime: $takeTime')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, medicationName, dosage, time, isEnabled);
+  int get hashCode =>
+      Object.hash(id, medicationName, dosage, time, isEnabled, takeTime);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -202,7 +228,8 @@ class Alarm extends DataClass implements Insertable<Alarm> {
           other.medicationName == this.medicationName &&
           other.dosage == this.dosage &&
           other.time == this.time &&
-          other.isEnabled == this.isEnabled);
+          other.isEnabled == this.isEnabled &&
+          other.takeTime == this.takeTime);
 }
 
 class AlarmsCompanion extends UpdateCompanion<Alarm> {
@@ -211,12 +238,14 @@ class AlarmsCompanion extends UpdateCompanion<Alarm> {
   final Value<String> dosage;
   final Value<DateTime> time;
   final Value<bool> isEnabled;
+  final Value<DateTime?> takeTime;
   const AlarmsCompanion({
     this.id = const Value.absent(),
     this.medicationName = const Value.absent(),
     this.dosage = const Value.absent(),
     this.time = const Value.absent(),
     this.isEnabled = const Value.absent(),
+    this.takeTime = const Value.absent(),
   });
   AlarmsCompanion.insert({
     this.id = const Value.absent(),
@@ -224,6 +253,7 @@ class AlarmsCompanion extends UpdateCompanion<Alarm> {
     required String dosage,
     required DateTime time,
     this.isEnabled = const Value.absent(),
+    this.takeTime = const Value.absent(),
   })  : medicationName = Value(medicationName),
         dosage = Value(dosage),
         time = Value(time);
@@ -233,6 +263,7 @@ class AlarmsCompanion extends UpdateCompanion<Alarm> {
     Expression<String>? dosage,
     Expression<DateTime>? time,
     Expression<bool>? isEnabled,
+    Expression<DateTime>? takeTime,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -240,6 +271,7 @@ class AlarmsCompanion extends UpdateCompanion<Alarm> {
       if (dosage != null) 'dosage': dosage,
       if (time != null) 'time': time,
       if (isEnabled != null) 'is_enabled': isEnabled,
+      if (takeTime != null) 'take_time': takeTime,
     });
   }
 
@@ -248,13 +280,15 @@ class AlarmsCompanion extends UpdateCompanion<Alarm> {
       Value<String>? medicationName,
       Value<String>? dosage,
       Value<DateTime>? time,
-      Value<bool>? isEnabled}) {
+      Value<bool>? isEnabled,
+      Value<DateTime?>? takeTime}) {
     return AlarmsCompanion(
       id: id ?? this.id,
       medicationName: medicationName ?? this.medicationName,
       dosage: dosage ?? this.dosage,
       time: time ?? this.time,
       isEnabled: isEnabled ?? this.isEnabled,
+      takeTime: takeTime ?? this.takeTime,
     );
   }
 
@@ -276,6 +310,9 @@ class AlarmsCompanion extends UpdateCompanion<Alarm> {
     if (isEnabled.present) {
       map['is_enabled'] = Variable<bool>(isEnabled.value);
     }
+    if (takeTime.present) {
+      map['take_time'] = Variable<DateTime>(takeTime.value);
+    }
     return map;
   }
 
@@ -286,7 +323,8 @@ class AlarmsCompanion extends UpdateCompanion<Alarm> {
           ..write('medicationName: $medicationName, ')
           ..write('dosage: $dosage, ')
           ..write('time: $time, ')
-          ..write('isEnabled: $isEnabled')
+          ..write('isEnabled: $isEnabled, ')
+          ..write('takeTime: $takeTime')
           ..write(')'))
         .toString();
   }
