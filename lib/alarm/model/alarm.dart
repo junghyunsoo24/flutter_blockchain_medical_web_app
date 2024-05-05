@@ -1,10 +1,11 @@
 import 'package:drift/drift.dart';
 
 
-class Alarms extends Table{ //별도의 설정이 없으면, 클래스명에 뒤에 s는 코드 제너레이션 과정에서 떨어져 나가서 Alarm이라는 클래스로 만들어짐.
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get medicationName => text()();
-  TextColumn get dosage => text()();
-  DateTimeColumn   get time => dateTime()();
-  BoolColumn get isEnabled => boolean().withDefault(const Constant(true))();
+class Alarms extends Table {
+  IntColumn get id => integer().autoIncrement()(); // 고유번호
+  TextColumn get medicationName => text()(); // 복용약 명
+  TextColumn get dosage => text()(); // 복용 양
+  DateTimeColumn get time => dateTime()(); // 사용자가 설정한 시간
+  BoolColumn get isEnabled => boolean().withDefault(const Constant(true))(); // 알림 설정 활성화 여부
+  DateTimeColumn? get takeTime => dateTime().nullable()(); // 복용 일시 (선택적 필드)
 }

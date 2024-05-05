@@ -34,17 +34,17 @@ class MyDatabase extends _$MyDatabase {
   // you should bump this number whenever you change or add a table definition. Migrations
   // are covered later in this readme.
 
-  Future<int> addAlarm(Alarm alarm) { //알람
-    return into(alarms).insert(alarm);
+  Future<int> insertAlarm(AlarmsCompanion alarmsCompanion) { //알람 insert
+    return into(alarms).insert(alarmsCompanion);
   }
 
   // Future<List<Alarm>> get allAlarm => select(alarms).get();
-  Future<List<Alarm>> getAllAlarms() {
-    return select(alarms).get();
+  Future<List<Alarm>> getAllAlarms() async{
+    return await select(alarms).get();
   }
 
-  Future delAlarm(data) {
-    return delete(alarms).delete(data);
+  Future deleteAlarm(Alarm alarm) {
+    return delete(alarms).delete(alarm);
   }
   Future<void> updateAlarm(Alarm alarm) async {
     await update(alarms)
