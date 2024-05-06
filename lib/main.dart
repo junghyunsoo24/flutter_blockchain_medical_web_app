@@ -4,14 +4,17 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_data
 import 'splash/provider/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/firebase_options.dart';
+import 'package:get_it/get_it.dart';
 
-late MyDatabase database;
 void main() async {
+  final database = MyDatabase();
+  GetIt.I.registerSingleton<MyDatabase>(database);
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  database = MyDatabase();
+
   runApp(
     const ProviderScope(
       child: MyApp(),
