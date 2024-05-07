@@ -9,15 +9,15 @@ const realPhoneIp = '192.168.248.103:3000';
 const webIp = 'localhost:3000';
 
 String getIp() {
-  if (kIsWeb) {
+  if (Platform.isAndroid) {
+    return emulatorIp;
+  } else if (Platform.isIOS) {
+    return realPhoneIp;
+  } else if (Platform.isWindows) {
     return webIp;
   } else {
-    // if (Platform.isAndroid) {
-    //   return emulatorIp;
-    // } else{
-    //   return realPhoneIp;
-    // }
-      return emulatorIp;
+    return webIp;
   }
+
 }
 final ip = getIp();

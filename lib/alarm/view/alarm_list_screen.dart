@@ -17,19 +17,42 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
   late final MyDatabase _database;
   late final AlarmViewModel _viewModel;
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
+  late final AlarmManager _alarmManager;
+  // 싱글톤 인스턴스
+  static _AlarmListScreenState? _instance;
 
-  @override
-  void initState() {
-    super.initState();
+  factory _AlarmListScreenState() {
+    _instance ??= _AlarmListScreenState._();
+    return _instance!;
+  }
+
+  _AlarmListScreenState._() {
+    // 인스턴스 초기화
     _database = MyDatabase();
     _viewModel = AlarmViewModel(MyDatabase());
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
+    _alarmManager = AlarmManager(_database, _flutterLocalNotificationsPlugin);
     _requestPermissions();
     _loadAlarms();
-
+    _initializeNotifications();
   }
 
+  // 알림 초기화 메서드
+  void _initializeNotifications() {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('app_icon');
+
+    final InitializationSettings initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid);
+    _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  @override
+  void dispose() {
+    // 인스턴스 해제
+    _instance = null;
+    super.dispose();
+  }
   Future<void> _requestPermissions() async { //알림 권한 요청
     print("요청");
     await _flutterLocalNotificationsPlugin

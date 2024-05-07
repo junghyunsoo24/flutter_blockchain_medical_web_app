@@ -19,8 +19,8 @@ class _AlarmSetupScreenState  extends State<AlarmSetupScreen> {
   TextEditingController _medicineController = TextEditingController();
   TextEditingController _dosageController = TextEditingController();
   bool _isEnabled = true;
-  late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
-  late final AlarmManager _alarmManager;
+  //late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
+  //late final AlarmManager _alarmManager;
 
   final _formKey = GlobalKey<FormState>();
   late final AlarmViewModel _viewModel;
@@ -29,9 +29,9 @@ class _AlarmSetupScreenState  extends State<AlarmSetupScreen> {
   void initState() {
     super.initState();
     _database = MyDatabase();
-    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    //_flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     _viewModel = AlarmViewModel(MyDatabase());
-    _alarmManager = AlarmManager(_database, _flutterLocalNotificationsPlugin);
+    //_alarmManager = AlarmManager(_database, _flutterLocalNotificationsPlugin);
   }
 
   @override
@@ -113,13 +113,13 @@ class _AlarmSetupScreenState  extends State<AlarmSetupScreen> {
                       //   _isEnabled ,
                       // );
                       print(id);
-                      await _alarmManager.scheduleNotification(
-                        id: id,
-                        medicationName: _medicineController.text,
-                        dosage: _dosageController.text,
-                        dateTime: dateTime,
-                        isEnabled: _isEnabled
-                      );
+                      // await _alarmManager.scheduleNotification(
+                      //   id: id,
+                      //   medicationName: _medicineController.text,
+                      //   dosage: _dosageController.text,
+                      //   dateTime: dateTime,
+                      //   isEnabled: _isEnabled
+                      // );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("복용알림이 등록 되었습니다."),
