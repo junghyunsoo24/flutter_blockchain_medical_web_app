@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/view/alarm_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/viewModel/alarm_view_model.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
+
+import '../viewModel/alarm_manager.dart';
 
 class AlarmSetupScreen  extends StatefulWidget {
   @override
@@ -11,11 +14,13 @@ class AlarmSetupScreen  extends StatefulWidget {
 
 class _AlarmSetupScreenState  extends State<AlarmSetupScreen> {
   final borderside = OutlineInputBorder(borderSide: BorderSide(color: Colors.grey));
-
+  late final MyDatabase _database;
   TimeOfDay _selectedTime = TimeOfDay.now();
   TextEditingController _medicineController = TextEditingController();
   TextEditingController _dosageController = TextEditingController();
   bool _isEnabled = true;
+  late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
+  late final AlarmManager _alarmManager;
 
   final _formKey = GlobalKey<FormState>();
   late final AlarmViewModel _viewModel;
@@ -23,7 +28,10 @@ class _AlarmSetupScreenState  extends State<AlarmSetupScreen> {
   @override
   void initState() {
     super.initState();
+    _database = MyDatabase();
+    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     _viewModel = AlarmViewModel(MyDatabase());
+    _alarmManager = AlarmManager(_database, _flutterLocalNotificationsPlugin);
   }
 
   @override
@@ -92,19 +100,33 @@ class _AlarmSetupScreenState  extends State<AlarmSetupScreen> {
                   if (_formKey.currentState != null) {
                     bool passed = _formKey.currentState!.validate();
                     if (passed) {
-                      await _viewModel.saveAlarm(
+                      final id = await _viewModel.saveAlarm(
                         _medicineController.text,
                         _dosageController.text,
                         dateTime,
-                        _isEnabled ,
+                        _isEnabled,
                       );
-
+                      // await _viewModel.saveAlarm(
+                      //   _medicineController.text,
+                      //   _dosageController.text,
+                      //   dateTime,
+                      //   _isEnabled ,
+                      // );
+                      print(id);
+                      await _alarmManager.scheduleNotification(
+                        id: id,
+                        medicationName: _medicineController.text,
+                        dosage: _dosageController.text,
+                        dateTime: dateTime,
+                        isEnabled: _isEnabled
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("복용알림이 등록 되었습니다."),
                           duration: Duration(seconds: 3),
                         ),
                       );
+
                       Navigator.pop(context);
                     }
                   }
