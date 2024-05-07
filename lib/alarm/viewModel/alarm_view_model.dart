@@ -25,20 +25,44 @@ class AlarmViewModel extends ChangeNotifier {
     final alarmList = await getAlarms();
     _alarm.value = alarmList;
   }
-
-  Future<void> saveAlarm(String medicationName, String dosage, DateTime time, bool isEnabled,
-      ) async {
-    await _database.insertAlarm(AlarmsCompanion(
-        medicationName: Value(medicationName),
-        dosage : Value(dosage),
-        time: Value(time),
-        isEnabled: Value(isEnabled),
-        // takeTime: takeTime != null ? Value(takeTime) : const Value.absent(),
+  Future<int> saveAlarm(String medicationName, String dosage, DateTime time, bool isEnabled) async {
+    final id = await _database.insertAlarm(AlarmsCompanion(
+      medicationName: Value(medicationName),
+      dosage: Value(dosage),
+      time: Value(time),
+      isEnabled: Value(isEnabled),
     ));
     loadAlarms();
+    return id.toInt(); // 반환된 ID를 int로 변환하여 반환
   }
+
+  // Future<void> saveAlarm(String medicationName, String dosage, DateTime time, bool isEnabled,
+  //     ) async {
+  //   await _database.insertAlarm(AlarmsCompanion(
+  //       medicationName: Value(medicationName),
+  //       dosage : Value(dosage),
+  //       time: Value(time),
+  //       isEnabled: Value(isEnabled),
+  //       // takeTime: takeTime != null ? Value(takeTime) : const Value.absent(),
+  //   ));
+  //   loadAlarms();
+  //
+  // }
   Future<List<Alarm>> getAlarms() async {
     return await _repository.getAllAlarms();
   }
-
+  Future<void> confirmTakeMedication(Alarm alarm) async {
+    final updatedAlarm = alarm.copyWith(
+      takeTime: Value(DateTime.now()),
+    );
+    await _database.updateAlarm(updatedAlarm);
+    notifyListeners();
+  }
+  Future<void> deleteAlarm(Alarm alarm) async {
+    try {
+      await _repository.deleteAlarm(alarm);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
