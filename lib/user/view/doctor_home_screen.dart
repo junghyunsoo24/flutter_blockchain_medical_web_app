@@ -7,6 +7,7 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/pre
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_screen.dart';
+import '../../deliver/view/deliver_screen.dart';
 import '../../user/provider/user_me_provider.dart';
 
 class DoctorHomeScreen extends ConsumerWidget {
@@ -106,9 +107,17 @@ class DoctorHomeScreen extends ConsumerWidget {
                         Expanded(
                           child: Align(
                             alignment: Alignment.centerRight,
-                            child: Icon(
-                              Icons.send_to_mobile_rounded,
-                              color: Colors.white,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.send_to_mobile_rounded,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => DeliverScreen()),
+                                );
+                              },
                             ),
                           ),
                         ),
