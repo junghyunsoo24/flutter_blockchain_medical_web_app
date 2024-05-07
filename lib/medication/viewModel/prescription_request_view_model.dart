@@ -16,7 +16,7 @@ class PrescriptionRequestViewModel {
       provider: provider,
     );
 
-    final url = Uri.parse('http://localhost:8080/api/test/request'); //일단 임시 URL
+    final url = Uri.parse('http://localhost:5000/api/v1/medical-api/treatment-imformation/first-request'); //일단 임시 URL
     final response = await http.post(
       url,
       body: jsonEncode(model.toJson()), //model의 내용을 json 타입으로 변경해서 전달

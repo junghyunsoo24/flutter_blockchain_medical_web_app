@@ -18,7 +18,17 @@ class _DeliverScreenState extends State<DeliverScreen> {
   final TextEditingController _senderController = TextEditingController();
 
   // FlutterLocalNotificationsPlugin 인스턴스를 생성합니다.
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+
+  // 싱글톤 인스턴스
+  static FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
+
+  // 싱글톤 패턴의 팩토리 생성자
+  static FlutterLocalNotificationsPlugin get flutterLocalNotificationsPlugin {
+    _flutterLocalNotificationsPlugin ??= FlutterLocalNotificationsPlugin();
+    return _flutterLocalNotificationsPlugin!;
+  }
 
   void getMyDeviceToken() async {
     final token = await FirebaseMessaging.instance.getToken();
@@ -27,14 +37,16 @@ class _DeliverScreenState extends State<DeliverScreen> {
 
   @override
   void initState(){
+    super.initState();
     getMyDeviceToken();
+    _initializeNotifications();
     // FlutterLocalNotificationsPlugin 인스턴스를 초기화합니다.
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    final InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    // const AndroidInitializationSettings initializationSettingsAndroid =
+    // AndroidInitializationSettings('@mipmap/ic_launcher');
+    //
+    // final InitializationSettings initializationSettings =
+    // InitializationSettings(android: initializationSettingsAndroid);
+    // flutterLocalNotificationsPlugin.initialize(initializationSettings);
     _messagesStream.listen((querySnapshot) {
       querySnapshot.docChanges.forEach((change) {
         if (change.type == DocumentChangeType.added) {
@@ -44,7 +56,14 @@ class _DeliverScreenState extends State<DeliverScreen> {
       });
     });
   }
+  void _initializeNotifications() {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
 
+    final InitializationSettings initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

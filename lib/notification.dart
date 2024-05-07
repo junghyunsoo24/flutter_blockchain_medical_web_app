@@ -6,17 +6,34 @@ import 'second.dart';
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 class FlutterLocalNotification {
-  FlutterLocalNotification._();
+  static final FlutterLocalNotification _instance = FlutterLocalNotification._internal();
+  // FlutterLocalNotification._();
 
-  static init() async {
+  factory FlutterLocalNotification() {
+    return _instance;
+  }
+
+  FlutterLocalNotification._internal();
+
+  static Future<void> init() async {
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
     final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: (payload) async {
-        onSelectNotification(payload);
+          onSelectNotification(payload);
         });
   }
+  //
+  // static init() async {
+  //   const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  //   final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+  //
+  //   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //       onDidReceiveNotificationResponse: (payload) async {
+  //       onSelectNotification(payload);
+  //       });
+  // }
 
   static Future<void> showNotification(Map<String, dynamic> payload) async {
     const AndroidNotificationDetails androidNotificationDetails =
