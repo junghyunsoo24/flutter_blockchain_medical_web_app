@@ -11,4 +11,8 @@ class AlarmRepository {
   Future<List<Alarm>> getAllAlarms() async {
     return await _databaseService.getAllAlarms();
   }
+
+  Future<void> deleteAlarm(Alarm alarm) async {
+    await _databaseService.deleteAlarm(alarm);
+  }
 }
