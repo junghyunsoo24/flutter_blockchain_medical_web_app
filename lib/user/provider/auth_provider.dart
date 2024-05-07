@@ -4,10 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/user/provider/user_me_provider.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/user/view/patient_main_screen.dart';
 import '../../home/view/root_tab.dart';
 import '../../login/view/login_screen.dart';
 import '../../splash/view/splash_screen.dart';
 import '../model/user_model.dart';
+import '../view/doctor_main_screen.dart';
 
 final authProvider = ChangeNotifierProvider<AuthProvider>((ref) {
   return AuthProvider(ref: ref);
@@ -31,6 +33,11 @@ class AuthProvider extends ChangeNotifier {
       path: '/',
       name: RootTab.routeName,
       builder: (_, __) => const RootTab(),
+    ),
+    GoRoute(
+      path: '/doctor',
+      name: DoctorMainScreen.routeName,
+      builder: (_, __) => const DoctorMainScreen(),
     ),
     GoRoute(
       path: '/splash',
@@ -72,8 +79,15 @@ class AuthProvider extends ChangeNotifier {
     // 로그인 중이거나 현재 위치가 SplashScreen이면
     // 홈으로 이동
     if (user is UserModel) {
-      return logginIn || state.matchedLocation == '/splash' ? '/' : null;
+      if (logginIn || state.matchedLocation == '/splash') {
+        if (MediaQuery.of(context).size.width > 600) {
+          return '/doctor';
+        } else {
+          return '/';
+        }
+      }
     }
+    return null; // 조건에 맞지 않는 경우, 리디렉션하지 않음
 
     // UserModelError
     if (user is UserModelError) {
