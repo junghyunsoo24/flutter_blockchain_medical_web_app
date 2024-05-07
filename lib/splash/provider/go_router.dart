@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/user/provider/auth_provider.dart';
+
+import '../../notification.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   // watch - 값이 변경될때마다 다시 빌드
@@ -12,5 +16,6 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: '/splash',
     refreshListenable: provider,
     redirect: provider.redirectLogic,
+    navigatorKey: FlutterLocalNotification.navigatorKey,
   );
 });

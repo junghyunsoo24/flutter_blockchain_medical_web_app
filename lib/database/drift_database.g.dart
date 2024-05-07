@@ -1468,6 +1468,826 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
   }
 }
 
+class $PatientsTable extends Patients with TableInfo<$PatientsTable, Patient> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PatientsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _userIDMeta = const VerificationMeta('userID');
+  @override
+  late final GeneratedColumn<String> userID = GeneratedColumn<String>(
+      'user_i_d', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _userPWMeta = const VerificationMeta('userPW');
+  @override
+  late final GeneratedColumn<String> userPW = GeneratedColumn<String>(
+      'user_p_w', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _birthdayMeta =
+      const VerificationMeta('birthday');
+  @override
+  late final GeneratedColumn<String> birthday = GeneratedColumn<String>(
+      'birthday', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _genderMeta = const VerificationMeta('gender');
+  @override
+  late final GeneratedColumn<int> gender = GeneratedColumn<int>(
+      'gender', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _heightMeta = const VerificationMeta('height');
+  @override
+  late final GeneratedColumn<double> height = GeneratedColumn<double>(
+      'height', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _weightMeta = const VerificationMeta('weight');
+  @override
+  late final GeneratedColumn<double> weight = GeneratedColumn<double>(
+      'weight', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<int> role = GeneratedColumn<int>(
+      'role', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, userID, userPW, name, birthday, gender, height, weight, role];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'patients';
+  @override
+  VerificationContext validateIntegrity(Insertable<Patient> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_i_d')) {
+      context.handle(_userIDMeta,
+          userID.isAcceptableOrUnknown(data['user_i_d']!, _userIDMeta));
+    } else if (isInserting) {
+      context.missing(_userIDMeta);
+    }
+    if (data.containsKey('user_p_w')) {
+      context.handle(_userPWMeta,
+          userPW.isAcceptableOrUnknown(data['user_p_w']!, _userPWMeta));
+    } else if (isInserting) {
+      context.missing(_userPWMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('birthday')) {
+      context.handle(_birthdayMeta,
+          birthday.isAcceptableOrUnknown(data['birthday']!, _birthdayMeta));
+    } else if (isInserting) {
+      context.missing(_birthdayMeta);
+    }
+    if (data.containsKey('gender')) {
+      context.handle(_genderMeta,
+          gender.isAcceptableOrUnknown(data['gender']!, _genderMeta));
+    } else if (isInserting) {
+      context.missing(_genderMeta);
+    }
+    if (data.containsKey('height')) {
+      context.handle(_heightMeta,
+          height.isAcceptableOrUnknown(data['height']!, _heightMeta));
+    } else if (isInserting) {
+      context.missing(_heightMeta);
+    }
+    if (data.containsKey('weight')) {
+      context.handle(_weightMeta,
+          weight.isAcceptableOrUnknown(data['weight']!, _weightMeta));
+    } else if (isInserting) {
+      context.missing(_weightMeta);
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+          _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Patient map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Patient(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      userID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_i_d'])!,
+      userPW: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_p_w'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      birthday: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}birthday'])!,
+      gender: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}gender'])!,
+      height: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}height'])!,
+      weight: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}weight'])!,
+      role: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}role'])!,
+    );
+  }
+
+  @override
+  $PatientsTable createAlias(String alias) {
+    return $PatientsTable(attachedDatabase, alias);
+  }
+}
+
+class Patient extends DataClass implements Insertable<Patient> {
+  final int id;
+  final String userID;
+  final String userPW;
+  final String name;
+  final String birthday;
+  final int gender;
+  final double height;
+  final double weight;
+  final int role;
+  const Patient(
+      {required this.id,
+      required this.userID,
+      required this.userPW,
+      required this.name,
+      required this.birthday,
+      required this.gender,
+      required this.height,
+      required this.weight,
+      required this.role});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['user_i_d'] = Variable<String>(userID);
+    map['user_p_w'] = Variable<String>(userPW);
+    map['name'] = Variable<String>(name);
+    map['birthday'] = Variable<String>(birthday);
+    map['gender'] = Variable<int>(gender);
+    map['height'] = Variable<double>(height);
+    map['weight'] = Variable<double>(weight);
+    map['role'] = Variable<int>(role);
+    return map;
+  }
+
+  PatientsCompanion toCompanion(bool nullToAbsent) {
+    return PatientsCompanion(
+      id: Value(id),
+      userID: Value(userID),
+      userPW: Value(userPW),
+      name: Value(name),
+      birthday: Value(birthday),
+      gender: Value(gender),
+      height: Value(height),
+      weight: Value(weight),
+      role: Value(role),
+    );
+  }
+
+  factory Patient.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Patient(
+      id: serializer.fromJson<int>(json['id']),
+      userID: serializer.fromJson<String>(json['userID']),
+      userPW: serializer.fromJson<String>(json['userPW']),
+      name: serializer.fromJson<String>(json['name']),
+      birthday: serializer.fromJson<String>(json['birthday']),
+      gender: serializer.fromJson<int>(json['gender']),
+      height: serializer.fromJson<double>(json['height']),
+      weight: serializer.fromJson<double>(json['weight']),
+      role: serializer.fromJson<int>(json['role']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userID': serializer.toJson<String>(userID),
+      'userPW': serializer.toJson<String>(userPW),
+      'name': serializer.toJson<String>(name),
+      'birthday': serializer.toJson<String>(birthday),
+      'gender': serializer.toJson<int>(gender),
+      'height': serializer.toJson<double>(height),
+      'weight': serializer.toJson<double>(weight),
+      'role': serializer.toJson<int>(role),
+    };
+  }
+
+  Patient copyWith(
+          {int? id,
+          String? userID,
+          String? userPW,
+          String? name,
+          String? birthday,
+          int? gender,
+          double? height,
+          double? weight,
+          int? role}) =>
+      Patient(
+        id: id ?? this.id,
+        userID: userID ?? this.userID,
+        userPW: userPW ?? this.userPW,
+        name: name ?? this.name,
+        birthday: birthday ?? this.birthday,
+        gender: gender ?? this.gender,
+        height: height ?? this.height,
+        weight: weight ?? this.weight,
+        role: role ?? this.role,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Patient(')
+          ..write('id: $id, ')
+          ..write('userID: $userID, ')
+          ..write('userPW: $userPW, ')
+          ..write('name: $name, ')
+          ..write('birthday: $birthday, ')
+          ..write('gender: $gender, ')
+          ..write('height: $height, ')
+          ..write('weight: $weight, ')
+          ..write('role: $role')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, userID, userPW, name, birthday, gender, height, weight, role);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Patient &&
+          other.id == this.id &&
+          other.userID == this.userID &&
+          other.userPW == this.userPW &&
+          other.name == this.name &&
+          other.birthday == this.birthday &&
+          other.gender == this.gender &&
+          other.height == this.height &&
+          other.weight == this.weight &&
+          other.role == this.role);
+}
+
+class PatientsCompanion extends UpdateCompanion<Patient> {
+  final Value<int> id;
+  final Value<String> userID;
+  final Value<String> userPW;
+  final Value<String> name;
+  final Value<String> birthday;
+  final Value<int> gender;
+  final Value<double> height;
+  final Value<double> weight;
+  final Value<int> role;
+  const PatientsCompanion({
+    this.id = const Value.absent(),
+    this.userID = const Value.absent(),
+    this.userPW = const Value.absent(),
+    this.name = const Value.absent(),
+    this.birthday = const Value.absent(),
+    this.gender = const Value.absent(),
+    this.height = const Value.absent(),
+    this.weight = const Value.absent(),
+    this.role = const Value.absent(),
+  });
+  PatientsCompanion.insert({
+    this.id = const Value.absent(),
+    required String userID,
+    required String userPW,
+    required String name,
+    required String birthday,
+    required int gender,
+    required double height,
+    required double weight,
+    required int role,
+  })  : userID = Value(userID),
+        userPW = Value(userPW),
+        name = Value(name),
+        birthday = Value(birthday),
+        gender = Value(gender),
+        height = Value(height),
+        weight = Value(weight),
+        role = Value(role);
+  static Insertable<Patient> custom({
+    Expression<int>? id,
+    Expression<String>? userID,
+    Expression<String>? userPW,
+    Expression<String>? name,
+    Expression<String>? birthday,
+    Expression<int>? gender,
+    Expression<double>? height,
+    Expression<double>? weight,
+    Expression<int>? role,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userID != null) 'user_i_d': userID,
+      if (userPW != null) 'user_p_w': userPW,
+      if (name != null) 'name': name,
+      if (birthday != null) 'birthday': birthday,
+      if (gender != null) 'gender': gender,
+      if (height != null) 'height': height,
+      if (weight != null) 'weight': weight,
+      if (role != null) 'role': role,
+    });
+  }
+
+  PatientsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? userID,
+      Value<String>? userPW,
+      Value<String>? name,
+      Value<String>? birthday,
+      Value<int>? gender,
+      Value<double>? height,
+      Value<double>? weight,
+      Value<int>? role}) {
+    return PatientsCompanion(
+      id: id ?? this.id,
+      userID: userID ?? this.userID,
+      userPW: userPW ?? this.userPW,
+      name: name ?? this.name,
+      birthday: birthday ?? this.birthday,
+      gender: gender ?? this.gender,
+      height: height ?? this.height,
+      weight: weight ?? this.weight,
+      role: role ?? this.role,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userID.present) {
+      map['user_i_d'] = Variable<String>(userID.value);
+    }
+    if (userPW.present) {
+      map['user_p_w'] = Variable<String>(userPW.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (birthday.present) {
+      map['birthday'] = Variable<String>(birthday.value);
+    }
+    if (gender.present) {
+      map['gender'] = Variable<int>(gender.value);
+    }
+    if (height.present) {
+      map['height'] = Variable<double>(height.value);
+    }
+    if (weight.present) {
+      map['weight'] = Variable<double>(weight.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<int>(role.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PatientsCompanion(')
+          ..write('id: $id, ')
+          ..write('userID: $userID, ')
+          ..write('userPW: $userPW, ')
+          ..write('name: $name, ')
+          ..write('birthday: $birthday, ')
+          ..write('gender: $gender, ')
+          ..write('height: $height, ')
+          ..write('weight: $weight, ')
+          ..write('role: $role')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DoctorsTable extends Doctors with TableInfo<$DoctorsTable, Doctor> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DoctorsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _userIDMeta = const VerificationMeta('userID');
+  @override
+  late final GeneratedColumn<String> userID = GeneratedColumn<String>(
+      'user_i_d', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _userPWMeta = const VerificationMeta('userPW');
+  @override
+  late final GeneratedColumn<String> userPW = GeneratedColumn<String>(
+      'user_p_w', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _fieldMeta = const VerificationMeta('field');
+  @override
+  late final GeneratedColumn<String> field = GeneratedColumn<String>(
+      'field', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _hospitalMeta =
+      const VerificationMeta('hospital');
+  @override
+  late final GeneratedColumn<String> hospital = GeneratedColumn<String>(
+      'hospital', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _introductionMeta =
+      const VerificationMeta('introduction');
+  @override
+  late final GeneratedColumn<String> introduction = GeneratedColumn<String>(
+      'introduction', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<int> role = GeneratedColumn<int>(
+      'role', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, userID, userPW, name, field, hospital, introduction, role];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'doctors';
+  @override
+  VerificationContext validateIntegrity(Insertable<Doctor> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_i_d')) {
+      context.handle(_userIDMeta,
+          userID.isAcceptableOrUnknown(data['user_i_d']!, _userIDMeta));
+    } else if (isInserting) {
+      context.missing(_userIDMeta);
+    }
+    if (data.containsKey('user_p_w')) {
+      context.handle(_userPWMeta,
+          userPW.isAcceptableOrUnknown(data['user_p_w']!, _userPWMeta));
+    } else if (isInserting) {
+      context.missing(_userPWMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('field')) {
+      context.handle(
+          _fieldMeta, field.isAcceptableOrUnknown(data['field']!, _fieldMeta));
+    } else if (isInserting) {
+      context.missing(_fieldMeta);
+    }
+    if (data.containsKey('hospital')) {
+      context.handle(_hospitalMeta,
+          hospital.isAcceptableOrUnknown(data['hospital']!, _hospitalMeta));
+    } else if (isInserting) {
+      context.missing(_hospitalMeta);
+    }
+    if (data.containsKey('introduction')) {
+      context.handle(
+          _introductionMeta,
+          introduction.isAcceptableOrUnknown(
+              data['introduction']!, _introductionMeta));
+    } else if (isInserting) {
+      context.missing(_introductionMeta);
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+          _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Doctor map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Doctor(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      userID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_i_d'])!,
+      userPW: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_p_w'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      field: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}field'])!,
+      hospital: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}hospital'])!,
+      introduction: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}introduction'])!,
+      role: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}role'])!,
+    );
+  }
+
+  @override
+  $DoctorsTable createAlias(String alias) {
+    return $DoctorsTable(attachedDatabase, alias);
+  }
+}
+
+class Doctor extends DataClass implements Insertable<Doctor> {
+  final int id;
+  final String userID;
+  final String userPW;
+  final String name;
+  final String field;
+  final String hospital;
+  final String introduction;
+  final int role;
+  const Doctor(
+      {required this.id,
+      required this.userID,
+      required this.userPW,
+      required this.name,
+      required this.field,
+      required this.hospital,
+      required this.introduction,
+      required this.role});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['user_i_d'] = Variable<String>(userID);
+    map['user_p_w'] = Variable<String>(userPW);
+    map['name'] = Variable<String>(name);
+    map['field'] = Variable<String>(field);
+    map['hospital'] = Variable<String>(hospital);
+    map['introduction'] = Variable<String>(introduction);
+    map['role'] = Variable<int>(role);
+    return map;
+  }
+
+  DoctorsCompanion toCompanion(bool nullToAbsent) {
+    return DoctorsCompanion(
+      id: Value(id),
+      userID: Value(userID),
+      userPW: Value(userPW),
+      name: Value(name),
+      field: Value(field),
+      hospital: Value(hospital),
+      introduction: Value(introduction),
+      role: Value(role),
+    );
+  }
+
+  factory Doctor.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Doctor(
+      id: serializer.fromJson<int>(json['id']),
+      userID: serializer.fromJson<String>(json['userID']),
+      userPW: serializer.fromJson<String>(json['userPW']),
+      name: serializer.fromJson<String>(json['name']),
+      field: serializer.fromJson<String>(json['field']),
+      hospital: serializer.fromJson<String>(json['hospital']),
+      introduction: serializer.fromJson<String>(json['introduction']),
+      role: serializer.fromJson<int>(json['role']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userID': serializer.toJson<String>(userID),
+      'userPW': serializer.toJson<String>(userPW),
+      'name': serializer.toJson<String>(name),
+      'field': serializer.toJson<String>(field),
+      'hospital': serializer.toJson<String>(hospital),
+      'introduction': serializer.toJson<String>(introduction),
+      'role': serializer.toJson<int>(role),
+    };
+  }
+
+  Doctor copyWith(
+          {int? id,
+          String? userID,
+          String? userPW,
+          String? name,
+          String? field,
+          String? hospital,
+          String? introduction,
+          int? role}) =>
+      Doctor(
+        id: id ?? this.id,
+        userID: userID ?? this.userID,
+        userPW: userPW ?? this.userPW,
+        name: name ?? this.name,
+        field: field ?? this.field,
+        hospital: hospital ?? this.hospital,
+        introduction: introduction ?? this.introduction,
+        role: role ?? this.role,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Doctor(')
+          ..write('id: $id, ')
+          ..write('userID: $userID, ')
+          ..write('userPW: $userPW, ')
+          ..write('name: $name, ')
+          ..write('field: $field, ')
+          ..write('hospital: $hospital, ')
+          ..write('introduction: $introduction, ')
+          ..write('role: $role')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, userID, userPW, name, field, hospital, introduction, role);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Doctor &&
+          other.id == this.id &&
+          other.userID == this.userID &&
+          other.userPW == this.userPW &&
+          other.name == this.name &&
+          other.field == this.field &&
+          other.hospital == this.hospital &&
+          other.introduction == this.introduction &&
+          other.role == this.role);
+}
+
+class DoctorsCompanion extends UpdateCompanion<Doctor> {
+  final Value<int> id;
+  final Value<String> userID;
+  final Value<String> userPW;
+  final Value<String> name;
+  final Value<String> field;
+  final Value<String> hospital;
+  final Value<String> introduction;
+  final Value<int> role;
+  const DoctorsCompanion({
+    this.id = const Value.absent(),
+    this.userID = const Value.absent(),
+    this.userPW = const Value.absent(),
+    this.name = const Value.absent(),
+    this.field = const Value.absent(),
+    this.hospital = const Value.absent(),
+    this.introduction = const Value.absent(),
+    this.role = const Value.absent(),
+  });
+  DoctorsCompanion.insert({
+    this.id = const Value.absent(),
+    required String userID,
+    required String userPW,
+    required String name,
+    required String field,
+    required String hospital,
+    required String introduction,
+    required int role,
+  })  : userID = Value(userID),
+        userPW = Value(userPW),
+        name = Value(name),
+        field = Value(field),
+        hospital = Value(hospital),
+        introduction = Value(introduction),
+        role = Value(role);
+  static Insertable<Doctor> custom({
+    Expression<int>? id,
+    Expression<String>? userID,
+    Expression<String>? userPW,
+    Expression<String>? name,
+    Expression<String>? field,
+    Expression<String>? hospital,
+    Expression<String>? introduction,
+    Expression<int>? role,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userID != null) 'user_i_d': userID,
+      if (userPW != null) 'user_p_w': userPW,
+      if (name != null) 'name': name,
+      if (field != null) 'field': field,
+      if (hospital != null) 'hospital': hospital,
+      if (introduction != null) 'introduction': introduction,
+      if (role != null) 'role': role,
+    });
+  }
+
+  DoctorsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? userID,
+      Value<String>? userPW,
+      Value<String>? name,
+      Value<String>? field,
+      Value<String>? hospital,
+      Value<String>? introduction,
+      Value<int>? role}) {
+    return DoctorsCompanion(
+      id: id ?? this.id,
+      userID: userID ?? this.userID,
+      userPW: userPW ?? this.userPW,
+      name: name ?? this.name,
+      field: field ?? this.field,
+      hospital: hospital ?? this.hospital,
+      introduction: introduction ?? this.introduction,
+      role: role ?? this.role,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userID.present) {
+      map['user_i_d'] = Variable<String>(userID.value);
+    }
+    if (userPW.present) {
+      map['user_p_w'] = Variable<String>(userPW.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (field.present) {
+      map['field'] = Variable<String>(field.value);
+    }
+    if (hospital.present) {
+      map['hospital'] = Variable<String>(hospital.value);
+    }
+    if (introduction.present) {
+      map['introduction'] = Variable<String>(introduction.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<int>(role.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DoctorsCompanion(')
+          ..write('id: $id, ')
+          ..write('userID: $userID, ')
+          ..write('userPW: $userPW, ')
+          ..write('name: $name, ')
+          ..write('field: $field, ')
+          ..write('hospital: $hospital, ')
+          ..write('introduction: $introduction, ')
+          ..write('role: $role')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   late final $AlarmsTable alarms = $AlarmsTable(this);
@@ -1475,10 +2295,12 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   late final $PersonalMedicinesTable personalMedicines =
       $PersonalMedicinesTable(this);
   late final $PrescriptionsTable prescriptions = $PrescriptionsTable(this);
+  late final $PatientsTable patients = $PatientsTable(this);
+  late final $DoctorsTable doctors = $DoctorsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [alarms, symptoms, personalMedicines, prescriptions];
+      [alarms, symptoms, personalMedicines, prescriptions, patients, doctors];
 }
