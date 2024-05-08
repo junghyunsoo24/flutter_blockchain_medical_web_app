@@ -7,7 +7,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterL
 
 class FlutterLocalNotification {
   static final FlutterLocalNotification _instance = FlutterLocalNotification._internal();
-  // FlutterLocalNotification._();
 
   factory FlutterLocalNotification() {
     return _instance;
@@ -24,16 +23,6 @@ class FlutterLocalNotification {
           onSelectNotification(payload);
         });
   }
-  //
-  // static init() async {
-  //   const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  //   final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-  //
-  //   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-  //       onDidReceiveNotificationResponse: (payload) async {
-  //       onSelectNotification(payload);
-  //       });
-  // }
 
   static Future<void> showNotification(Map<String, dynamic> payload) async {
     const AndroidNotificationDetails androidNotificationDetails =
@@ -62,14 +51,14 @@ class FlutterLocalNotification {
       if (payload.payload != null) {
         try {
           final data = Map<String, dynamic>.fromEntries(
-            payload.payload!.split('&').map((item) {
-              final List<String> parts = item.split('=');
-              if (parts.length == 2) {
-                return MapEntry(Uri.decodeComponent(parts[0].trim()), Uri.decodeComponent(parts[1].trim())); // 변경된 부분
-              } else {
-                throw FormatException("잘못된 데이터 포맷입니다.");
-              }
-            })
+              payload.payload!.split('&').map((item) {
+                final List<String> parts = item.split('=');
+                if (parts.length == 2) {
+                  return MapEntry(Uri.decodeComponent(parts[0].trim()), Uri.decodeComponent(parts[1].trim())); // 변경된 부분
+                } else {
+                  throw FormatException("잘못된 데이터 포맷입니다.");
+                }
+              })
           );
 
           if (navigatorKey.currentState != null) {

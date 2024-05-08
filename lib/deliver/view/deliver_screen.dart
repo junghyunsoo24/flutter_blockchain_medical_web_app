@@ -11,15 +11,11 @@ class DeliverScreen extends StatefulWidget {
 }
 
 class _DeliverScreenState extends State<DeliverScreen> {
-  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('messages').snapshots();
+  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('first').snapshots();
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
   final TextEditingController _senderController = TextEditingController();
-
-  // FlutterLocalNotificationsPlugin 인스턴스를 생성합니다.
-  //final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
 
   // 싱글톤 인스턴스
   static FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
@@ -40,13 +36,10 @@ class _DeliverScreenState extends State<DeliverScreen> {
     super.initState();
     getMyDeviceToken();
     _initializeNotifications();
-    // FlutterLocalNotificationsPlugin 인스턴스를 초기화합니다.
-    // const AndroidInitializationSettings initializationSettingsAndroid =
-    // AndroidInitializationSettings('@mipmap/ic_launcher');
-    //
-    // final InitializationSettings initializationSettings =
-    // InitializationSettings(android: initializationSettingsAndroid);
-    // flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    FirebaseFirestore.instance.settings = Settings(
+      persistenceEnabled: true,
+    );
+
     _messagesStream.listen((querySnapshot) {
       querySnapshot.docChanges.forEach((change) {
         if (change.type == DocumentChangeType.added) {
@@ -90,7 +83,7 @@ class _DeliverScreenState extends State<DeliverScreen> {
             ElevatedButton(
               onPressed: () async {
                 // Firestore에 데이터 추가
-                await FirebaseFirestore.instance.collection('messages').add({
+                await FirebaseFirestore.instance.collection('first').add({
                   'title': _titleController.text,
                   'body': _bodyController.text,
                   'sender': _senderController.text,
