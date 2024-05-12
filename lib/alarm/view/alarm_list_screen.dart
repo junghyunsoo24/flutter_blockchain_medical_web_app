@@ -44,9 +44,16 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
 
     final InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
-    _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+      // 알림을 클릭했을 때 실행되는 콜백 함수
+      _handleNotificationTap(response);
+    },);
   }
-
+  void _handleNotificationTap(NotificationResponse response) {
+    Navigator.pushNamed(context, '/alarm_list_screen');
+  }
   @override
   void dispose() {
     // 인스턴스 해제
