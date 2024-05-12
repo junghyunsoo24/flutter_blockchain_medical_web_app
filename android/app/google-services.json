@@ -1,14 +1,13 @@
 {
   "project_info": {
-    "project_number": "999780358797",
-    "firebase_url": "https://medicalwebapp-4b1dd-default-rtdb.firebaseio.com",
-    "project_id": "medicalwebapp-4b1dd",
-    "storage_bucket": "medicalwebapp-4b1dd.appspot.com"
+    "project_number": "842075101905",
+    "project_id": "medical-block-app",
+    "storage_bucket": "medical-block-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:999780358797:android:70dbe56fe3ed397890a0c4",
+        "mobilesdk_app_id": "1:842075101905:android:4ad532582a84e9005943f0",
         "android_client_info": {
           "package_name": "com.example.portfolio_flutter_blockchain_medical_web_app"
         }
@@ -16,26 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA03bxyws9N_ZOVeejFU99fkACbjfjsems"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:999780358797:android:b159e092bd91e49e90a0c4",
-        "android_client_info": {
-          "package_name": "com.example.portfolio_flutter_blockchain_medical_web_app2"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA03bxyws9N_ZOVeejFU99fkACbjfjsems"
+          "current_key": "AIzaSyASRnVAiAfDVJ5qDBlyiaBk1UJEbC-zCqw"
         }
       ],
       "services": {
