@@ -4,12 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/user/provider/user_me_provider.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/user/view/patient_main_screen.dart';
+import '../../home/view/doctor_root_tab.dart';
 import '../../home/view/root_tab.dart';
 import '../../login/view/login_screen.dart';
 import '../../splash/view/splash_screen.dart';
 import '../model/user_model.dart';
-import '../view/doctor_main_screen.dart';
 
 final authProvider = ChangeNotifierProvider<AuthProvider>((ref) {
   return AuthProvider(ref: ref);
@@ -30,16 +29,6 @@ class AuthProvider extends ChangeNotifier {
 
   List<GoRoute> get routes => [
     GoRoute(
-      path: '/',
-      name: RootTab.routeName,
-      builder: (_, __) => const RootTab(),
-    ),
-    GoRoute(
-      path: '/doctor',
-      name: DoctorMainScreen.routeName,
-      builder: (_, __) => const DoctorMainScreen(),
-    ),
-    GoRoute(
       path: '/splash',
       name: SplashScreen.routeName,
       builder: (_, __) => const SplashScreen(),
@@ -48,6 +37,16 @@ class AuthProvider extends ChangeNotifier {
       path: '/login',
       name: LoginScreen.routeName,
       builder: (_, __) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/',
+      name: RootTab.routeName,
+      builder: (_, __) => const RootTab(),
+    ),
+    GoRoute(
+      path: '/doctor',
+      name: DoctorRootTab.routeName,
+      builder: (_, __) => const DoctorRootTab(),
     ),
   ];
 

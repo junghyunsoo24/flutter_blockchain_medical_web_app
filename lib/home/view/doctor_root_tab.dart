@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-
-import '../../board/view/board_list_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/view/alarm_list_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_list_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/custom_app_bar.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/mypage/profile_screen.dart';
 import '../../colors.dart';
-import '../../home/layout/default_layout.dart';
-import '../../home/view/custom_app_bar.dart';
-import 'doctor_custom_app_bar.dart';
-import 'doctor_home_screen.dart';
+import '../layout/default_layout.dart';
+import 'home_screen.dart';
 
-class DoctorMainScreen extends StatefulWidget {
-  const DoctorMainScreen({Key? key}) : super(key: key);
-  static String get routeName => 'doctor';
+class DoctorRootTab extends StatefulWidget {
+  static String get routeName => 'home';
+
+  const DoctorRootTab({Key? key}) : super(key: key);
 
   @override
-  _DoctorMainScreenState createState() => _DoctorMainScreenState();
+  State<DoctorRootTab> createState() => _DoctorRootTabState();
 }
 
-class _DoctorMainScreenState extends State<DoctorMainScreen>
+class _DoctorRootTabState extends State<DoctorRootTab>
     with SingleTickerProviderStateMixin {
   late TabController controller;
 
@@ -46,7 +47,7 @@ class _DoctorMainScreenState extends State<DoctorMainScreen>
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      appBar:DoctorCustomAppBar(),
+      appBar:CustomAppBar(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.blueAccent,
         unselectedItemColor: BODY_TEXT_COLOR,
@@ -66,14 +67,25 @@ class _DoctorMainScreenState extends State<DoctorMainScreen>
             icon: Icon(Icons.dashboard),
             label: '게시판',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.access_time),
+            label: '복용',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outlined),
+            label: '마이 페이지',
+          ),
+
         ],
       ),
       child: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: controller,
         children: const [
-          DoctorHomeScreen(),
+          HomeScreen(),
           BoardListScreen(),
+          AlarmListScreen(),
+          ProfileScreen(),
         ],
       ),
     );
