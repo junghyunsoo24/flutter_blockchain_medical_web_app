@@ -1,272 +1,284 @@
-import 'package:expandable_text/expandable_text.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/board_view_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
-import '../../user/provider/user_me_provider.dart';
+final boardViewModelProvider = ChangeNotifierProvider((ref) => BoardViewModel());
 
 class BoardScreen extends ConsumerWidget {
-  const BoardScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // return Center(
-    //   child: ElevatedButton(
-    //     onPressed: (){
-    //       ref.read(userMeProvider.notifier).logout();
-    //     },
-    //     child: const Text('게시판'),
-    //   ),
-    // );
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        // border: Border.all(
-        //   color: Colors.white,
-        //   width: 2,
-        // ),
-        //color: Color(0xFFE3F2FD),
-        borderRadius: BorderRadius.circular(20),
+    final viewModel = ref.watch(boardViewModelProvider);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('게시물 등록'),
       ),
-      child: Column(
-        children: [
-          SizedBox(height: 20),
-          SizedBox(
-            height: 60,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DetailScreen()),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.blue.withOpacity(0.8), // 그림자 색상
-                      width: 2.0, // 그림자 두께
-                      style: BorderStyle.solid, // 그림자 스타일
-                      // 그림자 속성
-                      // offset: Offset(0, 2), // 그림자 위치 (x, y)
-                      // blurRadius: 50, // 그림자 흐림 정도
-                      // spreadRadius: 0, // 그림자 크기
-                    ),
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.dashboard, color: Colors.blueAccent, size: 35),
-                    SizedBox(width: 8),
-                    Text(
-                      '전체 게시판',
-                      style: TextStyle(
-                        fontFamily: 'NotoSans',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                  ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DropdownButtonFormField<String>(
+                value: viewModel.selectedCategory,
+                items: viewModel.categories.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  if (value != null) {
+                    viewModel.setSelectedCategory(value);
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: '질문 게시판 카테고리를 선택해주세요.',
+                  border: OutlineInputBorder(),
                 ),
               ),
-            ),
-          ),
-          // SizedBox(height: 10),
-          // SizedBox(
-          //   height: 60,
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(builder: (context) => DetailScreen()),
-          //       );
-          //     },
-          //     child: Container(
-          //       // decoration: BoxDecoration(
-          //       //   boxShadow: [
-          //       //     BoxShadow(
-          //       //       color: Colors.white54.withOpacity(0.2), // 시작 색상
-          //       //       offset: Offset(0, 2), // 그림자 위치 (x, y)
-          //       //       blurRadius: 90, // 그림자 흐림 정도
-          //       //       spreadRadius: 0, // 그림자 크기
-          //       //     ),
-          //       //     BoxShadow(
-          //       //       color: Colors.blue.withOpacity(0.8), // 끝 색상
-          //       //       offset: Offset(0, 2), // 그림자 위치 (x, y)
-          //       //       blurRadius: 50, // 그림자 흐림 정도
-          //       //       spreadRadius: 0, // 그림자 크기
-          //       //     ),
-          //       //   ],
-          //       //   borderRadius: BorderRadius.circular(10),
-          //       //
-          //       // ),
-          //       decoration: BoxDecoration(
-          //         border: Border(
-          //           bottom: BorderSide(
-          //             color: Colors.blue.withOpacity(0.8), // 그림자 색상
-          //             width: 2.0, // 그림자 두께
-          //             style: BorderStyle.solid, // 그림자 스타일
-          //             // 그림자 속성
-          //             // offset: Offset(0, 2), // 그림자 위치 (x, y)
-          //             // blurRadius: 50, // 그림자 흐림 정도
-          //             // spreadRadius: 0, // 그림자 크기
-          //           ),
-          //         ),
-          //         borderRadius: BorderRadius.circular(10),
-          //       ),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.start,
-          //         crossAxisAlignment: CrossAxisAlignment.center,
-          //         children: [
-          //           Icon(Icons.child_care_rounded, color: Colors.blueAccent, size:35),
-          //           SizedBox(width: 8),
-          //           Text(
-          //             '영유아 게시판',
-          //             style: TextStyle(
-          //               fontFamily: 'NotoSans',
-          //               fontWeight: FontWeight.w700,
-          //               fontSize: 20,
-          //               color: Colors.blueGrey,
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          SizedBox(height: 10),
-          SizedBox(
-            height: 60,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DetailScreen()),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.blue.withOpacity(0.8), // 그림자 색상
-                      width: 2.0, // 그림자 두께
-                      style: BorderStyle.solid, // 그림자 스타일
-                      // 그림자 속성
-                      // offset: Offset(0, 2), // 그림자 위치 (x, y)
-                      // blurRadius: 50, // 그림자 흐림 정도
-                      // spreadRadius: 0, // 그림자 크기
-                    ),
-                  ),
-                  borderRadius: BorderRadius.circular(10),
+              SizedBox(height: 30.0),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: '제목을 입력해주세요.',
+                  border: OutlineInputBorder(),
                 ),
-                // decoration: BoxDecoration(
-                //   boxShadow: [
-                //     BoxShadow(
-                //       color: Colors.white54.withOpacity(0.2), // 시작 색상
-                //       offset: Offset(0, 2), // 그림자 위치 (x, y)
-                //       blurRadius: 90, // 그림자 흐림 정도
-                //       spreadRadius: 0, // 그림자 크기
-                //     ),
-                //     BoxShadow(
-                //       color: Colors.blue.withOpacity(0.8), // 끝 색상
-                //       offset: Offset(0, 2), // 그림자 위치 (x, y)
-                //       blurRadius: 50, // 그림자 흐림 정도
-                //       spreadRadius: 0, // 그림자 크기
-                //     ),
-                //   ],
-                //   borderRadius: BorderRadius.circular(10),
-                //
-                // ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.
-                    elderly_rounded, color: Colors.blueAccent, size:35),
-                    SizedBox(width: 8),
-                    Text(
-                      '노년층 게시판',
-                      style: TextStyle(
-                        fontFamily: 'NotoSans',
-                        fontWeight:  FontWeight.w700,
-                        fontSize: 20,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                  ],
+                onChanged: viewModel.setTitle,
+              ),
+              SizedBox(height: 16.0),
+              DropdownButtonFormField<String>(
+                value: viewModel.selectedBodyPart,
+                items: viewModel.bodyParts.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  if (value != null) {
+                    viewModel.setSelectedSymptom(value);
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: '부위를 선택해주세요.',
+                  border: OutlineInputBorder(),
                 ),
               ),
-            ),
-          ),
-          SizedBox(height: 10),
-          SizedBox(
-            height: 60,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DetailScreen()),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.blue.withOpacity(0.8), // 그림자 색상
-                      width: 2.0, // 그림자 두께
-                      style: BorderStyle.solid, // 그림자 스타일
-                      // 그림자 속성
-                      // offset: Offset(0, 2), // 그림자 위치 (x, y)
-                      // blurRadius: 50, // 그림자 흐림 정도
-                      // spreadRadius: 0, // 그림자 크기
-                    ),
-                  ),
-                  borderRadius: BorderRadius.circular(10),
+              SizedBox(height: 16.0),
+              TextField(
+                maxLines: null,
+                decoration: InputDecoration(
+                  labelText: '증상 설명',
+                  border: OutlineInputBorder(),
                 ),
-                // decoration: BoxDecoration(
-                //   boxShadow: [
-                //     BoxShadow(
-                //       color: Colors.white54.withOpacity(0.2), // 시작 색상
-                //       offset: Offset(0, 2), // 그림자 위치 (x, y)
-                //       blurRadius: 90, // 그림자 흐림 정도
-                //       spreadRadius: 0, // 그림자 크기
-                //     ),
-                //     BoxShadow(
-                //       color: Colors.blue.withOpacity(0.8), // 끝 색상
-                //       offset: Offset(0, 2), // 그림자 위치 (x, y)
-                //       blurRadius: 50, // 그림자 흐림 정도
-                //       spreadRadius: 0, // 그림자 크기
-                //     ),
-                //   ],
-                //   borderRadius: BorderRadius.circular(10),
-                //
-                // ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.pregnant_woman, color: Colors.blueAccent, size:35),
-                    SizedBox(width: 8),
-                    Text(
-                      '임산부 게시판',
-                      style: TextStyle(
-                        fontFamily: 'NotoSans',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                  ],
+                onChanged: viewModel.setSymptomDescription,
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                maxLines: null,
+                decoration: InputDecoration(
+                  labelText: '내용',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: viewModel.setAdditionalInfo,
+              ),
+              SizedBox(height: 16.0),
+              // TextField(
+              //   maxLines: null,
+              //   decoration: InputDecoration(
+              //     labelText: '나의 추가 정보',
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   onChanged: viewModel.setPersonalData,
+              // ),
+              SizedBox(height: 16.0),
+              // Row(
+              //   children: [
+              //     Checkbox(
+              //       value: viewModel.sharePersonalData,
+              //       onChanged: (bool? value) {
+              //         if (value != null) {
+              //           viewModel.setSharePersonalData(value);
+              //         }
+              //       },
+              //     ),
+              //     Text('공개 여부'),
+              //   ],
+              // ),
+              SizedBox(height: 16.0),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    viewModel.submitForm();
+                  },
+                  child: Text('등록'),
                 ),
               ),
-            ),
+            ],
           ),
-          // 나머지 2개의 게시판 목록 추가
-        ],
+        ),
       ),
     );
   }
 }
+
+
+
+// import 'package:flutter/material.dart';
+//
+// class BoardScreen extends StatefulWidget {
+//   BoardScreen({Key? key}) : super(key: key);
+//
+//   @override
+//   _BoardScreen createState() => _BoardScreen();
+// }
+//
+// class _BoardScreen extends State<BoardScreen> {
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('게시물 등록'),
+//       ),
+//       body: SingleChildScrollView(
+//         child: Padding(
+//           padding: const EdgeInsets.all(16.0),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               TextField(
+//                 decoration: InputDecoration(
+//                   labelText: '제목을 입력해주세요.',
+//                   border: OutlineInputBorder(),
+//                 ),
+//                 onChanged: (value) {
+//                   setState(() {
+//                     _title = value;
+//                   });
+//                 },
+//               ),
+//               SizedBox(height: 16.0),
+//               Row(
+//                 children: [
+//                   Text('증상 선택: '),
+//                   SizedBox(width: 8.0),
+//                   DropdownButton<String>(
+//                     value: _selectedSymptom,
+//                     hint: Text('증상 선택'),
+//                     items: _symptoms.map((String symptom) {
+//                       return DropdownMenuItem<String>(
+//                         value: symptom,
+//                         child: Text(symptom),
+//                       );
+//                     }).toList(),
+//                     onChanged: (String? value) {
+//                       setState(() {
+//                         _selectedSymptom = value!;
+//                       });
+//                     },
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 16.0),
+//               Row(
+//                 children: [
+//                   Text('부위 선택: '),
+//                   SizedBox(width: 8.0),
+//                   DropdownButton<String>(
+//                     value: _selectedBodyPart,
+//                     hint: Text('부위 선택'),
+//                     items: _bodyParts.map((String bodyPart) {
+//                       return DropdownMenuItem<String>(
+//                         value: bodyPart,
+//                         child: Text(bodyPart),
+//                       );
+//                     }).toList(),
+//                     onChanged: (String? value) {
+//                       setState(() {
+//                         _selectedBodyPart = value!;
+//                       });
+//                     },
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 16.0),
+//               Row(
+//                 children: [
+//                   Text('카테고리 선택: '),
+//                   SizedBox(width: 8.0),
+//                   DropdownButton<String>(
+//                     value: _selectedCategory,
+//                     hint: Text('카테고리 선택'),
+//                     items: _categories.map((String category) {
+//                       return DropdownMenuItem<String>(
+//                         value: category,
+//                         child: Text(category),
+//                       );
+//                     }).toList(),
+//                     onChanged: (String? value) {
+//                       setState(() {
+//                         _selectedCategory = value!;
+//                       });
+//                     },
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 16.0),
+//               TextField(
+//                 maxLines: 3,
+//                 decoration: InputDecoration(
+//                   labelText: '증상을 설명해주세요.',
+//                   border: OutlineInputBorder(),
+//                 ),
+//                 onChanged: (value) {
+//                   setState(() {
+//                     _symptomDescription = value;
+//                   });
+//                 },
+//               ),
+//               SizedBox(height: 16.0),
+//               TextField(
+//                 maxLines: 3,
+//                 decoration: InputDecoration(
+//                   labelText: '궁금한 사항을 적어주세요.',
+//                   border: OutlineInputBorder(),
+//                 ),
+//                 onChanged: (value) {
+//                   setState(() {
+//                     _additionalInfo = value;
+//                   });
+//                 },
+//               ),
+//               SizedBox(height: 16.0),
+//               Row(
+//                 children: [
+//                   Text('개인 정보 공유: '),
+//                   Checkbox(
+//                     value: _sharePersonalData,
+//                     onChanged: (bool? value) {
+//                       setState(() {
+//                         _sharePersonalData = value!;
+//                       });
+//                     },
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 16.0),
+//               ElevatedButton(
+//                 onPressed: () {
+//                   // Add your logic for handling the registration here
+//                 },
+//                 style: ButtonStyle(
+//                   minimumSize: MaterialStateProperty.all(Size(double.infinity, 50)),
+//                 ),
+//                 child: Text('등록'),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
