@@ -8,7 +8,7 @@ import '../layout/default_layout.dart';
 import 'home_screen.dart';
 
 class DoctorRootTab extends StatefulWidget {
-  static String get routeName => 'home';
+  static String get routeName => 'doctorHome';
 
   const DoctorRootTab({Key? key}) : super(key: key);
 
