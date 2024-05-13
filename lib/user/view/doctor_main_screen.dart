@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../board/view/board_screen.dart';
+import '../../board/view/board_list_screen.dart';
 import '../../colors.dart';
 import '../../home/layout/default_layout.dart';
 import '../../home/view/custom_app_bar.dart';
@@ -73,7 +73,7 @@ class _DoctorMainScreenState extends State<DoctorMainScreen>
         controller: controller,
         children: const [
           DoctorHomeScreen(),
-          BoardScreen(),
+          BoardListScreen(),
         ],
       ),
     );

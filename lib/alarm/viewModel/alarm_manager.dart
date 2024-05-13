@@ -20,7 +20,7 @@ class AlarmManager {
 
     // 3. 주기적으로 알림 예약 확인
     // 1분마다 getAllAlarms() 메서드를 호출하여 새로운 알림 예약
-    Timer.periodic(Duration(seconds: 10), (timer) {
+    Timer.periodic(Duration(minutes: 1), (timer) {
       getAllAlarms();
     });
   }
