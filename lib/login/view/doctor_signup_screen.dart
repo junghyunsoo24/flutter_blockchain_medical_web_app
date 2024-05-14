@@ -1,7 +1,11 @@
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+
+import '../../database/drift_database.dart';
 
 class DoctorSignupScreen extends StatefulWidget {
   const DoctorSignupScreen({Key? key}) : super(key: key);
+
 
   @override
   _DoctorSignupScreenState createState() => _DoctorSignupScreenState();
@@ -9,7 +13,7 @@ class DoctorSignupScreen extends StatefulWidget {
 
 class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
   final _formKey = GlobalKey<FormState>();
-  String? _userId, _password, _name, _field, _hospital, _introduction;
+  String? _userID, _userPW, _name, _field, _hospital, _introduction;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
                   }
                   return null;
                 },
-                onSaved: (value) => _userId = value,
+                onSaved: (value) => _userID = value,
               ),
               TextFormField(
                 obscureText: true,
@@ -42,7 +46,7 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
                   }
                   return null;
                 },
-                onSaved: (value) => _password = value,
+                onSaved: (value) => _userPW = value,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Name'),
@@ -86,11 +90,21 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Create a new Doctor object and save it to the database
-                    // Navigate back to the login screen
+
+                    final db = MyDatabase();
+
+                    await db.addDoctor(DoctorsCompanion(
+                        userID: Value(_userID!),
+                        userPW: Value(_userPW!),
+                        name: Value(_name!),
+                        field: Value(_field!),
+                        hospital: Value(_hospital!),
+                        introduction: Value(_introduction!)
+                    ));
+
                     Navigator.pop(context);
                   }
                 },

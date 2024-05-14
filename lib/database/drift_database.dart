@@ -15,33 +15,40 @@ import '../user/model/patient.dart';
 part 'drift_database.g.dart';
 
 @DriftDatabase(
-    tables: [
-      Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors
-    ]
+    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors],
 )
 
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
   //patient
+  Future<void> addPatient(PatientsCompanion data) async {
+    await into(patients).insert(data);
+  }
   Future<void> updatePatient(Patient patient) async {
     await update(patients)
         .replace(patient);
   }
-  Future<Patient?> getPatientByUserId(String userId) async {
-    final query = select(patients)..where((tbl) => tbl.userID.equals(userId));
+  Future<Patient?> getPatientByUserIdAndPassword(String userId, String password) async {
+    final query = select(patients)
+      ..where((tbl) => tbl.userID.equals(userId) & tbl.userPW.equals(password));
     return query.getSingleOrNull();
   }
 
   //doctor
+  Future<void> addDoctor(DoctorsCompanion data) async {
+    await into(doctors).insert(data);
+  }
   Future<void> updateDoctor(Doctor doctor) async {
     await update(doctors)
         .replace(doctor);
   }
-  Future<Doctor?> getDoctorByUserId(String userId) async {
-    final query = select(doctors)..where((tbl) => tbl.userID.equals(userId));
+  Future<Doctor?> getDoctorByUserIdAndPassword(String userId, String password) async {
+    final query = select(doctors)
+      ..where((tbl) => tbl.userID.equals(userId) & tbl.userPW.equals(password));
     return query.getSingleOrNull();
   }
+
 
   //alarm
   Future<int> insertAlarm(AlarmsCompanion alarmsCompanion) { //알람 insert
@@ -95,7 +102,21 @@ class MyDatabase extends _$MyDatabase {
   }
 
   @override
-  int get schemaVersion => 1; //테이블 변화 감지를 위한 필수 지정
+  int get schemaVersion => 2; //테이블 변화 감지를 위한 필수 지정
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: (migrator, from, to) async {
+      if (from < 2) {
+        // 마이그레이션 로직: 새로운 테이블 생성
+        await migrator.createTable(doctors);
+        await migrator.createTable(patients);
+      }
+    },
+    onCreate: (Migrator m) {
+      return m.createAll();
+    },
+  );
 }
 
 LazyDatabase _openConnection() {

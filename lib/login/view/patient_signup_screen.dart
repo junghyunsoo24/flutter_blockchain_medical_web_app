@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 
 class PatientSignupScreen extends StatefulWidget {
   const PatientSignupScreen({Key? key}) : super(key: key);
@@ -115,11 +117,23 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Create a new Patient object and save it to the database
-                    // Navigate back to the login screen
+
+                    final db = MyDatabase();
+
+                    await db.addPatient(PatientsCompanion(
+                      userID: Value(_userId!),
+                      userPW: Value(_password!),
+                      name: Value(_name!),
+                      birthday: Value(_birthday!),
+                      gender: Value(_gender!),
+                      height: Value(_height!),
+                      weight: Value(_weight!),
+                      role: Value("1")
+                    ));
+
                     Navigator.pop(context);
                   }
                 },

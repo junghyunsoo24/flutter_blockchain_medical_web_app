@@ -7,8 +7,6 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/Det
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/prescription_history_list.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_list_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_screen.dart';
-import '../../user/provider/user_me_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
