@@ -10,12 +10,11 @@ import 'dart:core';
 
 import 'alarm_view_model.dart';
 class AlarmManager {
-  final MyDatabase _database;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   final AlarmViewModel _viewModel;
 
-  AlarmManager(this._database, this._flutterLocalNotificationsPlugin)
-      : _viewModel = AlarmViewModel(_database) {
+  AlarmManager(this._flutterLocalNotificationsPlugin)
+      : _viewModel = AlarmViewModel() {
     tz.initializeTimeZones();
 
     // 3. 주기적으로 알림 예약 확인

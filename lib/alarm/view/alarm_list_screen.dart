@@ -1,9 +1,11 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/view/alarm_setUp_Screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/viewModel/alarm_view_model.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
 import '../viewModel/alarm_manager.dart';
 
 class AlarmListScreen extends StatefulWidget {
@@ -14,7 +16,6 @@ class AlarmListScreen extends StatefulWidget {
 
 class _AlarmListScreenState extends State<AlarmListScreen> {
   late List<Alarm> alarms = [];
-  late final MyDatabase _database;
   late final AlarmViewModel _viewModel;
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   late final AlarmManager _alarmManager;
@@ -28,10 +29,9 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
 
   _AlarmListScreenState._() {
     // 인스턴스 초기화
-    _database = MyDatabase();
-    _viewModel = AlarmViewModel(MyDatabase());
+    _viewModel = AlarmViewModel();
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    _alarmManager = AlarmManager(_database, _flutterLocalNotificationsPlugin);
+    _alarmManager = AlarmManager(_flutterLocalNotificationsPlugin);
     _requestPermissions();
     _loadAlarms();
     _initializeNotifications();
@@ -70,7 +70,7 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
   }
 
   Future<void> _loadAlarms() async {
-    final alarmList = await _database.getAllAlarms(); //모든 알람 가져오기
+    final alarmList = await GetIt.I<MyDatabase>().getAllAlarms(); //모든 알람 가져오기
     print("여기");
     print(alarmList);
     setState(() {
@@ -80,7 +80,7 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
 
   Future<void> _toggleAlarmStatus(Alarm alarm) async {
     final updatedAlarm = alarm.copyWith(isEnabled: !alarm.isEnabled);
-    await _database.updateAlarm(updatedAlarm);
+    await GetIt.I<MyDatabase>().updateAlarm(updatedAlarm);
     _loadAlarms(); // Refresh the list
   }
 

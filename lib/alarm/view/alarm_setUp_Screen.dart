@@ -28,9 +28,8 @@ class _AlarmSetupScreenState  extends State<AlarmSetupScreen> {
   @override
   void initState() {
     super.initState();
-    _database = MyDatabase();
     //_flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    _viewModel = AlarmViewModel(MyDatabase());
+    _viewModel = AlarmViewModel();
     //_alarmManager = AlarmManager(_database, _flutterLocalNotificationsPlugin);
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/prescription_history_request.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/viewModel/prescription_view_model.dart';
@@ -15,13 +16,11 @@ class PrescriptionHistoryListScreen extends StatefulWidget{
 
 class _PrescriptionHistoryListScreenState extends State<PrescriptionHistoryListScreen>{
   late List<Prescription> prescriptions = [];
-  late final MyDatabase _database;
   late final PrescriptionViewModel _viewModel;
   @override
   void initState() {
     super.initState();
-    _database = MyDatabase();
-    _viewModel = PrescriptionViewModel(MyDatabase());
+    _viewModel = PrescriptionViewModel();
     _loadMedicines();
   }
 

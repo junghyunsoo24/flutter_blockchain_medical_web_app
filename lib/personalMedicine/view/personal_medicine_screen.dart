@@ -27,7 +27,7 @@ class _PersonalMedicineScreen extends State<PersonalMedicineScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel = PersonalMedicineViewModel(MyDatabase());
+    _viewModel = PersonalMedicineViewModel();
   }
 
   @override

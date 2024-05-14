@@ -10,7 +10,7 @@ class ProfileScreen extends ConsumerWidget {
     return Center(
       child: ElevatedButton(
         onPressed: (){
-          // ref.read(userMeProvider.notifier).logout();
+          Navigator.pop(context);
         },
         child: const Text('로그 아웃'),
       ),

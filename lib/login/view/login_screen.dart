@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/doctor_root_tab.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/root_tab.dart';
@@ -8,6 +9,7 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/doctor_s
 import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/patient_signup_screen.dart';
 import '../../colors.dart';
 import '../../home/layout/default_layout.dart';
+import '../../main.dart';
 import '../component/custom_text_form.field.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -23,7 +25,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   String username = '';
   String password = '';
   bool isMobile = true;
-  final database = MyDatabase();
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onPressed: () async {
                     if (Platform.isAndroid) {
                       // Patients 테이블에서 아이디와 비밀번호 확인
-                      final patient = await database.getPatientByUserIdAndPassword(username, password);
+                      final patient = await GetIt.I<MyDatabase>().getPatientByUserIdAndPassword(username, password);
                       if (patient != null) {
 
                         Navigator.push(
@@ -77,7 +78,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       }
                     } else {
                       // Doctors 테이블에서 아이디와 비밀번호 확인
-                      final doctor = await database.getDoctorByUserIdAndPassword(username, password);
+                      final doctor = await GetIt.I<MyDatabase>().getDoctorByUserIdAndPassword(username, password);
                       if (doctor != null) {
                         // 로그인 성공, 다른 화면으로 이동
                         Navigator.push(

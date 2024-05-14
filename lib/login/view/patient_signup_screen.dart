@@ -1,6 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
+
+import '../../main.dart';
 
 class PatientSignupScreen extends StatefulWidget {
   const PatientSignupScreen({Key? key}) : super(key: key);
@@ -121,9 +124,7 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
 
-                    final db = MyDatabase();
-
-                    await db.addPatient(PatientsCompanion(
+                    await GetIt.I<MyDatabase>().addPatient(PatientsCompanion(
                       userID: Value(_userId!),
                       userPW: Value(_password!),
                       name: Value(_name!),

@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/viewModel/symptom_view_model.dart';
+
+import '../../main.dart';
 
 class SymptomListScreen extends StatefulWidget{
   const SymptomListScreen({Key? key}) : super(key: key);
@@ -13,13 +16,11 @@ class SymptomListScreen extends StatefulWidget{
 
 class _SymptomListScreenState extends State<SymptomListScreen>{
   late List<Symptom> symptoms = [];
-  late final MyDatabase _database;
   late final SymptomViewModel _viewModel;
   @override
   void initState() {
     super.initState();
-    _database = MyDatabase();
-    _viewModel = SymptomViewModel(MyDatabase());
+    _viewModel = SymptomViewModel();
     _loadSymptoms();
   }
 

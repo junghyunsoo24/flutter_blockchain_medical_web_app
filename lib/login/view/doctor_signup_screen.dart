@@ -1,7 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../database/drift_database.dart';
+import '../../main.dart';
 
 class DoctorSignupScreen extends StatefulWidget {
   const DoctorSignupScreen({Key? key}) : super(key: key);
@@ -94,9 +96,7 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
 
-                    final db = MyDatabase();
-
-                    await db.addDoctor(DoctorsCompanion(
+                    await GetIt.I<MyDatabase>().addDoctor(DoctorsCompanion(
                         userID: Value(_userID!),
                         userPW: Value(_userPW!),
                         name: Value(_name!),
