@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/viewModel/personal_medicine_view_model.dart';
@@ -20,8 +21,7 @@ class _PersonalMedicineListScreenState extends State<PersonalMedicineListScreen>
   @override
   void initState() {
     super.initState();
-    _database = MyDatabase();
-    _viewModel = PersonalMedicineViewModel(MyDatabase());
+    _viewModel = PersonalMedicineViewModel();
     _loadMedicines();
   }
 

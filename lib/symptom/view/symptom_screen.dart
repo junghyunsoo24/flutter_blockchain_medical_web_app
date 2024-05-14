@@ -25,7 +25,7 @@ class _SymptomScreenState extends State<SymptomScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel = SymptomViewModel(MyDatabase());
+    _viewModel = SymptomViewModel();
   }
 
   @override

@@ -1,17 +1,19 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/repository/prescription_repository.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/repository/personal_medicine_repository.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/repository/symptom_repository.dart';
+
+import '../../main.dart';
 
 class PrescriptionViewModel extends ChangeNotifier {
   final ValueNotifier<List<Prescription>> _prescription = ValueNotifier<List<Prescription>>([]);
 
   final _repository = PrescriptionRepository();
   Prescription? _currentPrescription;
-  final MyDatabase _database;
-  PrescriptionViewModel(this._database);
+  PrescriptionViewModel();
 
   void updatePrescription(Prescription prescription) {
     _currentPrescription = prescription;
@@ -27,7 +29,7 @@ class PrescriptionViewModel extends ChangeNotifier {
 
   Future<void> savePrescription(String resHospitalName, DateTime resTreatDate,String resPrescribeDrugName, String resPrescribeDrugEffect,
       String resMedicationDirection, String resPrescribeDays, int count, String resDrugImageLink) async {
-    await _database.insertPrescription(PrescriptionsCompanion(
+    await GetIt.I.registerSingleton<MyDatabase>(database).insertPrescription(PrescriptionsCompanion(
         resHospitalName: Value(resHospitalName),
         resTreatDate: Value(resTreatDate),
         resPrescribeDrugName: Value(resPrescribeDrugName),
