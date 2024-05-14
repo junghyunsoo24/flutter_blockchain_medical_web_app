@@ -10,8 +10,6 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:get_it/get_it.dart';
 import 'dart:io';
 
-late MyDatabase database;
-
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 void main() async {

@@ -124,7 +124,7 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
 
-                    await GetIt.I.registerSingleton<MyDatabase>(database).addPatient(PatientsCompanion(
+                    await GetIt.I<MyDatabase>().addPatient(PatientsCompanion(
                       userID: Value(_userId!),
                       userPW: Value(_password!),
                       name: Value(_name!),

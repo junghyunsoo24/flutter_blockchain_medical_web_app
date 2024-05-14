@@ -7,10 +7,10 @@ class PrescriptionRepository {
 
   Future<void> insertPrescription (
       PrescriptionsCompanion prescriptionsCompanion) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).insertPrescription(prescriptionsCompanion);
+    await GetIt.I<MyDatabase>().insertPrescription(prescriptionsCompanion);
   }
 
   Future<List<Prescription>> getAllPrescriptions() async {
-    return await GetIt.I.registerSingleton<MyDatabase>(database).getAllPrescriptions();
+    return await GetIt.I<MyDatabase>().getAllPrescriptions();
   }
 }

@@ -25,7 +25,7 @@ class PersonalMedicineViewModel extends ChangeNotifier {
   }
 
   Future<void> savePersoanlMedicine(String pillName, DateTime startDate, DateTime endDate, String dosage) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).insertPersonalMedicine(PersonalMedicinesCompanion(
+    await GetIt.I<MyDatabase>().insertPersonalMedicine(PersonalMedicinesCompanion(
       pillName: Value(pillName),
       startDate: Value(startDate),
       endDate: Value(endDate),

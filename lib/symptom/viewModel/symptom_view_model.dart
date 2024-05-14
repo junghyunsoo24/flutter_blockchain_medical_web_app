@@ -23,7 +23,7 @@ class SymptomViewModel extends ChangeNotifier {
   }
 
     Future<void> saveSymptom(String symptom, DateTime startDate, DateTime endDate) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).insertSymptom(SymptomsCompanion(
+    await GetIt.I<MyDatabase>().insertSymptom(SymptomsCompanion(
       symptom: Value(symptom),
       startDate: Value(startDate),
       endDate: Value(endDate),

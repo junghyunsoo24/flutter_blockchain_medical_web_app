@@ -28,7 +28,7 @@ class AlarmViewModel extends ChangeNotifier {
     _alarm.value = alarmList;
   }
   Future<int> saveAlarm(String medicationName, String dosage, DateTime time, bool isEnabled) async {
-    final id = await GetIt.I.registerSingleton<MyDatabase>(database).insertAlarm(AlarmsCompanion(
+    final id = await GetIt.I<MyDatabase>().insertAlarm(AlarmsCompanion(
       medicationName: Value(medicationName),
       dosage: Value(dosage),
       time: Value(time),
@@ -57,7 +57,7 @@ class AlarmViewModel extends ChangeNotifier {
     final updatedAlarm = alarm.copyWith(
       takeTime: Value(DateTime.now()),
     );
-    await GetIt.I.registerSingleton<MyDatabase>(database).updateAlarm(updatedAlarm);
+    await GetIt.I<MyDatabase>().updateAlarm(updatedAlarm);
     notifyListeners();
   }
   Future<void> deleteAlarm(Alarm alarm) async {

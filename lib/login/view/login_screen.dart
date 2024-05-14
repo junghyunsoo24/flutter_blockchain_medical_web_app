@@ -65,7 +65,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onPressed: () async {
                     if (Platform.isAndroid) {
                       // Patients 테이블에서 아이디와 비밀번호 확인
-                      final patient = await GetIt.I.registerSingleton<MyDatabase>(database).getPatientByUserIdAndPassword(username, password);
+                      final patient = await GetIt.I<MyDatabase>().getPatientByUserIdAndPassword(username, password);
                       if (patient != null) {
 
                         Navigator.push(
@@ -78,7 +78,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       }
                     } else {
                       // Doctors 테이블에서 아이디와 비밀번호 확인
-                      final doctor = await GetIt.I.registerSingleton<MyDatabase>(database).getDoctorByUserIdAndPassword(username, password);
+                      final doctor = await GetIt.I<MyDatabase>().getDoctorByUserIdAndPassword(username, password);
                       if (doctor != null) {
                         // 로그인 성공, 다른 화면으로 이동
                         Navigator.push(

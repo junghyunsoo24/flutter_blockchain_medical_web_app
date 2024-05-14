@@ -7,14 +7,14 @@ class AlarmRepository {
 
   Future<void> insertAlarm (
       AlarmsCompanion alarmsCompanion) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).insertAlarm(alarmsCompanion);
+    await GetIt.I<MyDatabase>().insertAlarm(alarmsCompanion);
   }
 
   Future<List<Alarm>> getAllAlarms() async {
-    return await GetIt.I.registerSingleton<MyDatabase>(database).getAllAlarms();
+    return await GetIt.I<MyDatabase>().getAllAlarms();
   }
 
   Future<void> deleteAlarm(Alarm alarm) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).deleteAlarm(alarm);
+    await GetIt.I<MyDatabase>().deleteAlarm(alarm);
   }
 }

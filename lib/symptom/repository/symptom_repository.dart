@@ -6,19 +6,19 @@ import '../../main.dart';
 class SymptomRepository{
 
   Future<void> insertSymptom(SymptomsCompanion symptom) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).insertSymptom(symptom);
+    await GetIt.I<MyDatabase>().insertSymptom(symptom);
   }
 
   Future<void> updateSymptom(Symptom symptom) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).updateSymptom(symptom);
+    await GetIt.I<MyDatabase>().updateSymptom(symptom);
   }
 
   Future<void> deleteSymptom(Symptom symptom) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).deleteSymptom(symptom);
+    await GetIt.I<MyDatabase>().deleteSymptom(symptom);
   }
 
   Future<List<Symptom>> getAllSymptoms() async {
-    return await GetIt.I.registerSingleton<MyDatabase>(database).getAllSymptoms();
+    return await GetIt.I<MyDatabase>().getAllSymptoms();
   }
 
   // Future<List<Symptom>> getSymptomsByFilter(SymptomFilter filter) async {

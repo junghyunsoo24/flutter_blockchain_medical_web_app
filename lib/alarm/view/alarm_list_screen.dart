@@ -70,7 +70,7 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
   }
 
   Future<void> _loadAlarms() async {
-    final alarmList = await GetIt.I.registerSingleton<MyDatabase>(database).getAllAlarms(); //모든 알람 가져오기
+    final alarmList = await GetIt.I<MyDatabase>().getAllAlarms(); //모든 알람 가져오기
     print("여기");
     print(alarmList);
     setState(() {
@@ -80,7 +80,7 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
 
   Future<void> _toggleAlarmStatus(Alarm alarm) async {
     final updatedAlarm = alarm.copyWith(isEnabled: !alarm.isEnabled);
-    await GetIt.I.registerSingleton<MyDatabase>(database).updateAlarm(updatedAlarm);
+    await GetIt.I<MyDatabase>().updateAlarm(updatedAlarm);
     _loadAlarms(); // Refresh the list
   }
 

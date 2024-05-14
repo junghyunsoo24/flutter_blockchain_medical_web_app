@@ -7,18 +7,18 @@ class PersonalMedicineRepository {
 
   Future<void> insertPersonalMedicine(
       PersonalMedicinesCompanion personalmedicinesCompanion) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).insertPersonalMedicine(personalmedicinesCompanion);
+    await GetIt.I<MyDatabase>().insertPersonalMedicine(personalmedicinesCompanion);
   }
 
   Future<void> updatePersonalMedicine(PersonalMedicine personalMedicine) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).updatePersonalMedicine(personalMedicine);
+    await GetIt.I<MyDatabase>().updatePersonalMedicine(personalMedicine);
   }
 
   Future<void> deletePersonalMedicine(PersonalMedicine personalMedicine) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).deletePersonalMedicine(personalMedicine);
+    await GetIt.I<MyDatabase>().deletePersonalMedicine(personalMedicine);
   }
 
   Future<List<PersonalMedicine>> getAllPersonalMedicines() async {
-    return await GetIt.I.registerSingleton<MyDatabase>(database).getAllPersonalMedicines();
+    return await GetIt.I<MyDatabase>().getAllPersonalMedicines();
   }
 }

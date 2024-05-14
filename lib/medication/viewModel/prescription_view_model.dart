@@ -29,7 +29,7 @@ class PrescriptionViewModel extends ChangeNotifier {
 
   Future<void> savePrescription(String resHospitalName, DateTime resTreatDate,String resPrescribeDrugName, String resPrescribeDrugEffect,
       String resMedicationDirection, String resPrescribeDays, int count, String resDrugImageLink) async {
-    await GetIt.I.registerSingleton<MyDatabase>(database).insertPrescription(PrescriptionsCompanion(
+    await GetIt.I<MyDatabase>().insertPrescription(PrescriptionsCompanion(
         resHospitalName: Value(resHospitalName),
         resTreatDate: Value(resTreatDate),
         resPrescribeDrugName: Value(resPrescribeDrugName),
