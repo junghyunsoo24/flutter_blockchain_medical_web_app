@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 class BoardViewModel extends ChangeNotifier {
+  String? baseUrl = dotenv.env['BASE_URL'];
+
   String _title = '';
   String _selectedSymptom = '머리';
   String _selectedBodyPart = 'HEAD';
@@ -62,14 +64,8 @@ class BoardViewModel extends ChangeNotifier {
     _personalData = value;
     notifyListeners();
   }
-
-  // void setSharePersonalData(bool value) {
-  //   _sharePersonalData = value;
-  //   notifyListeners();
-  // }
-
   Future<void> submitForm() async {
-    final url = Uri.parse('http://10.0.2.2:8080/api/v1/question/enroll');
+    final url = Uri.parse('$baseUrl/api/v1/question/enroll');
     final body = jsonEncode({
       'userId': "patientId",
       'bodyParts': [_selectedBodyPart.toUpperCase()],

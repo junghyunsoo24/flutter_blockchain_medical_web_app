@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_entire_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
 
@@ -25,7 +26,7 @@ class BoardListScreen extends ConsumerWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DetailScreen()),
+                      MaterialPageRoute(builder: (context) => BoardEntireScreen()),
                     );
                   },
                   child: Container(
