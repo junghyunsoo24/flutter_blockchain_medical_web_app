@@ -9,5 +9,5 @@ class Patients extends Table {
   IntColumn get gender => integer()();
   RealColumn get height => real()();
   RealColumn get weight => real()();
-  IntColumn get role => integer()();
+  TextColumn get role => text()();
 }
