@@ -1520,9 +1520,9 @@ class $PatientsTable extends Patients with TableInfo<$PatientsTable, Patient> {
       type: DriftSqlType.double, requiredDuringInsert: true);
   static const VerificationMeta _roleMeta = const VerificationMeta('role');
   @override
-  late final GeneratedColumn<int> role = GeneratedColumn<int>(
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
       'role', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, userID, userPW, name, birthday, gender, height, weight, role];
@@ -1613,7 +1613,7 @@ class $PatientsTable extends Patients with TableInfo<$PatientsTable, Patient> {
       weight: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}weight'])!,
       role: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}role'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}role'])!,
     );
   }
 
@@ -1632,7 +1632,7 @@ class Patient extends DataClass implements Insertable<Patient> {
   final int gender;
   final double height;
   final double weight;
-  final int role;
+  final String role;
   const Patient(
       {required this.id,
       required this.userID,
@@ -1654,7 +1654,7 @@ class Patient extends DataClass implements Insertable<Patient> {
     map['gender'] = Variable<int>(gender);
     map['height'] = Variable<double>(height);
     map['weight'] = Variable<double>(weight);
-    map['role'] = Variable<int>(role);
+    map['role'] = Variable<String>(role);
     return map;
   }
 
@@ -1684,7 +1684,7 @@ class Patient extends DataClass implements Insertable<Patient> {
       gender: serializer.fromJson<int>(json['gender']),
       height: serializer.fromJson<double>(json['height']),
       weight: serializer.fromJson<double>(json['weight']),
-      role: serializer.fromJson<int>(json['role']),
+      role: serializer.fromJson<String>(json['role']),
     );
   }
   @override
@@ -1699,7 +1699,7 @@ class Patient extends DataClass implements Insertable<Patient> {
       'gender': serializer.toJson<int>(gender),
       'height': serializer.toJson<double>(height),
       'weight': serializer.toJson<double>(weight),
-      'role': serializer.toJson<int>(role),
+      'role': serializer.toJson<String>(role),
     };
   }
 
@@ -1712,7 +1712,7 @@ class Patient extends DataClass implements Insertable<Patient> {
           int? gender,
           double? height,
           double? weight,
-          int? role}) =>
+          String? role}) =>
       Patient(
         id: id ?? this.id,
         userID: userID ?? this.userID,
@@ -1767,7 +1767,7 @@ class PatientsCompanion extends UpdateCompanion<Patient> {
   final Value<int> gender;
   final Value<double> height;
   final Value<double> weight;
-  final Value<int> role;
+  final Value<String> role;
   const PatientsCompanion({
     this.id = const Value.absent(),
     this.userID = const Value.absent(),
@@ -1788,7 +1788,7 @@ class PatientsCompanion extends UpdateCompanion<Patient> {
     required int gender,
     required double height,
     required double weight,
-    required int role,
+    required String role,
   })  : userID = Value(userID),
         userPW = Value(userPW),
         name = Value(name),
@@ -1806,7 +1806,7 @@ class PatientsCompanion extends UpdateCompanion<Patient> {
     Expression<int>? gender,
     Expression<double>? height,
     Expression<double>? weight,
-    Expression<int>? role,
+    Expression<String>? role,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1830,7 +1830,7 @@ class PatientsCompanion extends UpdateCompanion<Patient> {
       Value<int>? gender,
       Value<double>? height,
       Value<double>? weight,
-      Value<int>? role}) {
+      Value<String>? role}) {
     return PatientsCompanion(
       id: id ?? this.id,
       userID: userID ?? this.userID,
@@ -1872,7 +1872,7 @@ class PatientsCompanion extends UpdateCompanion<Patient> {
       map['weight'] = Variable<double>(weight.value);
     }
     if (role.present) {
-      map['role'] = Variable<int>(role.value);
+      map['role'] = Variable<String>(role.value);
     }
     return map;
   }
@@ -1940,14 +1940,9 @@ class $DoctorsTable extends Doctors with TableInfo<$DoctorsTable, Doctor> {
   late final GeneratedColumn<String> introduction = GeneratedColumn<String>(
       'introduction', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _roleMeta = const VerificationMeta('role');
-  @override
-  late final GeneratedColumn<int> role = GeneratedColumn<int>(
-      'role', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, userID, userPW, name, field, hospital, introduction, role];
+      [id, userID, userPW, name, field, hospital, introduction];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1999,12 +1994,6 @@ class $DoctorsTable extends Doctors with TableInfo<$DoctorsTable, Doctor> {
     } else if (isInserting) {
       context.missing(_introductionMeta);
     }
-    if (data.containsKey('role')) {
-      context.handle(
-          _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
-    } else if (isInserting) {
-      context.missing(_roleMeta);
-    }
     return context;
   }
 
@@ -2028,8 +2017,6 @@ class $DoctorsTable extends Doctors with TableInfo<$DoctorsTable, Doctor> {
           .read(DriftSqlType.string, data['${effectivePrefix}hospital'])!,
       introduction: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}introduction'])!,
-      role: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}role'])!,
     );
   }
 
@@ -2047,7 +2034,6 @@ class Doctor extends DataClass implements Insertable<Doctor> {
   final String field;
   final String hospital;
   final String introduction;
-  final int role;
   const Doctor(
       {required this.id,
       required this.userID,
@@ -2055,8 +2041,7 @@ class Doctor extends DataClass implements Insertable<Doctor> {
       required this.name,
       required this.field,
       required this.hospital,
-      required this.introduction,
-      required this.role});
+      required this.introduction});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -2067,7 +2052,6 @@ class Doctor extends DataClass implements Insertable<Doctor> {
     map['field'] = Variable<String>(field);
     map['hospital'] = Variable<String>(hospital);
     map['introduction'] = Variable<String>(introduction);
-    map['role'] = Variable<int>(role);
     return map;
   }
 
@@ -2080,7 +2064,6 @@ class Doctor extends DataClass implements Insertable<Doctor> {
       field: Value(field),
       hospital: Value(hospital),
       introduction: Value(introduction),
-      role: Value(role),
     );
   }
 
@@ -2095,7 +2078,6 @@ class Doctor extends DataClass implements Insertable<Doctor> {
       field: serializer.fromJson<String>(json['field']),
       hospital: serializer.fromJson<String>(json['hospital']),
       introduction: serializer.fromJson<String>(json['introduction']),
-      role: serializer.fromJson<int>(json['role']),
     );
   }
   @override
@@ -2109,7 +2091,6 @@ class Doctor extends DataClass implements Insertable<Doctor> {
       'field': serializer.toJson<String>(field),
       'hospital': serializer.toJson<String>(hospital),
       'introduction': serializer.toJson<String>(introduction),
-      'role': serializer.toJson<int>(role),
     };
   }
 
@@ -2120,8 +2101,7 @@ class Doctor extends DataClass implements Insertable<Doctor> {
           String? name,
           String? field,
           String? hospital,
-          String? introduction,
-          int? role}) =>
+          String? introduction}) =>
       Doctor(
         id: id ?? this.id,
         userID: userID ?? this.userID,
@@ -2130,7 +2110,6 @@ class Doctor extends DataClass implements Insertable<Doctor> {
         field: field ?? this.field,
         hospital: hospital ?? this.hospital,
         introduction: introduction ?? this.introduction,
-        role: role ?? this.role,
       );
   @override
   String toString() {
@@ -2141,15 +2120,14 @@ class Doctor extends DataClass implements Insertable<Doctor> {
           ..write('name: $name, ')
           ..write('field: $field, ')
           ..write('hospital: $hospital, ')
-          ..write('introduction: $introduction, ')
-          ..write('role: $role')
+          ..write('introduction: $introduction')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, userID, userPW, name, field, hospital, introduction, role);
+  int get hashCode =>
+      Object.hash(id, userID, userPW, name, field, hospital, introduction);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2160,8 +2138,7 @@ class Doctor extends DataClass implements Insertable<Doctor> {
           other.name == this.name &&
           other.field == this.field &&
           other.hospital == this.hospital &&
-          other.introduction == this.introduction &&
-          other.role == this.role);
+          other.introduction == this.introduction);
 }
 
 class DoctorsCompanion extends UpdateCompanion<Doctor> {
@@ -2172,7 +2149,6 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
   final Value<String> field;
   final Value<String> hospital;
   final Value<String> introduction;
-  final Value<int> role;
   const DoctorsCompanion({
     this.id = const Value.absent(),
     this.userID = const Value.absent(),
@@ -2181,7 +2157,6 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
     this.field = const Value.absent(),
     this.hospital = const Value.absent(),
     this.introduction = const Value.absent(),
-    this.role = const Value.absent(),
   });
   DoctorsCompanion.insert({
     this.id = const Value.absent(),
@@ -2191,14 +2166,12 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
     required String field,
     required String hospital,
     required String introduction,
-    required int role,
   })  : userID = Value(userID),
         userPW = Value(userPW),
         name = Value(name),
         field = Value(field),
         hospital = Value(hospital),
-        introduction = Value(introduction),
-        role = Value(role);
+        introduction = Value(introduction);
   static Insertable<Doctor> custom({
     Expression<int>? id,
     Expression<String>? userID,
@@ -2207,7 +2180,6 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
     Expression<String>? field,
     Expression<String>? hospital,
     Expression<String>? introduction,
-    Expression<int>? role,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2217,7 +2189,6 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
       if (field != null) 'field': field,
       if (hospital != null) 'hospital': hospital,
       if (introduction != null) 'introduction': introduction,
-      if (role != null) 'role': role,
     });
   }
 
@@ -2228,8 +2199,7 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
       Value<String>? name,
       Value<String>? field,
       Value<String>? hospital,
-      Value<String>? introduction,
-      Value<int>? role}) {
+      Value<String>? introduction}) {
     return DoctorsCompanion(
       id: id ?? this.id,
       userID: userID ?? this.userID,
@@ -2238,7 +2208,6 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
       field: field ?? this.field,
       hospital: hospital ?? this.hospital,
       introduction: introduction ?? this.introduction,
-      role: role ?? this.role,
     );
   }
 
@@ -2266,9 +2235,6 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
     if (introduction.present) {
       map['introduction'] = Variable<String>(introduction.value);
     }
-    if (role.present) {
-      map['role'] = Variable<int>(role.value);
-    }
     return map;
   }
 
@@ -2281,8 +2247,7 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
           ..write('name: $name, ')
           ..write('field: $field, ')
           ..write('hospital: $hospital, ')
-          ..write('introduction: $introduction, ')
-          ..write('role: $role')
+          ..write('introduction: $introduction')
           ..write(')'))
         .toString();
   }

@@ -1,9 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/doctor_root_tab.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/root_tab.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/doctor_signup_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/patient_signup_screen.dart';
 import '../../colors.dart';
 import '../../home/layout/default_layout.dart';
-import '../../user/model/user_model.dart';
-import '../../user/provider/user_me_provider.dart';
 import '../component/custom_text_form.field.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -18,11 +22,11 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   String username = '';
   String password = '';
+  bool isMobile = true;
+  final database = MyDatabase();
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(userMeProvider);
-
     return DefaultLayout(
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -42,7 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   width: MediaQuery.of(context).size.width / 3 * 2,
                 ),
                 CustomTextFormField(
-                  hintText: '이메일을 입력해주세요.',
+                  hintText: '아이디를 입력해주세요.',
                   onChanged: (String value) {
                     username = value;
                   },
@@ -57,14 +61,34 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: state is UserModelLoading
-                      ? null
-                      : () async {
-                    ref.read(userMeProvider.notifier).login(
-                      username: username,
-                      password: password,
-                    );
+                  onPressed: () async {
+                    if (Platform.isAndroid) {
+                      // Patients 테이블에서 아이디와 비밀번호 확인
+                      final patient = await database.getPatientByUserIdAndPassword(username, password);
+                      if (patient != null) {
 
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => RootTab()),
+                        );
+                      } else {
+                        // 로그인 실패, 에러 메시지 표시
+                        print("환자 로그인 실패하였습니다.");
+                      }
+                    } else {
+                      // Doctors 테이블에서 아이디와 비밀번호 확인
+                      final doctor = await database.getDoctorByUserIdAndPassword(username, password);
+                      if (doctor != null) {
+                        // 로그인 성공, 다른 화면으로 이동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>DoctorRootTab()),
+                        );
+                      } else {
+                        // 로그인 실패, 에러 메시지 표시
+                        print("의사 로그인 실패하였습니다.");
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     primary: PRIMARY_COLOR,
@@ -74,7 +98,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    // 플랫폼 확인
+                    if (Platform.isAndroid) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PatientSignupScreen()),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DoctorSignupScreen()),
+                      );
+                    }
+                  },
                   style: TextButton.styleFrom(
                     primary: Colors.black,
                   ),
@@ -113,7 +150,7 @@ class _SubTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-      '이메일과 비밀번호를 입력해서 로그인 해주세요!)',
+      '아이디와 비밀번호를 입력해서 로그인 해주세요!)',
       style: TextStyle(
         fontSize: 16,
         color: BODY_TEXT_COLOR,

@@ -8,5 +8,4 @@ class Doctors extends Table {
   TextColumn get field => text()();
   TextColumn get hospital => text()();
   TextColumn get introduction => text()();
-  IntColumn get role => integer()();
 }

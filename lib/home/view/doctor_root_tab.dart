@@ -5,6 +5,7 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/custom_ap
 import 'package:portfolio_flutter_blockchain_medical_web_app/mypage/profile_screen.dart';
 import '../../colors.dart';
 import '../layout/default_layout.dart';
+import 'doctor_home_screen.dart';
 import 'home_screen.dart';
 
 class DoctorRootTab extends StatefulWidget {
@@ -68,10 +69,6 @@ class _DoctorRootTabState extends State<DoctorRootTab>
             label: '게시판',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.access_time),
-            label: '복용',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
             label: '마이 페이지',
           ),
@@ -82,9 +79,8 @@ class _DoctorRootTabState extends State<DoctorRootTab>
         physics: const NeverScrollableScrollPhysics(),
         controller: controller,
         children: const [
-          HomeScreen(),
+          DoctorHomeScreen(),
           BoardListScreen(),
-          AlarmListScreen(),
           ProfileScreen(),
         ],
       ),
