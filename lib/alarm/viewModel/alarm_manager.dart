@@ -110,6 +110,27 @@ class AlarmManager {
     );
   }
 
+  Future<void> showSuccessNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'id',
+      'name',
+      channelDescription: 'description',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      '약 복용 시간 기록',
+      '사용자의 약 복용시간이 기록되었습니다.',
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
+  }
 
 // Future<void> scheduleNotification(Alarm alarm) async {
   //   final now = DateTime.now();

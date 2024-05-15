@@ -7,7 +7,7 @@ class BoardRepository {
 
   Future<List<Question>> getQuestions() async {
     final response = await http.get(Uri.parse('$baseUrl/api/v1/question'));
-    print(response);
+    print(response.body);
     if (response.statusCode == 200) {
       print("응답 왔니?");
       final List<dynamic> data = json.decode(response.body);
