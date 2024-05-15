@@ -14,6 +14,7 @@ class DeliverScreen extends StatefulWidget {
 
 class _DeliverScreenState extends State<DeliverScreen> {
   final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('test').snapshots();
+  bool _isInitialLoadComplete = false;
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
@@ -29,11 +30,15 @@ class _DeliverScreenState extends State<DeliverScreen> {
     super.initState();
 
     _messagesStream.listen((querySnapshot) {
-      for (var change in querySnapshot.docChanges) {
-        if (change.type == DocumentChangeType.added) {
-          Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
-          FlutterLocalNotification.showNotification(data);
+      if (_isInitialLoadComplete) {
+        for (var change in querySnapshot.docChanges) {
+          if (change.type == DocumentChangeType.added) {
+            Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
+            FlutterLocalNotification.showNotification(data);
+          }
         }
+      } else {
+        _isInitialLoadComplete = true;
       }
     });
     FlutterLocalNotification.init();
