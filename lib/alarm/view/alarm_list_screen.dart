@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/view/alarm_medical_history_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/view/alarm_setUp_Screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/viewModel/alarm_view_model.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
@@ -47,12 +48,19 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
     _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
-      // 알림을 클릭했을 때 실행되는 콜백 함수
-      _handleNotificationTap(response);
-    },);
+        // 알림을 클릭했을 때 실행되는 콜백 함수
+        _handleNotificationTap(response);
+
+      },);
   }
+
   void _handleNotificationTap(NotificationResponse response) {
-    Navigator.pushNamed(context, '/alarm_list_screen');
+    final alarmId = response.id; // 현재 울린 알람 ID
+    final alarm = alarms.firstWhere((a) => a.id == alarmId); // 알람 객체 찾기
+    if (alarm != null) {
+      _viewModel.confirmTakeMedication(alarm); // 해당 알람 정보 업데이트
+      _alarmManager.showSuccessNotification();
+    }
   }
   @override
   void dispose() {
@@ -104,6 +112,18 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('알람목록', style: TextStyle(fontWeight: FontWeight.bold)),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.history),
+            onPressed: () {
+              // 복용 기록 조회 화면으로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AlarmMedicalHistoryScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: alarms.length,

@@ -67,4 +67,7 @@ class AlarmViewModel extends ChangeNotifier {
       rethrow;
     }
   }
+  Future<List<Alarm>> getAlarmsWithNonNullTakeTime() async{
+    return await _repository.getAlarmsWithNonNullTakeTime();
+  }
 }

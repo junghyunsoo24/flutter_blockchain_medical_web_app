@@ -64,6 +64,11 @@ class MyDatabase extends _$MyDatabase {
     await update(alarms)
         .replace(alarm);
   }
+  Future<List<Alarm>> getAlarmsWithNonNullTakeTime() async {
+    return await (select(alarms)
+      ..where((alarm) => alarm.takeTime.isNotNull()))
+        .get();
+  }
 
   //symptom
   Future<int> insertSymptom(SymptomsCompanion symptomsCompanion){ //추가 증상
