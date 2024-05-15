@@ -1,32 +1,26 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'second.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
 class FlutterLocalNotification {
-  static final FlutterLocalNotification _instance = FlutterLocalNotification._internal();
-
-  factory FlutterLocalNotification() {
-    return _instance;
-  }
-
-  FlutterLocalNotification._internal();
 
   static Future<void> init() async {
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+    print("코드확인1");
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+    await GetIt.I<FlutterLocalNotificationsPlugin>().initialize(
+        initializationSettings,
         onDidReceiveNotificationResponse: (payload) async {
+          print("코드확인2");
           onSelectNotification(payload);
         });
   }
 
   static Future<void> showNotification(Map<String, dynamic> payload) async {
-    const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
+    const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
       'channel_id',
       'channel_name',
       channelDescription: 'channel_description',
@@ -37,7 +31,7 @@ class FlutterLocalNotification {
     const NotificationDetails notificationDetails = NotificationDetails(android: androidNotificationDetails);
     String payloadString = mapToQueryString(payload);
 
-    await flutterLocalNotificationsPlugin.show(
+    await GetIt.I<FlutterLocalNotificationsPlugin>().show(
       0,
       payload['title'] ?? 'No Title',
       payload['body'] ?? 'No Body',
@@ -47,6 +41,7 @@ class FlutterLocalNotification {
   }
 
   static Future onSelectNotification(NotificationResponse payload) async {
+    print("코드호출이 안됨");
     if (payload != null) {
       if (payload.payload != null) {
         try {
@@ -54,7 +49,7 @@ class FlutterLocalNotification {
               payload.payload!.split('&').map((item) {
                 final List<String> parts = item.split('=');
                 if (parts.length == 2) {
-                  return MapEntry(Uri.decodeComponent(parts[0].trim()), Uri.decodeComponent(parts[1].trim())); // 변경된 부분
+                  return MapEntry(Uri.decodeComponent(parts[0].trim()), Uri.decodeComponent(parts[1].trim()));
                 } else {
                   throw FormatException("잘못된 데이터 포맷입니다.");
                 }
