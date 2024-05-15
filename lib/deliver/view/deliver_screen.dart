@@ -2,29 +2,22 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../notification.dart';
 
 class DeliverScreen extends StatefulWidget {
+
   @override
   _DeliverScreenState createState() => _DeliverScreenState();
 }
 
 class _DeliverScreenState extends State<DeliverScreen> {
-  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('first').snapshots();
+  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('test').snapshots();
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
   final TextEditingController _senderController = TextEditingController();
-
-  // 싱글톤 인스턴스
-  static FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
-
-  // 싱글톤 패턴의 팩토리 생성자
-  static FlutterLocalNotificationsPlugin get flutterLocalNotificationsPlugin {
-    _flutterLocalNotificationsPlugin ??= FlutterLocalNotificationsPlugin();
-    return _flutterLocalNotificationsPlugin!;
-  }
 
   void getMyDeviceToken() async {
     final token = await FirebaseMessaging.instance.getToken();
@@ -34,29 +27,18 @@ class _DeliverScreenState extends State<DeliverScreen> {
   @override
   void initState(){
     super.initState();
-    getMyDeviceToken();
-    _initializeNotifications();
-    FirebaseFirestore.instance.settings = Settings(
-      persistenceEnabled: true,
-    );
 
     _messagesStream.listen((querySnapshot) {
-      querySnapshot.docChanges.forEach((change) {
+      for (var change in querySnapshot.docChanges) {
         if (change.type == DocumentChangeType.added) {
           Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
           FlutterLocalNotification.showNotification(data);
         }
-      });
+      }
     });
+    FlutterLocalNotification.init();
   }
-  void _initializeNotifications() {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +65,7 @@ class _DeliverScreenState extends State<DeliverScreen> {
             ElevatedButton(
               onPressed: () async {
                 // Firestore에 데이터 추가
-                await FirebaseFirestore.instance.collection('first').add({
+                await FirebaseFirestore.instance.collection('test').add({
                   'title': _titleController.text,
                   'body': _bodyController.text,
                   'sender': _senderController.text,
