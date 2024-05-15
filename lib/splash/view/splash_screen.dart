@@ -10,6 +10,7 @@ class SplashScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print("splash 나오지 테스트");
     return DefaultLayout(
       backgroundColor: Colors.white,
       child: SingleChildScrollView(

@@ -13,9 +13,9 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     routes: provider.routes,
-    initialLocation: '/splash',
+    initialLocation: '/login',
     refreshListenable: provider,
-    redirect: provider.redirectLogic,
+    // redirect: provider.redirectLogic,
     navigatorKey: FlutterLocalNotification.navigatorKey,
   );
 });
