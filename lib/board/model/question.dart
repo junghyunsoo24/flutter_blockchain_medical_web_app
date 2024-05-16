@@ -1,28 +1,34 @@
 class Question {
   final int id;
-  final int userId;
+  final String uid;
   final String title;
-  final String content;
   final String category;
-  final DateTime createdAt;
+  final String symptom;
+  final String content;
+  final List<String> bodyParts;
+  final dynamic personalData;
 
   Question({
     required this.id,
-    required this.userId,
+    required this.uid,
     required this.title,
-    required this.content,
     required this.category,
-    required this.createdAt,
+    required this.symptom,
+    required this.content,
+    required this.bodyParts,
+    this.personalData,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
       id: json['id'],
-      userId: json['userId'],
+      uid: json['uid'],
       title: json['title'],
-      content: json['content'],
       category: json['category'],
-      createdAt: DateTime.parse(json['createdAt']),
+      symptom: json['symptom'],
+      content: json['content'],
+      bodyParts: List<String>.from(json['bodyParts']),
+      personalData: json['personalData'],
     );
   }
 }
