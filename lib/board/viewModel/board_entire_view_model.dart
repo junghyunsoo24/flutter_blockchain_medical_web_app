@@ -3,18 +3,21 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/questio
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/repository/board_repository.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-class BoardEntireViewModel extends StateNotifier<List<Question>> {
+class QuestionViewModel extends ChangeNotifier {
+  final QuestionRepository _repository;
+  List<Question> _questions = [];
 
-  final _questionRepository = BoardRepository();
+  QuestionViewModel(this._repository);
 
-  BoardEntireViewModel() : super([]);
+  List<Question> get questions => _questions;
 
   Future<void> fetchQuestions() async {
     try {
-      state = await _questionRepository.getQuestions();
-      print("실행???");
+      print("실행?");
+      _questions = await _repository.fetchQuestions();
+      notifyListeners();
     } catch (e) {
-      // 에러 처리
+      // Handle error
     }
   }
 }
