@@ -98,6 +98,7 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
   }
   Future<void> _deleteAlarm(Alarm alarm) async {
     await _viewModel.deleteAlarm(alarm);
+    await _alarmManager.cancelNotification(alarm.id);
     _loadAlarms();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
