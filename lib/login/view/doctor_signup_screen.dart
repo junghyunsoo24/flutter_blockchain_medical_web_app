@@ -21,17 +21,18 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
   String? _userID, _userPW, _name, _field, _hospital, _introduction;
 
   Future<bool> submitDoctorInfo() async {
-    final url = Uri.parse('http://localhost:5000/api/v1/doctor/sign-up');
+    final url = Uri.parse('http://localhost:8080/api/v1/doctor/sign-up');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'userID': _userID,
-        'userPW': _userPW,
+        'id': _userID,
+        'pw': _userPW,
+        'role': "doctor",
         'name': _name,
         'field': _field,
         'hospital': _hospital,
-        'introduction': _introduction,
+        'introduction': _introduction
       }),
     );
 
