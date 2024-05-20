@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../data.dart';
 import '../../database/drift_database.dart';
 import '../../main.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,7 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
   String? _userID, _userPW, _name, _field, _hospital, _introduction;
 
   Future<bool> submitDoctorInfo() async {
-    final url = Uri.parse('http://localhost:8080/api/v1/doctor/sign-up');
+    final url = Uri.parse('http://$webIp/api/v1/doctor/sign-up');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -37,10 +38,16 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
     );
 
     if (response.statusCode == 200) {
-      print('의사 회원 가입 성공!');
-      return true;
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['result'] == 'success') {
+        print('의료진 회원가입 성공!');
+        return true;
+      } else {
+        print('의료진 회원가입 실패..');
+        return false;
+      }
     } else {
-      print('의사 회원 가입 실패..');
+      print('서버 오류로 인한 회원가입 실패..');
       return false;
     }
   }
@@ -134,12 +141,29 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
                           hospital: Value(_hospital!),
                           introduction: Value(_introduction!)
                       ));
+                      Navigator.pop(context);
+                    }
+                    else{
+                      ScaffoldMessenger.of(context).showMaterialBanner(
+                        MaterialBanner(
+                          content: Text("회원정보를 확인해주세요."),
+                          leading: Icon(Icons.error, color: Colors.red),
+                          backgroundColor: Colors.yellow,
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text("확인"),
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                              },
+                            ),
+                          ],
+                        ),
+                      );
                     }
 
-                    Navigator.pop(context);
                   }
                 },
-                child: const Text('의사 회원가입'),
+                child: const Text('의료진 회원가입'),
               ),
             ],
           ),

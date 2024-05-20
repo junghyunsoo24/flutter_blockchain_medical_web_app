@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
+import '../../data.dart';
 import '../../main.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,7 +22,7 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
   double? _height, _weight;
 
   Future<bool> submitPatientInfo() async {
-    final url = Uri.parse('http://localhost:8080/api/v1/patient/sign-up');
+    final url = Uri.parse('http://$realPhoneIp/api/v1/patient/sign-up');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -147,21 +148,44 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
 
-                    await GetIt.I<MyDatabase>().addPatient(PatientsCompanion(
-                      userID: Value(_userId!),
-                      userPW: Value(_password!),
-                      name: Value(_name!),
-                      birthday: Value(_birthday!),
-                      gender: Value(_gender!),
-                      height: Value(_height!),
-                      weight: Value(_weight!),
-                      role: Value("1")
-                    ));
+                    bool success = await submitPatientInfo();
+                    if (success) {
+                      await GetIt.I<MyDatabase>().addPatient(PatientsCompanion(
+                          userID: Value(_userId!),
+                          userPW: Value(_password!),
+                          name: Value(_name!),
+                          birthday: Value(_birthday!),
+                          gender: Value(_gender!),
+                          height: Value(_height!),
+                          weight: Value(_weight!),
+                          role: Value("1")
+                      ));
 
-                    Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
+                    else{
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("환자 회원가입 실패"),
+                            content: Text("회원가입 정보를 다시 확인해주세요."),
+                            actions: [
+                              TextButton(
+                                child: Text("확인"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   }
+
                 },
-                child: const Text('환자 로그인'),
+                child: const Text('환자 회원가입'),
               ),
             ],
           ),
