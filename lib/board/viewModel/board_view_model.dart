@@ -15,8 +15,8 @@ class BoardViewModel extends ChangeNotifier {
   bool _sharePersonalData = false;
 
   final List<String> _symptoms = ['머리', '치아', '열'];
-  final List<String> _bodyParts = ['HEAD', 'TEETH', 'TETH'];
-  final List<String> _categories = ['ENTIRE', 'E', 'NTIRE'];
+  final List<String> _bodyParts = ['HEAD', 'MATERNITY', 'EIDERS'];
+  final List<String> _categories = ['ENTIRE', 'MATERNITY', 'EIDERS'];
 
   String get title => _title;
   String get selectedSymptom => _selectedSymptom;

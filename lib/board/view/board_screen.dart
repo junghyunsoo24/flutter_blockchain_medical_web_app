@@ -83,14 +83,14 @@ class BoardScreen extends ConsumerWidget {
                 onChanged: viewModel.setAdditionalInfo,
               ),
               SizedBox(height: 16.0),
-              // TextField(
-              //   maxLines: null,
-              //   decoration: InputDecoration(
-              //     labelText: '나의 추가 정보',
-              //     border: OutlineInputBorder(),
-              //   ),
-              //   onChanged: viewModel.setPersonalData,
-              // ),
+              TextField(
+                maxLines: null,
+                decoration: InputDecoration(
+                  labelText: '나의 추가 정보',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: viewModel.setPersonalData,
+              ),
               SizedBox(height: 16.0),
               // Row(
               //   children: [

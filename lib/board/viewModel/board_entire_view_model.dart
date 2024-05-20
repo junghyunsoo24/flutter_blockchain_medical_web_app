@@ -11,14 +11,25 @@ class QuestionViewModel extends ChangeNotifier {
 
   List<Question> get questions => _questions;
 
-  Future<void> fetchQuestions() async {
+  Future<void> fetchQuestions({String? category, String? userId}) async {
     try {
       print("실행?");
-      _questions = await _repository.fetchQuestions();
+      _questions = await _repository.fetchQuestions(category: category, userId: userId);
       notifyListeners();
     } catch (e) {
       // Handle error
+      print('Error fetching questions: $e');
     }
   }
+
+  // Future<void> fetchQuestions() async {
+  //   try {
+  //     print("실행?");
+  //     _questions = await _repository.fetchQuestions();
+  //     notifyListeners();
+  //   } catch (e) {
+  //     // Handle error
+  //   }
+  // }
 
 }
