@@ -33,10 +33,10 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
     );
 
     if (response.statusCode == 200) {
-      print('환자 로그인 성공!');
+      print('환자 회원 가입 성공!');
       return true;
     } else {
-      print('환자 로그인 실패..');
+      print('환자 회원 가입 실패..');
       return false;
     }
   }

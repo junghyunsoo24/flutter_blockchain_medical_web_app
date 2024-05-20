@@ -37,10 +37,10 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
     );
 
     if (response.statusCode == 200) {
-      print('의사 로그인 성공!');
+      print('의사 회원 가입 성공!');
       return true;
     } else {
-      print('의사 로그인 실패..');
+      print('의사 회원 가입 실패..');
       return false;
     }
   }
