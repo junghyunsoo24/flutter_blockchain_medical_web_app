@@ -8,7 +8,7 @@ const emulatorIp = '10.0.2.2:3000';
 
 // const realPhoneIp = '192.168.248.103:3000';
 
-const realPhoneIp = '192.168.18.103:3000';
+const realPhoneIp = '172.30.67.135:8080';
 const webIp = 'localhost:8080';
 //const realPhoneIp = '192.168.0.9:3000';
 String getIp() {

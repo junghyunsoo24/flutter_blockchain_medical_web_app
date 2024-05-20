@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,9 +9,11 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/root_tab.
 import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/doctor_signup_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/patient_signup_screen.dart';
 import '../../colors.dart';
+import '../../data.dart';
 import '../../home/layout/default_layout.dart';
 import '../../main.dart';
 import '../component/custom_text_form.field.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends ConsumerStatefulWidget {
   static String get routeName => 'login';
@@ -26,9 +29,54 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   String password = '';
   bool isMobile = true;
 
+  Future<bool> doctorLogin() async {
+    final url = Uri.parse('http://$webIp/api/v1/sign-in');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'id': username, 'pw': password}),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['result'] == 'success') {
+        print('의료진 로그인 성공!');
+        return true;
+      } else {
+        print('의료진 로그인 실패..');
+        return false;
+      }
+    } else {
+      print('서버 오류로 인한 로그인 실패..');
+      return false;
+    }
+  }
+
+  Future<bool> patientLogin() async {
+    final url = Uri.parse('http://$realPhoneIp/api/v1/sign-in');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'id': username, 'pw': password}),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['result'] == 'success') {
+        print('환자 로그인 성공!');
+        return true;
+      } else {
+        print('환자 로그인 실패..');
+        return false;
+      }
+    } else {
+      print('서버 오류로 인한 로그인 실패..');
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("login 나오지 테스트");
     return DefaultLayout(
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -65,31 +113,87 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     if (Platform.isAndroid) {
-                      // Patients 테이블에서 아이디와 비밀번호 확인
-                      final patient = await GetIt.I<MyDatabase>().getPatientByUserIdAndPassword(username, password);
-                      if (patient != null) {
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RootTab()),
-                        );
-                      } else {
-                        // 로그인 실패, 에러 메시지 표시
-                        print("환자 로그인 실패하였습니다.");
+                      bool patientSuccess = await patientLogin();
+                      if(patientSuccess) {
+                        final patient = await GetIt.I<MyDatabase>()
+                            .getPatientByUserIdAndPassword(username, password);
+                        if (patient != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RootTab()),
+                          );
+                        }
                       }
-                    } else {
-                      // Doctors 테이블에서 아이디와 비밀번호 확인
-                      final doctor = await GetIt.I<MyDatabase>().getDoctorByUserIdAndPassword(username, password);
-                      if (doctor != null) {
-                        // 로그인 성공, 다른 화면으로 이동
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) =>DoctorRootTab()),
+                      else{
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("환자 로그인 실패"),
+                              content: Text("아이디와 비밀번호를 확인해주세요."),
+                              actions: [
+                                TextButton(
+                                  child: Text("확인"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
                         );
-                      } else {
-                        // 로그인 실패, 에러 메시지 표시
-                        print("의사 로그인 실패하였습니다.");
                       }
+                    }
+                    else if(Platform.isWindows) {
+                      bool doctorSuccess = await doctorLogin();
+                      if(doctorSuccess) {
+                        final doctor = await GetIt.I<MyDatabase>()
+                            .getDoctorByUserIdAndPassword(username, password);
+                        if (doctor != null) {
+                          // 로그인 성공, 다른 화면으로 이동
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DoctorRootTab()),
+                          );
+                        }
+                      }
+                      else{
+                        ScaffoldMessenger.of(context).showMaterialBanner(
+                          MaterialBanner(
+                            content: Text("아이디와 비밀번호를 확인해주세요."),
+                            leading: Icon(Icons.error, color: Colors.red),
+                            backgroundColor: Colors.yellow,
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text("확인"),
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    }
+                    else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("로그인 실패"),
+                            content: Text("로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요."),
+                            actions: [
+                              TextButton(
+                                child: Text("확인"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -105,12 +209,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     if (Platform.isAndroid) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PatientSignupScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => PatientSignupScreen()),
                       );
                     } else {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => DoctorSignupScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => DoctorSignupScreen()),
                       );
                     }
                   },
@@ -150,6 +256,10 @@ class _SubTitle extends StatelessWidget {
   const _SubTitle({Key? key}) : super(key: key);
 
   @override
+
+
+
+
   Widget build(BuildContext context) {
     return const Text(
       '아이디와 비밀번호를 입력해서 로그인 해주세요!)',
