@@ -1,166 +1,179 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_entire_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/repository/board_repository.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_detail_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/board_entire_view_model.dart';
 
-class BoardListScreen extends ConsumerWidget {
-  const BoardListScreen({Key? key}) : super(key: key);
+final questionViewModelProvider = ChangeNotifierProvider((ref) => QuestionViewModel(QuestionRepository()));
+
+class BoardListScreen extends ConsumerStatefulWidget {
+  final String category;
+
+  const BoardListScreen({Key? key, required this.category}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<BoardListScreen> createState() => _BoardListScreenState();
+}
+
+class _BoardListScreenState extends ConsumerState<BoardListScreen> {
+
+  String getCategoryDisplayName(String category) {
+    switch (category) {
+      case 'ENTIRE':
+        return '전체';
+      case 'ElDERS':
+        return '노약자';
+      case 'MATERNITY':
+        return '임산부';
+      default:
+        return category;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchQuestions(widget.category);
+    print('Received category: ${widget.category}');
+  }
+
+  void _fetchQuestions(String selectedCategory) {
+    final category = selectedCategory;
+    final userId = 'patientId';
+    ref.read(questionViewModelProvider).fetchQuestions(category: category, userId: userId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = ref.watch(questionViewModelProvider);
+    final categoryTitle = '${getCategoryDisplayName(widget.category)} 게시판';
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.all(5.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              SizedBox(
-                height: 60,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => BoardEntireScreen()),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.blue.withOpacity(0.8), // 그림자 색상
-                          width: 2.0, // 그림자 두께
-                          style: BorderStyle.solid, // 그림자 스타일
-                        ),
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(Icons.dashboard, color: Colors.blueAccent, size: 35),
-                        SizedBox(width: 8),
-                        Text(
-                          '전체 게시판',
-                          style: TextStyle(
-                            fontFamily: 'NotoSans',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              SizedBox(
-                height: 60,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DetailScreen()),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.blue.withOpacity(0.8), // 그림자 색상
-                          width: 2.0, // 그림자 두께
-                          style: BorderStyle.solid, // 그림자 스타일
-                        ),
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(Icons.elderly_rounded, color: Colors.blueAccent, size: 35),
-                        SizedBox(width: 8),
-                        Text(
-                          '노년층 게시판',
-                          style: TextStyle(
-                            fontFamily: 'NotoSans',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              SizedBox(
-                height: 60,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DetailScreen()),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.blue.withOpacity(0.8), // 그림자 색상
-                          width: 2.0, // 그림자 두께
-                          style: BorderStyle.solid, // 그림자 스타일
-                        ),
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(Icons.pregnant_woman, color: Colors.blueAccent, size: 35),
-                        SizedBox(width: 8),
-                        Text(
-                          '임산부 게시판',
-                          style: TextStyle(
-                            fontFamily: 'NotoSans',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+      appBar: AppBar(
+        title: Text(categoryTitle),
+        backgroundColor: Colors.blue[50],
+        elevation: 0,
       ),
+      body: _buildQuestionList(viewModel),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => BoardScreen()),
-          );
+          // Navigate to the create question screen
         },
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        elevation: 8.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: Icon(Icons.add),
+        backgroundColor: Colors.blue[50],
+        child: const Icon(Icons.add),
       ),
     );
   }
+  Widget _buildQuestionList(QuestionViewModel viewModel) {
+    if (viewModel.questions.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.blue,
+        ),
+      );
+    } else {
+      return ListView.separated(
+        padding: const EdgeInsets.all(16.0),
+        itemCount: viewModel.questions.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 16.0),
+        itemBuilder: (context, index) {
+          final question = viewModel.questions[index];
+          return GestureDetector(
+            onTap: () {
+              // Navigate to the question detail page and pass the selected question
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BoardDetailScreen(question: question),
+                ),
+              );
+            },
+            child: Card(
+              // ... (existing card content)
+            ),
+          );
+        },
+      );
+    }
+  }
+
+
+// Widget _buildQuestionList(QuestionViewModel viewModel) {
+  //   if (viewModel.questions.isEmpty) {
+  //     return const Center(
+  //       child: CircularProgressIndicator(
+  //         color: Colors.blue,
+  //       ),
+  //     );
+  //   } else {
+  //     return ListView.separated(
+  //       padding: const EdgeInsets.all(16.0),
+  //       itemCount: viewModel.questions.length,
+  //       separatorBuilder: (context, index) => const SizedBox(height: 16.0),
+  //       itemBuilder: (context, index) {
+  //         final question = viewModel.questions[index];
+  //         return Card(
+  //           elevation: 4.0,
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(8.0),
+  //           ),
+  //           child: Padding(
+  //             padding: const EdgeInsets.all(16.0),
+  //             child: Row(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Expanded(
+  //                   child: Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       Text(
+  //                         '작성자: ${question.uid}',
+  //                         style: const TextStyle(
+  //                           fontSize: 16.0,
+  //                           fontWeight: FontWeight.bold,
+  //                         ),
+  //                       ),
+  //                       const SizedBox(height: 8.0),
+  //                       Text(
+  //                         '제목: ${question.title}',
+  //                         style: const TextStyle(
+  //                           fontSize: 18.0,
+  //                           fontWeight: FontWeight.bold,
+  //                         ),
+  //                       ),
+  //                       const SizedBox(height: 8.0),
+  //                       Text(
+  //                         '증상: ${question.symptom}',
+  //                         style: const TextStyle(
+  //                           fontSize: 16.0,
+  //                           color: Colors.grey,
+  //                         ),
+  //                       ),
+  //                       const SizedBox(height: 8.0),
+  //                       Text(
+  //                         '${question.content}',
+  //                         style: const TextStyle(
+  //                           fontSize: 16.0,
+  //                           color: Colors.grey,
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ),
+  //                 const SizedBox(width: 16.0),
+  //                 Text(
+  //                   '${question.category}',
+  //                   style: const TextStyle(
+  //                     fontSize: 16.0,
+  //                     color: Colors.grey,
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
+
 }

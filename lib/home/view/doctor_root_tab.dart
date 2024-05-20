@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/view/alarm_list_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_list_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_category_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/custom_app_bar.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/mypage/profile_screen.dart';
 import '../../colors.dart';
@@ -80,7 +79,7 @@ class _DoctorRootTabState extends State<DoctorRootTab>
         controller: controller,
         children: const [
           DoctorHomeScreen(),
-          BoardListScreen(),
+          BoardCategoryListScreen(),
           ProfileScreen(),
         ],
       ),

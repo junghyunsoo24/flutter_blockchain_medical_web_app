@@ -31,4 +31,5 @@ class Question {
       personalData: json['personalData'],
     );
   }
+
 }
