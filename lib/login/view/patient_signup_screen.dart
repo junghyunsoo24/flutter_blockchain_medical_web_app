@@ -23,6 +23,8 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
 
   Future<bool> submitPatientInfo() async {
     final url = Uri.parse('http://$realPhoneIp/api/v1/patient/sign-up');
+    print("여기여기");
+    print(url);
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},

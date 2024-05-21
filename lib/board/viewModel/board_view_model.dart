@@ -11,25 +11,35 @@ class BoardViewModel extends ChangeNotifier {
   String _selectedCategory = 'ENTIRE';
   String _symptomDescription = '';
   String _additionalInfo = '';
-  String _personalData = '';
-  bool _sharePersonalData = false;
+  int? _age;
+  String _selectedGender = 'MALE';
+  String _disease = '';
+  String _medication = '';
+  bool _showPersonalDataFields = false;
 
   final List<String> _symptoms = ['머리', '치아', '열'];
-  final List<String> _bodyParts = ['HEAD', 'MATERNITY', 'EIDERS'];
-  final List<String> _categories = ['ENTIRE', 'MATERNITY', 'EIDERS'];
+  final List<String> _bodyParts = ['HAND', 'WRIST', 'FOOT', 'ANKLE', 'NECK', 'THROAT',
+  'HEAD', 'ARM', 'HEART','WAIST', 'EYE', 'TEETH', 'KNEE', 'EAR', 'SKIN','STOMACH', 'THIGH',
+  'CALF', 'BACK'];
+  final List<String> _categories = ['ENTIRE', 'MATERNITY', 'ElDERS'];
+  final List<String> _genders = ['MALE', 'FEMALE'];
 
   String get title => _title;
-  String get selectedSymptom => _selectedSymptom;
   String get selectedBodyPart => _selectedBodyPart;
   String get selectedCategory => _selectedCategory;
   String get symptomDescription => _symptomDescription;
   String get additionalInfo => _additionalInfo;
-  String get personalData => _personalData;
-  bool get sharePersonalData => _sharePersonalData;
+  int? get age => _age;
+  String get selectedGender => _selectedGender;
+  String get disease => _disease;
+  String get medication => _medication;
+  bool get showPersonalDataFields => _showPersonalDataFields;
+
 
   List<String> get symptoms => _symptoms;
   List<String> get bodyParts => _bodyParts;
   List<String> get categories => _categories;
+  List<String> get genders => _genders;
 
   void setTitle(String value) {
     _title = value;
@@ -60,8 +70,29 @@ class BoardViewModel extends ChangeNotifier {
     _additionalInfo = value;
     notifyListeners();
   }
-  void setPersonalData(String value) {
-    _personalData = value;
+
+  void setAge(String value) {
+    _age = int.tryParse(value);
+    notifyListeners();
+  }
+
+  void setSelectedGender(String value) {
+    _selectedGender = value;
+    notifyListeners();
+  }
+
+  void setDisease(String value) {
+    _disease = value;
+    notifyListeners();
+  }
+
+  void setMedication(String value) {
+    _medication = value;
+    notifyListeners();
+  }
+
+  void toggleShowPersonalDataFields(bool show) {
+    _showPersonalDataFields = show;
     notifyListeners();
   }
   Future<void> submitForm() async {
@@ -73,7 +104,14 @@ class BoardViewModel extends ChangeNotifier {
       'title': _title,
       'symptom': _symptomDescription,
       'content': _additionalInfo,
-      'personalData': null,
+      'personalData': _showPersonalDataFields
+          ? {
+        'age': _age,
+        'gender': _selectedGender,
+        'disease': _disease,
+        'medication': _medication,
+      }
+          : null,
     },
 
     );
