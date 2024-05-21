@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/board_view_model.dart';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,25 @@ class BoardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(boardViewModelProvider);
+
+    void _showSuccessSnackBar() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('질문 등록이 완료되었습니다.'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+    void _navigateToBoardListScreen() {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BoardListScreen(category: viewModel.selectedCategory),
+        ),
+      );
+    }
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('게시물 등록'),
@@ -38,7 +58,7 @@ class BoardScreen extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 30.0),
-              TextField(
+              TextFormField(
                 decoration: InputDecoration(
                   labelText: '제목을 입력해주세요.',
                   border: OutlineInputBorder(),
@@ -56,11 +76,11 @@ class BoardScreen extends ConsumerWidget {
                 }).toList(),
                 onChanged: (String? value) {
                   if (value != null) {
-                    viewModel.setSelectedSymptom(value);
+                    viewModel.setSelectedBodyPart(value);
                   }
                 },
                 decoration: InputDecoration(
-                  labelText: '부위를 선택해주세요.',
+                  labelText: '아픈 부위를 선택해주세요.',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -83,34 +103,74 @@ class BoardScreen extends ConsumerWidget {
                 onChanged: viewModel.setAdditionalInfo,
               ),
               SizedBox(height: 16.0),
-              TextField(
-                maxLines: null,
-                decoration: InputDecoration(
-                  labelText: '나의 추가 정보',
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: viewModel.setPersonalData,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('추가정보를 입력하려면, 우측 버튼을 누르세요.'),
+                  Switch(
+                    value: viewModel.showPersonalDataFields,
+                    onChanged: (value) {
+                      viewModel.toggleShowPersonalDataFields(value);
+                    },
+                  ),
+                ],
               ),
               SizedBox(height: 16.0),
-              // Row(
-              //   children: [
-              //     Checkbox(
-              //       value: viewModel.sharePersonalData,
-              //       onChanged: (bool? value) {
-              //         if (value != null) {
-              //           viewModel.setSharePersonalData(value);
-              //         }
-              //       },
-              //     ),
-              //     Text('공개 여부'),
-              //   ],
-              // ),
-              SizedBox(height: 16.0),
+              if (viewModel.showPersonalDataFields) ...[
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: '나이',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: viewModel.setAge,
+                ),
+                SizedBox(height: 16.0),
+                DropdownButtonFormField<String>(
+                  value: viewModel.selectedGender,
+                  items: viewModel.genders.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      viewModel.setSelectedGender(value);
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: '성별',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: '질병',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: viewModel.setDisease,
+                ),
+                SizedBox(height: 16.0),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: '복용약 설명',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: viewModel.setMedication,
+                ),
+                SizedBox(height: 16.0),
+              ],
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    viewModel.submitForm();
+                    viewModel.submitForm().then((_) {
+                      _showSuccessSnackBar();
+                      _navigateToBoardListScreen();
+                    }).catchError((error) {
+                      // 에러 처리
+                    });
                   },
                   child: Text('등록'),
                 ),
@@ -122,9 +182,6 @@ class BoardScreen extends ConsumerWidget {
     );
   }
 }
-
-
-
 // import 'package:flutter/material.dart';
 //
 // class BoardScreen extends StatefulWidget {
