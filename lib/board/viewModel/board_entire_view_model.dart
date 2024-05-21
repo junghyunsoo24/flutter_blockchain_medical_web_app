@@ -33,6 +33,17 @@ class QuestionViewModel extends ChangeNotifier {
       print('Error deleting question: $e');
     }
   }
+
+  Future<void> myBoardQuestion( {String? userId}) async {
+    try {
+      _questions = await _repository.myBoardList(userId: userId);
+      notifyListeners();
+    } catch (e) {
+      // Handle error
+      print('Error deleting question: $e');
+    }
+  }
+
   // final QuestionRepository _repository;
   // List<Question> _questions = [];
   //

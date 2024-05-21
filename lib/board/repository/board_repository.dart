@@ -36,6 +36,26 @@ class QuestionRepository {
     }
   }
 
+  Future<List<Question>> myBoardList({String? userId}) async {
+    final uri = Uri.parse('$baseUrl/api/v1/question')
+        .replace(queryParameters: {
+      'userId': userId,
+    });
+
+    print(uri);
+    final response = await http.get(uri);
+    print(response.body);
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      final questions = (data['questions'] as List)
+          .map((question) => Question.fromJson(question))
+          .toList();
+      return questions;
+    } else {
+      throw Exception('Failed to fetch questions');
+    }
+  }
+
 
 // Future<List<Question>> fetchQuestions() async {
   //   final response = await http.get(Uri.parse('$baseUrl/api/v1/question'));
