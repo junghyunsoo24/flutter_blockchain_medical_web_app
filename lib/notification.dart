@@ -9,12 +9,10 @@ class FlutterLocalNotification {
   static Future<void> init() async {
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-    print("코드확인1");
 
     await GetIt.I<FlutterLocalNotificationsPlugin>().initialize(
         initializationSettings,
         onDidReceiveNotificationResponse: (payload) async {
-          print("코드확인2");
           onSelectNotification(payload);
         });
   }
@@ -41,7 +39,6 @@ class FlutterLocalNotification {
   }
 
   static Future onSelectNotification(NotificationResponse payload) async {
-    print("코드호출이 안됨");
     if (payload != null) {
       if (payload.payload != null) {
         try {

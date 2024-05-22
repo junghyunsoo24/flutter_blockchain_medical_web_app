@@ -13,7 +13,7 @@ class DeliverScreen extends StatefulWidget {
 }
 
 class _DeliverScreenState extends State<DeliverScreen> {
-  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('test').snapshots();
+  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('medical').snapshots();
   bool _isInitialLoadComplete = false;
 
   final TextEditingController _titleController = TextEditingController();
@@ -70,7 +70,7 @@ class _DeliverScreenState extends State<DeliverScreen> {
             ElevatedButton(
               onPressed: () async {
                 // Firestore에 데이터 추가
-                await FirebaseFirestore.instance.collection('test').add({
+                await FirebaseFirestore.instance.collection('medical').add({
                   'title': _titleController.text,
                   'body': _bodyController.text,
                   'sender': _senderController.text,
