@@ -136,21 +136,9 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
             ),
             subtitle: Text('Dosage: ${alarm.dosage}', ),
-            // trailing: Switch(
-            //   value: medication.isEnabled,
-            //   onChanged: (value) {
-            //     _toggleAlarmStatus(medication);
-            //   },
-            // ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Switch(
-                //   value: alarm.isEnabled,
-                //   onChanged: (value) {
-                //     _toggleAlarmStatus(alarm);
-                //   },
-                // ),
                 PopupMenuButton(
                   icon: Icon(Icons.more_vert),
                   itemBuilder: (context) => [
@@ -173,26 +161,6 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
           );
         },
       ),
-      //       trailing: Row(
-      //         mainAxisSize: MainAxisSize.min,
-      //         children: [
-      //           Switch(
-      //             value: medication.isEnabled,
-      //             onChanged: (value) {
-      //               _toggleAlarmStatus(medication);
-      //             },
-      //           ),
-      //           // IconButton(
-      //           //   icon: Icon(Icons.check),
-      //           //   onPressed: () {
-      //           //     _confirmTakeMedication(medication);
-      //           //   },
-      //           // ),
-      //         ],
-      //       ),
-      //     );
-      //   },
-      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigate to the medication setup screen

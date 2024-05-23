@@ -98,7 +98,7 @@ class BoardViewModel extends ChangeNotifier {
   Future<void> submitForm() async {
     final url = Uri.parse('$baseUrl/api/v1/question/enroll');
     final body = jsonEncode({
-      'userId': "patientId",
+      'userId': "string",
       'bodyParts': [_selectedBodyPart.toUpperCase()],
       'category': _selectedCategory.toUpperCase(),
       'title': _title,
