@@ -22,13 +22,13 @@ class _MyBoardListScreenState extends ConsumerState<MyBoardListScreen> {
   @override
   void initState() {
     super.initState();
-    _myBoardList("patientId");
+    _myBoardList("string");
     //print('Received category: ${widget.category}');
   }
 
   void _myBoardList(String userId) {
     //final userId = userId;
-    final userId = 'patientId';
+    //final userId = 'patientId';
     ref.read(questionViewModelProvider).myBoardQuestion(userId: userId);
     //ref.read(questionViewModelProvider).fetchQuestions(category: category, userId: userId);
   }
