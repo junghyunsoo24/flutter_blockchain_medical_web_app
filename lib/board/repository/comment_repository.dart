@@ -61,5 +61,25 @@ class CommentRepository {
     }
   }
 
+  Future<List<Comments>> myCommentList({String? userId}) async {
+    final uri = Uri.parse('$baseUrl/api/test-1/opinions')
+        .replace(queryParameters: {
+      'userId': userId,
+    });
+
+    print(uri);
+    final response = await http.get(uri);
+    print(response.body);
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      final opinions = (data['opinions'] as List)
+          .map((question) => Comments.fromJson(question))
+          .toList();
+      return opinions;
+    } else {
+      throw Exception('Failed to fetch opinions');
+    }
+  }
+
 
 }

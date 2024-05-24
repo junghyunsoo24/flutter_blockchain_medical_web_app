@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/question.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -53,6 +54,38 @@ class QuestionRepository {
       return questions;
     } else {
       throw Exception('Failed to fetch questions');
+    }
+  }
+
+
+  Future<void> updateQuestion(
+      int questionId,
+      String title,
+      String symptom,
+      String content,
+      ) async {
+    print("여기");
+    print(questionId);
+    print(title);
+    print(symptom);
+    print(content);
+    final uri = Uri.parse('$baseUrl/api/test-0/question');
+    final body = jsonEncode({
+      'questionId': questionId,
+      'title': title,
+      'symptom': symptom,
+      'content': content,
+    });
+    final response = await http.patch(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
+    print(body);
+    print(uri);
+    print(response.body);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update question');
     }
   }
 
