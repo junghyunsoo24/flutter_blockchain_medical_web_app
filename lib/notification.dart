@@ -9,16 +9,13 @@ class FlutterLocalNotification {
   static Future<void> init() async {
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-    print("코드확인1");
 
     await GetIt.I<FlutterLocalNotificationsPlugin>().initialize(
         initializationSettings,
         onDidReceiveNotificationResponse: (payload) async {
-          print("코드확인2");
           onSelectNotification(payload);
         });
   }
-
   static Future<void> showNotification(Map<String, dynamic> payload) async {
     const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
       'channel_id',
@@ -33,15 +30,14 @@ class FlutterLocalNotification {
 
     await GetIt.I<FlutterLocalNotificationsPlugin>().show(
       0,
-      payload['title'] ?? 'No Title',
-      payload['body'] ?? 'No Body',
+      payload['title'] ?? '환자 추가 정보',
+      payload['body'] ?? '증상, 의약품',
       notificationDetails,
       payload: payloadString,
     );
   }
 
   static Future onSelectNotification(NotificationResponse payload) async {
-    print("코드호출이 안됨");
     if (payload != null) {
       if (payload.payload != null) {
         try {

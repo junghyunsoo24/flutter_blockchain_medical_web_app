@@ -15,9 +15,9 @@ class SecondPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Title: ${payload['title']}'),
-            Text('Body: ${payload['body']}'),
-            Text('Sender: ${payload['sender']}'),
+            Text('추가 증상: ${payload['추가 증상']}'),
+            Text('추가 의약품: ${payload['추가 의약품']}'),
+            Text('상세 내용: ${payload['상세 내용']}'),
           ],
         ),
       ),
