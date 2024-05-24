@@ -16,7 +16,6 @@ class FlutterLocalNotification {
           onSelectNotification(payload);
         });
   }
-
   static Future<void> showNotification(Map<String, dynamic> payload) async {
     const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
       'channel_id',
@@ -31,8 +30,8 @@ class FlutterLocalNotification {
 
     await GetIt.I<FlutterLocalNotificationsPlugin>().show(
       0,
-      payload['title'] ?? 'No Title',
-      payload['body'] ?? 'No Body',
+      payload['title'] ?? '환자 추가 정보',
+      payload['body'] ?? '증상, 의약품',
       notificationDetails,
       payload: payloadString,
     );
