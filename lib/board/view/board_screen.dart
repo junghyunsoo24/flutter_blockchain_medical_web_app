@@ -4,11 +4,18 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/boa
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../model/question.dart';
 final boardViewModelProvider = ChangeNotifierProvider((ref) => BoardViewModel());
 
 class BoardScreen extends ConsumerWidget {
+
+  final Question? question;
+  const BoardScreen({super.key, this.question});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print(question);
     final viewModel = ref.watch(boardViewModelProvider);
 
     void _showSuccessSnackBar() {
@@ -27,8 +34,6 @@ class BoardScreen extends ConsumerWidget {
         ),
       );
     }
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text('게시물 등록'),

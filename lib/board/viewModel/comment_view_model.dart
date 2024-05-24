@@ -44,4 +44,14 @@ class CommentViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> myCommentList( {String? userId}) async {
+    try {
+      _comments = await _commentRepository.myCommentList(userId: userId);
+      notifyListeners();
+    } catch (e) {
+      // Handle error
+      print('Error deleting question: $e');
+    }
+  }
+
 }

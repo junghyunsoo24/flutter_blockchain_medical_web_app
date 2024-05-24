@@ -2,51 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/question.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/repository/board_repository.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/repository/comment_repository.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_category_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_detail_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/board_entire_view_model.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/comment_view_model.dart';
 
-final questionViewModelProvider = ChangeNotifierProvider((ref) => QuestionViewModel(QuestionRepository()));
+final commentViewModelProvider = ChangeNotifierProvider((ref) => CommentViewModel(CommentRepository()));
 
-class MyBoardListScreen extends ConsumerStatefulWidget {
+class MyCommentList extends ConsumerStatefulWidget {
 
-  const MyBoardListScreen({Key? key}) : super(key: key);
+  const MyCommentList({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<MyBoardListScreen> createState() => _MyBoardListScreenState();
+  ConsumerState<MyCommentList> createState() => _MyCommentListScreenState();
 }
 
-class _MyBoardListScreenState extends ConsumerState<MyBoardListScreen> {
+class _MyCommentListScreenState extends ConsumerState<MyCommentList> {
 
   @override
   void initState() {
     super.initState();
-    _myBoardList("string");
+    _myCommentList("string");
+    //print('Received category: ${widget.category}');
   }
 
-  void _myBoardList(String userId) {
-    ref.read(questionViewModelProvider).myBoardQuestion(userId: userId);
+  void _myCommentList(String userId) {
+    //final userId = userId;
+    //final userId = 'patientId';
+    ref.read(commentViewModelProvider).myCommentList(userId: userId);
+    //ref.read(questionViewModelProvider).fetchQuestions(category: category, userId: userId);
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = ref.watch(questionViewModelProvider);
+    final viewModel = ref.watch(commentViewModelProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text("나의 게시글"),
+        title: Text("나의 댓글"),
         backgroundColor: Colors.blue[50],
         elevation: 0,
       ),
-      body: _buildQuestionList(viewModel),
+      body: _buildCommentList(viewModel),
     );
   }
   @override
-  Widget _buildQuestionList(QuestionViewModel viewModel) {
-    if (viewModel.questions.isEmpty) {
+  Widget _buildCommentList(CommentViewModel viewModel) {
+    if (viewModel.comments.isEmpty) {
       return Center(
         child: Text(
-          '아직 등록된 게시글이 없습니다.',
+          '아직 등록한 댓글이 없습니다.'
+              '댓글을 달아 보세요!',
           style: TextStyle(
             fontSize: 16.0,
             color: Colors.grey,
@@ -56,19 +63,19 @@ class _MyBoardListScreenState extends ConsumerState<MyBoardListScreen> {
     } else {
       return ListView.separated(
         padding: const EdgeInsets.all(16.0),
-        itemCount: viewModel.questions.length,
+        itemCount: viewModel.comments.length,
         separatorBuilder: (context, index) => const SizedBox(height: 16.0),
         itemBuilder: (context, index) {
-          final question = viewModel.questions[index];
+          final comment = viewModel.comments[index];
           return Container(
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BoardDetailScreen(question: question,   isMyPost: true,),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => BoardDetailScreen(question: comment),
+                //   ),
+                // );
               },
               child: Container(
                 width: MediaQuery.of(context).size.width - 32.0,
@@ -88,16 +95,9 @@ class _MyBoardListScreenState extends ConsumerState<MyBoardListScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      question.title,
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     const SizedBox(height: 8.0),
                     Text(
-                      question.content,
+                      comment.content,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(

@@ -2,8 +2,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/question.dart';
 class BoardViewModel extends ChangeNotifier {
   String? baseUrl = dotenv.env['BASE_URL'];
+
+  Question? _question;
+
+  Question? get question => _question;
+
+  void setQuestion(Question? value) {
+    _question = value;
+    print(_question);
+    notifyListeners();
+  }
 
   String _title = '';
   String _selectedSymptom = '머리';
@@ -42,6 +53,8 @@ class BoardViewModel extends ChangeNotifier {
   List<String> get genders => _genders;
 
   void setTitle(String value) {
+    print("여기");
+    print(value);
     _title = value;
     notifyListeners(); //리렌더링 하는 함수
   }
@@ -95,6 +108,7 @@ class BoardViewModel extends ChangeNotifier {
     _showPersonalDataFields = show;
     notifyListeners();
   }
+
   Future<void> submitForm() async {
     final url = Uri.parse('$baseUrl/api/v1/question/enroll');
     final body = jsonEncode({
