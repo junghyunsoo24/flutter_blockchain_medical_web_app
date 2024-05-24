@@ -7,6 +7,8 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_de
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/board_entire_view_model.dart';
 
+import 'comment_insert_view.dart';
+
 final questionViewModelProvider = ChangeNotifierProvider((ref) => QuestionViewModel(QuestionRepository()));
 
 class BoardListScreen extends ConsumerStatefulWidget {
