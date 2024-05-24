@@ -7,6 +7,8 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_de
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/board_entire_view_model.dart';
 
+import '../../login/view/login_screen.dart';
+
 final questionViewModelProvider = ChangeNotifierProvider((ref) => QuestionViewModel(QuestionRepository()));
 
 class MyBoardListScreen extends ConsumerStatefulWidget {
@@ -22,7 +24,7 @@ class _MyBoardListScreenState extends ConsumerState<MyBoardListScreen> {
   @override
   void initState() {
     super.initState();
-    _myBoardList("string");
+    _myBoardList(ref.read(userInfoProvider).userId);
   }
 
   void _myBoardList(String userId) {

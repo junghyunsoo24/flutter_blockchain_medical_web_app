@@ -5,6 +5,7 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/boa
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../login/view/login_screen.dart';
 import '../model/question.dart';
 final boardViewModelProvider = ChangeNotifierProvider((ref) => BoardViewModel());
 
@@ -17,6 +18,7 @@ class BoardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     print(question);
     final viewModel = ref.watch(boardViewModelProvider);
+    String userId = ref.read(userInfoProvider).userId;
 
     void _showSuccessSnackBar() {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -170,7 +172,7 @@ class BoardScreen extends ConsumerWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    viewModel.submitForm().then((_) {
+                    viewModel.submitForm(userId).then((_) {
                       _showSuccessSnackBar();
                       _navigateToBoardListScreen();
                     }).catchError((error) {

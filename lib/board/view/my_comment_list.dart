@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/question.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/repository/board_repository.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/repository/comment_repository.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_category_list_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_detail_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/board_entire_view_model.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/comment_view_model.dart';
+
+import '../../login/view/login_screen.dart';
 
 final commentViewModelProvider = ChangeNotifierProvider((ref) => CommentViewModel(CommentRepository()));
 
@@ -24,15 +20,12 @@ class _MyCommentListScreenState extends ConsumerState<MyCommentList> {
   @override
   void initState() {
     super.initState();
-    _myCommentList("string");
+    _myCommentList(ref.read(userInfoProvider).userId);
     //print('Received category: ${widget.category}');
   }
 
   void _myCommentList(String userId) {
-    //final userId = userId;
-    //final userId = 'patientId';
     ref.read(commentViewModelProvider).myCommentList(userId: userId);
-    //ref.read(questionViewModelProvider).fetchQuestions(category: category, userId: userId);
   }
 
   @override
