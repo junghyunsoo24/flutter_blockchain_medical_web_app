@@ -21,10 +21,12 @@ class CommentViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> addComment(int questionId, String content) async {
+  Future<void> addComment(int questionId, String content, String userId) async {
     print(questionId);
+    print("userId잘 넘어왔나 보자");
+    print(userId);
     try {
-      final newComment = await _commentRepository.addComment(questionId, content);
+      final newComment = await _commentRepository.addComment(questionId, content, userId);
       //_comments.add(newComment);
       notifyListeners();
     } catch (e) {
@@ -46,6 +48,8 @@ class CommentViewModel extends ChangeNotifier {
 
   Future<void> myCommentList( {String? userId}) async {
     try {
+      print("유저 아이디 출력해보자.");
+      print(userId);
       _comments = await _commentRepository.myCommentList(userId: userId);
       notifyListeners();
     } catch (e) {

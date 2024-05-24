@@ -27,13 +27,13 @@ class CommentRepository {
 
 
 
-  Future<void> addComment(int questionId, String content) async {
+  Future<void> addComment(int questionId, String content, String userId) async {
     final uri = Uri.parse('$baseUrl/api/v1/opinion/enroll');
     final response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'userId': "string",
+        'userId': userId,
         'questionId': questionId.toString(),
         'content': content,
       }),

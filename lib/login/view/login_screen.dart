@@ -15,6 +15,9 @@ import '../../main.dart';
 import '../component/custom_text_form.field.dart';
 import 'package:http/http.dart' as http;
 
+import '../model/user_info.dart';
+final userInfoProvider = ChangeNotifierProvider((ref) => UserInfo());
+
 class LoginScreen extends ConsumerStatefulWidget {
   static String get routeName => 'login';
 
@@ -24,10 +27,12 @@ class LoginScreen extends ConsumerStatefulWidget {
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
+
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   String username = '';
   String password = '';
   bool isMobile = true;
+
 
   Future<bool> doctorLogin() async {
     final url = Uri.parse('http://$webIp/api/v1/sign-in');
@@ -41,6 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final responseBody = jsonDecode(response.body);
       if (responseBody['result'] == 'success') {
         print('의료진 로그인 성공!');
+        ref.read(userInfoProvider).setUserId(username);
         return true;
       } else {
         print('의료진 로그인 실패..');
@@ -64,6 +70,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final responseBody = jsonDecode(response.body);
       if (responseBody['result'] == 'success') {
         print('환자 로그인 성공!');
+        ref.read(userInfoProvider).setUserId(username);
         return true;
       } else {
         print('환자 로그인 실패..');

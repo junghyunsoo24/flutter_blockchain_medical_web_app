@@ -1,11 +1,15 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 
+import '../../login/view/login_screen.dart';
 import '../repository/comment_repository.dart';
 import '../viewModel/comment_view_model.dart';
 import 'comment_view.dart';
 
-class CommentInsertView extends StatefulWidget {
+class CommentInsertView extends ConsumerStatefulWidget {
   final int questionId;
 
   const CommentInsertView({super.key, required this.questionId});
@@ -14,7 +18,7 @@ class CommentInsertView extends StatefulWidget {
   _CommentInsertViewState createState() => _CommentInsertViewState();
 }
 
-class _CommentInsertViewState extends State<CommentInsertView> {
+class _CommentInsertViewState extends ConsumerState<CommentInsertView> {
   final TextEditingController _commentController = TextEditingController();
   late final CommentViewModel _commentViewModel;
 
@@ -24,7 +28,6 @@ class _CommentInsertViewState extends State<CommentInsertView> {
     _commentViewModel = CommentViewModel(CommentRepository());
     _commentViewModel.fetchComments(widget.questionId);
   }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,7 +56,7 @@ class _CommentInsertViewState extends State<CommentInsertView> {
               onPressed: () {
                 final content = _commentController.text.trim();
                 if (content.isNotEmpty) {
-                  _commentViewModel.addComment(widget.questionId, content);
+                  _commentViewModel.addComment(widget.questionId, content, ref.read(userInfoProvider).userId );
                   _commentController.clear();
                 }
               },
