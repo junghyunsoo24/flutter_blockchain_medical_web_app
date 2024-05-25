@@ -28,8 +28,11 @@ class _CommentInsertViewState extends ConsumerState<CommentInsertView> {
     _commentViewModel = CommentViewModel(CommentRepository());
     _commentViewModel.fetchComments(widget.questionId);
   }
+
   @override
   Widget build(BuildContext context) {
+    final userInfo = ref.watch(userInfoProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -56,7 +59,7 @@ class _CommentInsertViewState extends ConsumerState<CommentInsertView> {
               onPressed: () {
                 final content = _commentController.text.trim();
                 if (content.isNotEmpty) {
-                  _commentViewModel.addComment(widget.questionId, content, ref.read(userInfoProvider).userId );
+                  _commentViewModel.addComment(widget.questionId, content, userInfo.userId);
                   _commentController.clear();
                 }
               },
@@ -73,26 +76,53 @@ class _CommentInsertViewState extends ConsumerState<CommentInsertView> {
               itemCount: _commentViewModel.comments.length,
               itemBuilder: (context, index) {
                 final comment = _commentViewModel.comments[index];
-                return Dismissible(
-                  key: Key(comment.id.toString()),
-                  direction: DismissDirection.endToStart,
-                  background: Container(
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 16.0),
-                    color: Colors.red,
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
+                final isOwnComment = comment.userId == userInfo.userId;
+                return Stack(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.comment),
+                      title: Text(comment.content),
+                      subtitle: Text('작성자: ${comment.userId}'),
                     ),
-                  ),
-                  onDismissed: (direction) {
-                    _commentViewModel.deleteComment(comment.id);
-                  },
-                  child: ListTile(
-                    leading: const Icon(Icons.comment),
-                    title: Text(comment.content),
-                    subtitle: Text('작성자: ${comment.userId}'),
-                  ),
+                    if (isOwnComment)
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('댓글 삭제'),
+                                content: Text('댓글을 삭제하시겠습니까?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('취소'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      _commentViewModel.deleteComment(comment.id);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('삭제'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.more_vert,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 );
               },
             );
@@ -102,4 +132,3 @@ class _CommentInsertViewState extends ConsumerState<CommentInsertView> {
     );
   }
 }
-
