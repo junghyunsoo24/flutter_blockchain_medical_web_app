@@ -6,57 +6,44 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_ca
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_detail_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/board_entire_view_model.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/emergency/repository/emergency_repository.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/emergency/view/emergency_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/emergency/viewModel/emergency_view_model.dart';
 
 import '../../login/model/user_info.dart';
 import '../../login/view/login_screen.dart';
-import 'comment_insert_view.dart';
+import '../viewModel/emergency_entire_view_model.dart';
 
-final questionViewModelProvider =
-    ChangeNotifierProvider((ref) => QuestionViewModel(QuestionRepository()));
+final emergencyViewModelProvider =
+ChangeNotifierProvider((ref) => EmergencyViewModel(EmergencyRepository()));
 
-class BoardListScreen extends ConsumerStatefulWidget {
-  final String category;
+class EmergencyListScreen extends ConsumerStatefulWidget {
 
-  const BoardListScreen({Key? key, required this.category}) : super(key: key);
+  const EmergencyListScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<BoardListScreen> createState() => _BoardListScreenState();
+  ConsumerState<EmergencyListScreen> createState() => _EmergencyListScreenState();
 }
 
-class _BoardListScreenState extends ConsumerState<BoardListScreen> {
-  String getCategoryDisplayName(String category) {
-    switch (category) {
-      case 'ENTIRE':
-        return '전체';
-      case 'ElDERS':
-        return '노약자';
-      case 'MATERNITY':
-        return '임산부';
-      default:
-        return category;
-    }
-  }
+class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
 
   @override
   void initState() {
     super.initState();
-    _fetchQuestions(widget.category);
-    print('Received category: ${widget.category}');
+    _fetchEmergency();
   }
 
-  void _fetchQuestions(String selectedCategory) {
-    final category = selectedCategory;
-    ref.read(questionViewModelProvider).fetchQuestions(category: category);
+  void _fetchEmergency() {
+    ref.read(emergencyViewModelProvider).fetchQuestions();
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = ref.watch(questionViewModelProvider);
+    final viewModel = ref.watch(emergencyViewModelProvider);
     final userInfo = ref.watch(userInfoProvider);
-    final categoryTitle = '${getCategoryDisplayName(widget.category)} 게시판';
     return Scaffold(
       appBar: AppBar(
-        title: Text(categoryTitle),
+        title: Text('긴급 데이터'),
         backgroundColor: Colors.blue[50],
         elevation: 0,
       ),
@@ -73,7 +60,7 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
             ),
           ),
           Expanded(
-            child: _buildQuestionList(viewModel, userInfo),
+            child: _buildEmergencyList(viewModel, userInfo),
           ),
         ],
       ),
@@ -81,7 +68,7 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BoardScreen()),
+            MaterialPageRoute(builder: (context) => EmergencyScreen()),
           );
         },
         backgroundColor: Colors.blue[50],
@@ -91,8 +78,8 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
   }
 
   @override
-  Widget _buildQuestionList(QuestionViewModel viewModel, UserInfo userInfo) {
-    if (viewModel.questions.isEmpty) {
+  Widget _buildEmergencyList(EmergencyViewModel viewModel, UserInfo userInfo) {
+    if (viewModel.emergency.isEmpty) {
       return Center(
         child: Text(
           '아직 등록된 게시글이 없습니다.'
@@ -106,23 +93,23 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
     } else {
       return ListView.separated(
         padding: const EdgeInsets.all(16.0),
-        itemCount: viewModel.questions.length,
+        itemCount: viewModel.emergency.length,
         separatorBuilder: (context, index) => const SizedBox(height: 16.0),
         itemBuilder: (context, index) {
-          final question = viewModel.questions[index];
-          final isOwnQuestion = question.uid == userInfo.userId;
+          final emergency = viewModel.emergency[index];
+          final isOwnEmergency = emergency.uid == userInfo.userId;
           return Stack(
             children: [
               GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          BoardDetailScreen(question: question),
-                    ),
-                  );
-                },
+                // onTap: () {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) =>
+                //           BoardDetailScreen(question: question),
+                //     ),
+                //   );
+                // },
                 child: Container(
                   width: MediaQuery
                       .of(context)
@@ -148,14 +135,14 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            question.title,
+                            emergency.content,
                             style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            '작성자: ${question.uid}',
+                            '작성자: ${emergency.uid}',
                             style: const TextStyle(
                               fontSize: 12.0,
                               color: Colors.grey,
@@ -163,21 +150,11 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        question.content,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.grey,
-                        ),
-                      ),
                     ],
                   ),
                 ),
               ),
-              if (isOwnQuestion)
+              if (isOwnEmergency)
                 Positioned(
                   top: 0,
                   right: 0,
@@ -196,14 +173,14 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
                                   },
                                   child: Text('취소'),
                                 ),
-                                TextButton(
-                                  onPressed: () {
-                                    ref.read(questionViewModelProvider)
-                                        .deleteQuestion(question);
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('삭제'),
-                                ),
+                                // TextButton(
+                                //   onPressed: () {
+                                //     ref.read(emergencyViewModelProvider)
+                                //         .deleteQuestion(question);
+                                //     Navigator.of(context).pop();
+                                //   },
+                                //   child: Text('삭제'),
+                                // ),
                               ],
                             ),
                       );
