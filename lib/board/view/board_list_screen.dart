@@ -28,7 +28,7 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
     switch (category) {
       case 'ENTIRE':
         return '전체';
-      case 'ElDERS':
+      case 'ELDERS':
         return '노약자';
       case 'MATERNITY':
         return '임산부';

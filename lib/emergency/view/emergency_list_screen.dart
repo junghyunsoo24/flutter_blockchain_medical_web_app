@@ -30,11 +30,11 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchEmergency();
+    _fetchEmergency(ref.read(userInfoProvider).userId);
   }
 
-  void _fetchEmergency() {
-    ref.read(emergencyViewModelProvider).fetchQuestions();
+  void _fetchEmergency(String userId) {
+    ref.read(emergencyViewModelProvider).fetchEmergency(userId);
   }
 
   @override

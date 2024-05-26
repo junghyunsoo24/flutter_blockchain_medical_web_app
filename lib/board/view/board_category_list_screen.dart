@@ -61,7 +61,7 @@ class BoardCategoryListScreen extends ConsumerWidget {
                 height: 60,
                 child: GestureDetector(
                   onTap: () {
-                    _navigateToBoardEntireScreen(context, 'ElDERS');
+                    _navigateToBoardEntireScreen(context, 'ELDERS');
                   },
                   child: Container(
                     decoration: BoxDecoration(

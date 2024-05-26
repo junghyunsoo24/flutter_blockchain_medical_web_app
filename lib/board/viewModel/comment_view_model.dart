@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/question.dart';
 
 import '../model/comment.dart';
 import '../repository/comment_repository.dart';
@@ -6,10 +7,11 @@ import '../repository/comment_repository.dart';
 class CommentViewModel extends ChangeNotifier {
   final CommentRepository _commentRepository;
   List<Comments> _comments = [];
-
+  List<Question> _questions = [];
   CommentViewModel(this._commentRepository);
 
   List<Comments> get comments => _comments;
+  List<Question> get questions => _questions;
 
   Future<void> fetchComments(int questionId) async {
     try {
@@ -22,18 +24,30 @@ class CommentViewModel extends ChangeNotifier {
   }
 
   Future<void> addComment(int questionId, String content, String userId) async {
-    print(questionId);
-    print("userId잘 넘어왔나 보자");
-    print(userId);
     try {
       final newComment = await _commentRepository.addComment(questionId, content, userId);
-      //_comments.add(newComment);
-      notifyListeners();
+      _comments.add(newComment); // 새로운 댓글을 _comments 리스트에 추가
+      notifyListeners(); // 상태 변경 알림
     } catch (e) {
-      // Handle error
+      // 에러 처리
       print('Error adding comment: $e');
     }
   }
+
+
+  // Future<void> addComment(int questionId, String content, String userId) async {
+  //   print(questionId);
+  //   print("userId잘 넘어왔나 보자");
+  //   print(userId);
+  //   try {
+  //     final newComment = await _commentRepository.addComment(questionId, content, userId);
+  //     //_comments.add(newComment);
+  //     notifyListeners();
+  //   } catch (e) {
+  //     // Handle error
+  //     print('Error adding comment: $e');
+  //   }
+  // }
 
   Future<void> deleteComment(int commentId) async {
     try {
@@ -50,7 +64,7 @@ class CommentViewModel extends ChangeNotifier {
     try {
       print("유저 아이디 출력해보자.");
       print(userId);
-      _comments = await _commentRepository.myCommentList(userId: userId);
+      _questions = await _commentRepository.myCommentQuestionList(userId: userId);
       notifyListeners();
     } catch (e) {
       // Handle error

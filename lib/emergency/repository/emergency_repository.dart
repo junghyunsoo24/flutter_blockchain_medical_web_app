@@ -10,18 +10,24 @@ class EmergencyRepository {
   String? baseUrl = dotenv.env['BASE_URL'];
 
 
-  Future<List<Emergency>> fetchEmergency() async {
-    final uri = Uri.parse('$baseUrl/api/v1/question')
-        .replace(queryParameters: {
-    });
+  Future<List<Emergency>> fetchEmergency(String? userId) async {
+    final uri = Uri.parse('$baseUrl/api/v1/patient/get-my-urgent-data');
+
+    final response = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'id': userId,
+      }),
+    );
 
     print(uri);
-    final response = await http.get(uri);
+
     print(response.body);
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      final emergency = (data['questions'] as List)
-          .map((question) => Emergency.fromJson(question))
+      final emergency = (data as List)
+          .map((emergency) => Emergency.emergencyDataFromJson(emergency))
           .toList();
       return emergency;
     } else {

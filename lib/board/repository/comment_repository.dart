@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/comment.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/question.dart';
 
 class CommentRepository {
   String? baseUrl = dotenv.env['BASE_URL'];
@@ -24,10 +25,7 @@ class CommentRepository {
       throw Exception('Failed to fetch comments');
     }
   }
-
-
-
-  Future<void> addComment(int questionId, String content, String userId) async {
+  Future<Comments>  addComment(int questionId, String content, String userId) async {
     final uri = Uri.parse('$baseUrl/api/v1/opinion/enroll');
     final response = await http.post(
       uri,
@@ -38,18 +36,38 @@ class CommentRepository {
         'content': content,
       }),
     );
-    print(uri);
-    print(response.body);
+
     if (response.statusCode == 200) {
-      print("? 성공");
-      print('요청 성공: ${response.body}');
-      // final data = json.decode(utf8.decode(response.bodyBytes));
-      // print(data);
-      // return Comments.fromJson(data['comment']);
+      final responseData = json.decode(utf8.decode(response.bodyBytes));
+      final commentData = responseData['opinionDTO'];
+      return Comments.fromJson(commentData);
     } else {
       throw Exception('Failed to add comment');
     }
   }
+
+
+  // Future<void> addComment(int questionId, String content, String userId) async {
+  //   final uri = Uri.parse('$baseUrl/api/v1/opinion/enroll');
+  //   final response = await http.post(
+  //     uri,
+  //     headers: {'Content-Type': 'application/json'},
+  //     body: jsonEncode({
+  //       'userId': userId,
+  //       'questionId': questionId.toString(),
+  //       'content': content,
+  //     }),
+  //   );
+  //   print(uri);
+  //   print(response.body);
+  //   if (response.statusCode == 200) {
+  //     print("? 성공");
+  //     print('요청 성공: ${response.body}');
+  //
+  //   } else {
+  //     throw Exception('Failed to add comment');
+  //   }
+  // }
 
   Future<void> deleteComment(int commentId) async {
     final uri = Uri.parse('$baseUrl/api/test-0/opinion/$commentId');
@@ -61,10 +79,10 @@ class CommentRepository {
     }
   }
 
-  Future<List<Comments>> myCommentList({String? userId}) async {
-    final uri = Uri.parse('$baseUrl/api/test-1/opinions')
+  Future<List<Question>> myCommentQuestionList({String? userId}) async {
+    final uri = Uri.parse('$baseUrl/api/v1/question')
         .replace(queryParameters: {
-      'userId': userId,
+      'opinionUserId': userId,
     });
 
     print(uri);
@@ -72,8 +90,8 @@ class CommentRepository {
     print(response.body);
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      final opinions = (data['opinions'] as List)
-          .map((question) => Comments.fromJson(question))
+      final opinions = (data['questions'] as List)
+          .map((question) => Question.myCommentQuestionFromJson(question))
           .toList();
       return opinions;
     } else {

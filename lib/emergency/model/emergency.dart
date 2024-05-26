@@ -1,11 +1,10 @@
 class Emergency {
-  final int id;
-  final String uid;
+  final int? id;
+  final String? uid;
   final String content;
-
   Emergency({
-    required this.id,
-    required this.uid,
+    this.id,
+    this.uid,
     required this.content,
   });
 
@@ -17,4 +16,9 @@ class Emergency {
     );
   }
 
+  factory Emergency.emergencyDataFromJson(Map<String, dynamic> json) {
+    return Emergency(
+      content : json['myUrgentContent'],
+    );
+  }
 }

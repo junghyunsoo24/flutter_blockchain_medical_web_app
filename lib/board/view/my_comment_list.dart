@@ -4,6 +4,7 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/board/repository/co
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/viewModel/comment_view_model.dart';
 
 import '../../login/view/login_screen.dart';
+import 'board_detail_screen.dart';
 
 final commentViewModelProvider = ChangeNotifierProvider((ref) => CommentViewModel(CommentRepository()));
 
@@ -33,7 +34,7 @@ class _MyCommentListScreenState extends ConsumerState<MyCommentList> {
     final viewModel = ref.watch(commentViewModelProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text("나의 댓글"),
+        title: Text("내가 댓글 단 게시글"),
         backgroundColor: Colors.blue[50],
         elevation: 0,
       ),
@@ -42,7 +43,7 @@ class _MyCommentListScreenState extends ConsumerState<MyCommentList> {
   }
   @override
   Widget _buildCommentList(CommentViewModel viewModel) {
-    if (viewModel.comments.isEmpty) {
+    if (viewModel.questions.isEmpty) {
       return Center(
         child: Text(
           '아직 등록한 댓글이 없습니다.'
@@ -56,19 +57,19 @@ class _MyCommentListScreenState extends ConsumerState<MyCommentList> {
     } else {
       return ListView.separated(
         padding: const EdgeInsets.all(16.0),
-        itemCount: viewModel.comments.length,
+        itemCount: viewModel.questions.length,
         separatorBuilder: (context, index) => const SizedBox(height: 16.0),
         itemBuilder: (context, index) {
-          final comment = viewModel.comments[index];
+          final comment = viewModel.questions[index];
           return Container(
             child: GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => BoardDetailScreen(question: comment),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BoardDetailScreen(question: comment),
+                  ),
+                );
               },
               child: Container(
                 width: MediaQuery.of(context).size.width - 32.0,
@@ -90,7 +91,17 @@ class _MyCommentListScreenState extends ConsumerState<MyCommentList> {
                   children: [
                     const SizedBox(height: 8.0),
                     Text(
-                      comment.content,
+                      '제목 : ${comment.title}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      '내용 : ${comment.content}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
