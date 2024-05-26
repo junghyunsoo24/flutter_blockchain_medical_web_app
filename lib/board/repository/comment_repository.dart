@@ -8,7 +8,7 @@ class CommentRepository {
   String? baseUrl = dotenv.env['BASE_URL'];
 
   Future<List<Comments>> fetchComments(int questionId) async {
-    final uri = Uri.parse('$baseUrl/api/test-1/opinions')
+    final uri = Uri.parse('$baseUrl/opinions')
         .replace(queryParameters: {
       'questionId': questionId.toString(),
     });
@@ -26,7 +26,7 @@ class CommentRepository {
     }
   }
   Future<Comments>  addComment(int questionId, String content, String userId) async {
-    final uri = Uri.parse('$baseUrl/api/v1/opinion/enroll');
+    final uri = Uri.parse('$baseUrl/opinion/enroll');
     final response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
@@ -70,7 +70,7 @@ class CommentRepository {
   // }
 
   Future<void> deleteComment(int commentId) async {
-    final uri = Uri.parse('$baseUrl/api/test-0/opinion/$commentId');
+    final uri = Uri.parse('$baseUrl/opinion/$commentId');
     final response = await http.delete(uri);
     if (response.statusCode == 200) {
       print('Comment deleted successfully');
@@ -80,7 +80,7 @@ class CommentRepository {
   }
 
   Future<List<Question>> myCommentQuestionList({String? userId}) async {
-    final uri = Uri.parse('$baseUrl/api/v1/question')
+    final uri = Uri.parse('$baseUrl/question')
         .replace(queryParameters: {
       'opinionUserId': userId,
     });

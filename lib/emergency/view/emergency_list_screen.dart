@@ -12,6 +12,7 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/emergency/viewModel
 
 import '../../login/model/user_info.dart';
 import '../../login/view/login_screen.dart';
+import '../model/emergency.dart';
 import '../viewModel/emergency_entire_view_model.dart';
 
 final emergencyViewModelProvider =
@@ -26,14 +27,13 @@ class EmergencyListScreen extends ConsumerStatefulWidget {
 }
 
 class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
-
   @override
   void initState() {
     super.initState();
     _fetchEmergency(ref.read(userInfoProvider).userId);
   }
 
-  void _fetchEmergency(String userId) {
+  void _fetchEmergency(String? userId) {
     ref.read(emergencyViewModelProvider).fetchEmergency(userId);
   }
 
@@ -41,6 +41,7 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
   Widget build(BuildContext context) {
     final viewModel = ref.watch(emergencyViewModelProvider);
     final userInfo = ref.watch(userInfoProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('긴급 데이터'),
@@ -51,14 +52,28 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-            child: Text(
-              '우측에 위치한 점 아이콘을 누르면, 삭제하실 수 있습니다.',
-              style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.grey,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '회원님의 특이사항을 저장해보세요.',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 4.0),
+                Text(
+                  '긴급 상황 시 중요한 데이터가 됩니다.',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
           ),
+
           Expanded(
             child: _buildEmergencyList(viewModel, userInfo),
           ),
@@ -77,127 +92,119 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
     );
   }
 
-  @override
   Widget _buildEmergencyList(EmergencyViewModel viewModel, UserInfo userInfo) {
-    if (viewModel.emergency.isEmpty) {
+    if (viewModel.emergency == null || viewModel.emergency!.content.isEmpty) {
       return Center(
-        child: Text(
-          '아직 등록된 게시글이 없습니다.'
-              '질문을 등록해보세요!',
-          style: TextStyle(
-            fontSize: 16.0,
-            color: Colors.grey,
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              '아직 등록된 데이터가 없습니다.',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.grey,
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              '긴급데이터를 등록해보세요!',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.grey,
+              ),
+            ),
+          ],
         ),
       );
     } else {
       return ListView.separated(
         padding: const EdgeInsets.all(16.0),
-        itemCount: viewModel.emergency.length,
+        itemCount: 1, // 단일 Emergency 항목만 표시
         separatorBuilder: (context, index) => const SizedBox(height: 16.0),
         itemBuilder: (context, index) {
-          final emergency = viewModel.emergency[index];
-          final isOwnEmergency = emergency.uid == userInfo.userId;
-          return Stack(
-            children: [
-              GestureDetector(
-                // onTap: () {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) =>
-                //           BoardDetailScreen(question: question),
-                //     ),
-                //   );
-                // },
-                child: Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width - 32.0,
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            emergency.content,
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            '작성자: ${emergency.uid}',
-                            style: const TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              if (isOwnEmergency)
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) =>
-                            AlertDialog(
-                              title: Text('게시물 삭제'),
-                              content: Text('게시물을 삭제하시겠습니까?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('취소'),
-                                ),
-                                // TextButton(
-                                //   onPressed: () {
-                                //     ref.read(emergencyViewModelProvider)
-                                //         .deleteQuestion(question);
-                                //     Navigator.of(context).pop();
-                                //   },
-                                //   child: Text('삭제'),
-                                // ),
-                              ],
-                            ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.more_vert,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          );
+          final emergency = viewModel.emergency!;
+          return _buildEmergencyItem(emergency, userInfo);
         },
       );
     }
+  }
+
+
+  Widget _buildEmergencyItem(Emergency emergency, UserInfo userInfo) {
+    return Stack(
+      children: [
+        GestureDetector(
+          child: Container(
+            width: MediaQuery.of(context).size.width - 32.0,
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  emergency.content,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                _showDeleteDialog(emergency, userInfo);
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.more_vert,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  void _showDeleteDialog(Emergency emergency, UserInfo userInfo) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('게시물 삭제'),
+        content: const Text('게시물을 삭제하시겠습니까?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('취소'),
+          ),
+          TextButton(
+            onPressed: () {
+              ref.read(emergencyViewModelProvider).deleteMyEmergencyData(ref.read(userInfoProvider).userId);
+              Navigator.of(context).pop();
+            },
+            child: const Text('삭제'),
+          ),
+        ],
+      ),
+    );
   }
 }

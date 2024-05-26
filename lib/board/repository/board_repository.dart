@@ -10,7 +10,7 @@ class QuestionRepository {
 
 
   Future<List<Question>> fetchQuestions({String? category}) async {
-    final uri = Uri.parse('$baseUrl/api/v1/question')
+    final uri = Uri.parse('$baseUrl/question')
         .replace(queryParameters: {
       'category': category,
     });
@@ -30,7 +30,7 @@ class QuestionRepository {
   }
 
   Future<void> deleteQuestion(int questionId) async {
-    final uri = Uri.parse('$baseUrl/api/test-0/question/$questionId');
+    final uri = Uri.parse('$baseUrl/question/$questionId');
     final response = await http.delete(uri);
     if (response.statusCode != 200) {
       throw Exception('Failed to delete question');
@@ -38,7 +38,7 @@ class QuestionRepository {
   }
 
   Future<List<Question>> myBoardList({String? userId}) async {
-    final uri = Uri.parse('$baseUrl/api/v1/question')
+    final uri = Uri.parse('$baseUrl/question')
         .replace(queryParameters: {
       'userId': userId,
     });
@@ -69,7 +69,7 @@ class QuestionRepository {
     print(title);
     print(symptom);
     print(content);
-    final uri = Uri.parse('$baseUrl/api/test-0/question');
+    final uri = Uri.parse('$baseUrl/question');
     final body = jsonEncode({
       'questionId': questionId,
       'title': title,
@@ -88,6 +88,8 @@ class QuestionRepository {
       throw Exception('Failed to update question');
     }
   }
+
+
 
 
 // Future<List<Question>> fetchQuestions() async {

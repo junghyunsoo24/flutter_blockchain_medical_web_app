@@ -32,7 +32,7 @@ class BoardViewModel extends ChangeNotifier {
   final List<String> _bodyParts = ['HAND', 'WRIST', 'FOOT', 'ANKLE', 'NECK', 'THROAT',
   'HEAD', 'ARM', 'HEART','WAIST', 'EYE', 'TEETH', 'KNEE', 'EAR', 'SKIN','STOMACH', 'THIGH',
   'CALF', 'BACK'];
-  final List<String> _categories = ['ENTIRE', 'MATERNITY', 'ElDERS'];
+  final List<String> _categories = ['ENTIRE', 'MATERNITY', 'ELDERS'];
   final List<String> _genders = ['MALE', 'FEMALE'];
 
   String get title => _title;
@@ -109,8 +109,8 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> submitForm(String userId) async {
-    final url = Uri.parse('$baseUrl/api/v1/question/enroll');
+  Future<void> submitForm(String userId, BuildContext context) async {
+    final url = Uri.parse('$baseUrl/question/enroll');
     final body = jsonEncode({
       'userId': userId,
       'bodyParts': [_selectedBodyPart.toUpperCase()],
@@ -132,10 +132,10 @@ class BoardViewModel extends ChangeNotifier {
     print(body);
     try {
       final response = await http.post(url, headers: {'Content-Type': 'application/json'}, body: body);
-      if (response.statusCode == 200) {
-        // 요청 성공 시 처리
-        print("? 성공");
+      final responseData = jsonDecode(response.body);
+      if (responseData['result'] == 'success') {
         print('요청 성공: ${response.body}');
+        _showSuccessSnackBar(context);
       } else {
         // 요청 실패 시 처리
         print('요청 실패: ${response.statusCode} - ${response.body}');
@@ -144,5 +144,14 @@ class BoardViewModel extends ChangeNotifier {
       // 예외 처리
       print('예외 발생: $e');
     }
+  }
+
+  void _showSuccessSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('긴급데이터 등록이 완료되었습니다.'),
+        duration: Duration(seconds: 3),
+      ),
+    );
   }
 }
