@@ -2,6 +2,7 @@ class Emergency {
   final int? id;
   final String? uid;
   final String content;
+  int get length => 1;
   Emergency({
     this.id,
     this.uid,
@@ -16,9 +17,9 @@ class Emergency {
     );
   }
 
-  factory Emergency.emergencyDataFromJson(Map<String, dynamic> json) {
+  factory Emergency.myUrgentContentFromJson(Map<String, dynamic> json) {
     return Emergency(
-      content : json['myUrgentContent'],
+      content: json['myUrgentContent'],
     );
   }
 }
