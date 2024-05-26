@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/question.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_edit_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
 
 import 'comment_insert_view.dart';
 import 'comment_view.dart';
 
 class BoardDetailScreen extends StatelessWidget {
   final Question question;
+  final bool? isMyPost;
 
-  const BoardDetailScreen({super.key, required this.question});
+  const BoardDetailScreen({super.key, required this.question, this.isMyPost,});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,21 @@ class BoardDetailScreen extends StatelessWidget {
         backgroundColor: Colors.blue[50],
         elevation: 0,
         actions: [
+          if (isMyPost == true) // Check if isMyPost is true
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: IconButton(
+                icon: Icon(Icons.edit), // Use the appropriate icon for "수정"
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BoardEditScreen(question: question),
+                    ),
+                  );
+                },
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: Text(

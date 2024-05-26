@@ -3,6 +3,7 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/deliver/view/deliver_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/emergency/view/emergency_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/prescription_history_list.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_list_screen.dart';
@@ -157,10 +158,8 @@ class HomeScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-
                   ),
                 ),
-
                 CarouselSlider(
                   options: CarouselOptions(
                     height: 150,
@@ -168,6 +167,48 @@ class HomeScreen extends ConsumerWidget {
                     enableInfiniteScroll: false,
                   ),
                   items: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EmergencyScreen()),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.lightBlueAccent),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        margin: EdgeInsets.all(5.0),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '긴급데이터',
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Text(
+                                    '비상상황 시 의료진이 열람할 수 있습니다.',
+                                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.emergency_share, color: Colors.red, size: 50,),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                     // 첫 번째 카루셀 영역
                     InkWell(
                       onTap: () {
@@ -181,26 +222,28 @@ class HomeScreen extends ConsumerWidget {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.lightBlueAccent),
                           borderRadius: BorderRadius.circular(20),
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: Colors.white.withOpacity(0.5), // 흰색 그림자
-                          //     spreadRadius: 1,
-                          //     blurRadius: 10,
-                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                          //   ),
-                          //   BoxShadow(
-                          //     color: Colors.blue.withOpacity(0.5), // 파란색 그림자
-                          //     spreadRadius: 1,
-                          //     blurRadius: 40,
-                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                          //   ),
-                          //],
                         ),
                         margin: EdgeInsets.all(5.0),
                         child: Stack(
                           children: [
+                            // Center(
+                            //   child: Text('추가증상', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                            // ),
                             Center(
-                              child: Text('추가증상 등록', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '추가 증상',
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Text(
+                                    '회원님의 증상을 기록해주세요.',
+                                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
                             ),
                             Align(
                               alignment: Alignment.bottomRight,
@@ -211,7 +254,6 @@ class HomeScreen extends ConsumerWidget {
                             )
                           ],
                         ),
-
                       ),
                     ),
                     InkWell(
@@ -226,26 +268,28 @@ class HomeScreen extends ConsumerWidget {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.lightBlueAccent),
                           borderRadius: BorderRadius.circular(20),
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: Colors.white.withOpacity(0.5), // 흰색 그림자
-                          //     spreadRadius: 1,
-                          //     blurRadius: 10,
-                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                          //   ),
-                          //   BoxShadow(
-                          //     color: Colors.blue.withOpacity(0.5), // 파란색 그림자
-                          //     spreadRadius: 1,
-                          //     blurRadius: 40,
-                          //     offset: Offset(0, 3), // 그림자 위치 (수직으로 아래로)
-                          //   ),
-                          // ],
                         ),
                         margin: EdgeInsets.all(5.0),
                         child: Stack(
                           children: [
+                            // Center(
+                            //   child: Text('개인구매 의약품', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                            // ),
                             Center(
-                              child: Text('개인구매 의약품 등록', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '개인구매 의약품',
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Text(
+                                    '처방받은 의약품 외 약국에서 별도로 구매한 의약품을 등록해주세요.',
+                                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
                             ),
                             Align(
                               alignment: Alignment.bottomRight,
@@ -256,7 +300,6 @@ class HomeScreen extends ConsumerWidget {
                             )
                           ],
                         ),
-
                       ),
                     ),
                     InkWell(
@@ -271,14 +314,28 @@ class HomeScreen extends ConsumerWidget {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.lightBlueAccent),
                           borderRadius: BorderRadius.circular(20),
-
-
                         ),
                         margin: EdgeInsets.all(5.0),
                         child: Stack(
                           children: [
+                            // Center(
+                            //   child: Text('건강검진', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                            // ),
                             Center(
-                              child: Text('건강검진 목록', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '건강검진',
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Text(
+                                    '건강검진 기록을 보여드립니다.',
+                                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
                             ),
                             Align(
                               alignment: Alignment.bottomRight,
@@ -289,7 +346,6 @@ class HomeScreen extends ConsumerWidget {
                             )
                           ],
                         ),
-
                       ),
                     ),
                   ],

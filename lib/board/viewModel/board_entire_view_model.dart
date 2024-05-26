@@ -44,6 +44,31 @@ class QuestionViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> updateQuestion(
+      int questionId,
+      String title,
+      String symptom,
+      String content,
+      ) async {
+    try {
+      print(questionId);
+      print(title);
+      print(symptom);
+      print(content);
+      await _repository.updateQuestion(
+        questionId,
+        title,
+        symptom,
+        content,
+      );
+      // 질문 목록 업데이트
+      await fetchQuestions();
+    } catch (e) {
+      // Handle error
+      print('Error updating question: $e');
+    }
+  }
+
   // final QuestionRepository _repository;
   // List<Question> _questions = [];
   //
