@@ -14,10 +14,10 @@ class EmergencyViewModel extends ChangeNotifier {
 
   List<Emergency> get emergency => _emergency;
 
-  Future<void> fetchQuestions() async {
+  Future<void> fetchEmergency(String? userId) async {
     try {
       print("실행?");
-      _emergency = await _repository.fetchEmergency();
+      _emergency = await _repository.fetchEmergency(userId);
       notifyListeners();
     } catch (e) {
       // Handle error

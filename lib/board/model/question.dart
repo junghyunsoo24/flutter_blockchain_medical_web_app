@@ -32,4 +32,18 @@ class Question {
     );
   }
 
+  factory Question.myCommentQuestionFromJson(Map<String, dynamic> json) {
+    return Question(
+      id: json['id'],
+      uid: json['uid'],
+      title: json['title'],
+      category: json['category'],
+      symptom: json['symptom'],
+      content: json['content'],
+      bodyParts: List<String>.from(json['bodyParts']),
+      personalData: json['personalData'],
+    );
+  }
+
+
 }

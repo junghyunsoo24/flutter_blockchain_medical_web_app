@@ -9,6 +9,8 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/pre
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_list_screen.dart';
 
+import '../../emergency/view/emergency_list_screen.dart';
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -171,7 +173,7 @@ class HomeScreen extends ConsumerWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => EmergencyScreen()),
+                          MaterialPageRoute(builder: (context) => EmergencyListScreen()),
                         );
                       },
                       child: Container(
@@ -192,7 +194,7 @@ class HomeScreen extends ConsumerWidget {
                                   ),
                                   SizedBox(height: 8.0),
                                   Text(
-                                    '비상상황 시 의료진이 열람할 수 있습니다.',
+                                    '비상상황 시 의료진이 열람하는 데이터입니다.',
                                     style: TextStyle(fontSize: 12, color: Colors.grey),
                                   ),
                                 ],
