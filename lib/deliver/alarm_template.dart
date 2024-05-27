@@ -3,9 +3,9 @@ const String alarmtTemplate = r'''
   <visual>
     <binding template="ToastGeneric">
       <text>새로운 환자 정보</text>
-      <text>추가 증상: %(추가 증상)</text>
-      <text>추가 의약품: %(추가 의약품)</text>
-      <text>상세 내용: %(상세 내용)</text>
+      <text>추가 증상: medicine</text> 
+      <text>추가 의약품: symptom</text>
+      <text>상세 내용: detail</text>
     </binding>
   </visual>
   <actions>

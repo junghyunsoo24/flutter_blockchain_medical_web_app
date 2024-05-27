@@ -28,6 +28,8 @@ class _WebDeliverScreenState extends State<WebDeliverScreen> {
   late List<Symptom> _symptoms = [];
   late List<PersonalMedicine> _medicines = [];
 
+  late String symptom, medicine;
+
   Future<void> _loadData() async {
     _symptoms = await GetIt.I<MyDatabase>().getAllSymptoms();
     _medicines = await GetIt.I<MyDatabase>().getAllPersonalMedicines();
@@ -43,23 +45,6 @@ class _WebDeliverScreenState extends State<WebDeliverScreen> {
   void initState(){
     super.initState();
     _loadData();
-
-    _messagesStream.listen((querySnapshot) {
-      if (_isInitialLoadComplete) {
-        for (var change in querySnapshot.docChanges) {
-          if (change.type == DocumentChangeType.added) {
-            Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
-            GetIt.I<FlutterLocalNotification>().showNotification({
-              'title': '환자 추가 정보',
-              'body': '${data['추가 증상']}, ${data['추가 의약품']}'
-            });
-          }
-        }
-      } else {
-        _isInitialLoadComplete = true;
-      }
-    });
-    GetIt.I<FlutterLocalNotification>().init();
   }
 
   @override
@@ -109,7 +94,6 @@ class _WebDeliverScreenState extends State<WebDeliverScreen> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                String medicine,symptom;
                 if (_selectedSymptom != null) {
                   symptom = _selectedSymptom!;
                 }
@@ -128,6 +112,14 @@ class _WebDeliverScreenState extends State<WebDeliverScreen> {
                   '추가 증상': symptom,
                   '추가 의약품': medicine,
                   '상세 내용': _bodyController.text,
+                });
+
+                FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+                  // 알림 메시지 처리 로직 추가
+                  GetIt.I<FlutterLocalNotification>().showNotification({
+                    'title': '환자 추가 정보',
+                    'body': '$medicine, $symptom, ${_bodyController.text}'
+                    });
                 });
 
                 // 데이터 추가 후, 필드 초기화
