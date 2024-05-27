@@ -2,13 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/deliver/view/deliver_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/emergency/view/emergency_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/prescription_history_list.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_list_screen.dart';
 
+import '../../deliver/view/web_deliver_screen.dart';
 import '../../emergency/view/emergency_list_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -152,7 +152,7 @@ class HomeScreen extends ConsumerWidget {
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => DeliverScreen()),
+                                  MaterialPageRoute(builder: (context) => WebDeliverScreen()),
                                 );
                               },
                             ),

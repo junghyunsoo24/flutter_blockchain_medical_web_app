@@ -9,13 +9,13 @@ import '../../notification.dart';
 import '../../personalMedicine/model/personal_medicine.dart';
 import '../../symptom/model/symptom.dart';
 
-class DeliverScreen extends StatefulWidget {
+class WebDeliverScreen extends StatefulWidget {
 
   @override
-  _DeliverScreenState createState() => _DeliverScreenState();
+  _WebDeliverScreenState createState() => _WebDeliverScreenState();
 }
 
-class _DeliverScreenState extends State<DeliverScreen> {
+class _WebDeliverScreenState extends State<WebDeliverScreen> {
   final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('medicalTest').snapshots();
   bool _isInitialLoadComplete = false;
 
