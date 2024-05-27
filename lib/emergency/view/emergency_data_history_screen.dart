@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/question.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/repository/board_repository.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_category_list_screen.dart';
@@ -14,20 +15,19 @@ import '../../login/model/user_info.dart';
 import '../../login/view/login_screen.dart';
 import '../model/emergency.dart';
 import '../viewModel/emergency_entire_view_model.dart';
-import 'emergency_data_history_screen.dart';
 
 final emergencyViewModelProvider =
 ChangeNotifierProvider((ref) => EmergencyViewModel(EmergencyRepository()));
 
-class EmergencyListScreen extends ConsumerStatefulWidget {
+class EmergencyDataHistoryScreen extends ConsumerStatefulWidget {
 
-  const EmergencyListScreen({Key? key}) : super(key: key);
+  const EmergencyDataHistoryScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<EmergencyListScreen> createState() => _EmergencyListScreenState();
+  ConsumerState<EmergencyDataHistoryScreen> createState() => _EmergencyDataHistoryScreenState();
 }
 
-class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
+class _EmergencyDataHistoryScreenState extends ConsumerState<EmergencyDataHistoryScreen> {
   @override
   void initState() {
     super.initState();
@@ -35,7 +35,7 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
   }
 
   void _fetchEmergency(String? userId) {
-    ref.read(emergencyViewModelProvider).fetchEmergency(userId);
+    ref.read(emergencyViewModelProvider).fetchEmergencyViewHistory(userId);
   }
 
   @override
@@ -45,20 +45,9 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('긴급 데이터'),
+        title: Text('긴급 데이터 열람 기록'),
         backgroundColor: Colors.blue[50],
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.history),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => EmergencyDataHistoryScreen()),
-              );
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -68,15 +57,7 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '회원님의 특이사항을 저장해보세요.',
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.grey,
-                  ),
-                ),
-                SizedBox(height: 4.0),
-                Text(
-                  '긴급 상황 시 중요한 데이터가 됩니다.',
+                  '회원님의 긴급 데이터를 조회한 의료진을 알 수 있어요!',
                   style: TextStyle(
                     fontSize: 12.0,
                     color: Colors.grey,
@@ -91,35 +72,27 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EmergencyScreen()),
-          );
-        },
-        backgroundColor: Colors.blue[50],
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => EmergencyScreen()),
+      //     );
+      //   },
+      //   backgroundColor: Colors.blue[50],
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 
   Widget _buildEmergencyList(EmergencyViewModel viewModel, UserInfo userInfo) {
-    if (viewModel.emergency == null || viewModel.emergency!.content.isEmpty) {
+    if (viewModel.emergencyData.isEmpty) {
       return Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              '아직 등록된 데이터가 없습니다.',
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              '긴급데이터를 등록해보세요!',
+              '아직 회원님의 긴급 데이터를 열람한 의료진이 없습니다.',
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.grey,
@@ -131,17 +104,16 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
     } else {
       return ListView.separated(
         padding: const EdgeInsets.all(16.0),
-        itemCount: 1, // 단일 Emergency 항목만 표시
+        itemCount: viewModel.emergencyData.length,
         separatorBuilder: (context, index) => const SizedBox(height: 16.0),
         itemBuilder: (context, index) {
-          final emergency = viewModel.emergency!;
+          final emergency = viewModel.emergencyData[index];
+          print(emergency.reason);
           return _buildEmergencyItem(emergency, userInfo);
         },
       );
     }
   }
-
-
   Widget _buildEmergencyItem(Emergency emergency, UserInfo userInfo) {
     return Stack(
       children: [
@@ -164,59 +136,67 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  emergency.content,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    const Icon(Icons.person, color: Colors.blue),
+                    const SizedBox(width: 8.0),
+                    Text(
+                      emergency.doctorId ?? '의사 ID 없음',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    if (emergency.date != null)
+                      Row(
+                        children: [
+                          const Icon(Icons.calendar_today, color: Colors.blue),
+                          const SizedBox(width: 8.0),
+                          Text(
+                            DateFormat('yy-MM-dd').format(emergency.date!),
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 8.0),
+                Row(
+                  children: [
+                    const Icon(Icons.question_mark_rounded, color: Colors.blue),
+                    const SizedBox(width: 8.0),
+                    Text(
+                      emergency.reason ?? '',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8.0),
+                Row(
+                  children: [
+                    const Icon(Icons.content_paste_search_sharp, color: Colors.blue),
+                    const SizedBox(width: 8.0),
+                    Text(
+                      '열람한 데이터:${emergency.content}',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
         ),
-          Positioned(
-            top: 0,
-            right: 0,
-            child: GestureDetector(
-              onTap: () {
-                _showDeleteDialog(emergency, userInfo);
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.more_vert,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-          ),
       ],
-    );
-  }
-
-  void _showDeleteDialog(Emergency emergency, UserInfo userInfo) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('게시물 삭제'),
-        content: const Text('게시물을 삭제하시겠습니까?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('취소'),
-          ),
-          TextButton(
-            onPressed: () {
-              ref.read(emergencyViewModelProvider).deleteMyEmergencyData(ref.read(userInfoProvider).userId);
-              Navigator.of(context).pop();
-            },
-            child: const Text('삭제'),
-          ),
-        ],
-      ),
     );
   }
 }

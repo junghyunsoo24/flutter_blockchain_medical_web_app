@@ -10,8 +10,8 @@ class EmergencyRepository {
   String? baseUrl = dotenv.env['BASE_URL'];
 
 
-  Future<List<Emergency>> fetchEmergency(String? userId) async {
-    final uri = Uri.parse('$baseUrl/api/v1/patient/get-my-urgent-data');
+  Future<Emergency> fetchEmergency(String? userId) async {
+    final uri = Uri.parse('$baseUrl/patient/get-my-urgent-data');
 
     final response = await http.post(
       uri,
@@ -22,19 +22,46 @@ class EmergencyRepository {
     );
 
     print(uri);
+    print(response.body);
 
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      final emergency = Emergency.myUrgentContentFromJson(data);
+      return emergency;
+    } else {
+      throw Exception('Failed to fetch emergency data');
+    }
+  }
+
+  Future<void> deleteMyEmergencyData(String userId) async {
+    final uri = Uri.parse('$baseUrl/patient/urgent-data/$userId');
+    final response = await http.delete(uri);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete question');
+    }
+  }
+
+  Future<List<Emergency>> fetchEmergencyViewHistory(String? userId) async {
+    final uri = Uri.parse('$baseUrl/patient/$userId/urgent-data-view-history')
+        .replace(queryParameters: {
+      'patientId': userId,
+    });
+
+    print(uri);
+    final response = await http.get(uri);
     print(response.body);
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      final emergency = (data as List)
-          .map((emergency) => Emergency.emergencyDataFromJson(emergency))
+      final history = (data['history'] as List)
+          .map((history) => Emergency.myEmergencyDataHistoryFromJson(history))
           .toList();
-      return emergency;
+      return history;
     } else {
       throw Exception('Failed to fetch questions');
     }
   }
-  //
+
+//
   // Future<void> deleteQuestion(int questionId) async {
   //   final uri = Uri.parse('$baseUrl/api/test-0/question/$questionId');
   //   final response = await http.delete(uri);

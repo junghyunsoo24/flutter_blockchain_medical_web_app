@@ -65,7 +65,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'id': username, 'pw': password}),
     );
-
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['result'] == 'success') {

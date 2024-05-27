@@ -172,8 +172,7 @@ class BoardScreen extends ConsumerWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    viewModel.submitForm(userId).then((_) {
-                      _showSuccessSnackBar();
+                    viewModel.submitForm(userId, context).then((_) {
                       _navigateToBoardListScreen();
                     }).catchError((error) {
                       // 에러 처리
