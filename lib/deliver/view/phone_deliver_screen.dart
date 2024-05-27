@@ -13,7 +13,7 @@ class PhoneDeliverScreen extends StatefulWidget {
 }
 
 class _PhoneDeliverScreenState extends State<PhoneDeliverScreen> {
-  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('medical').snapshots();
+  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('medicalData').snapshots();
   bool _isInitialLoadComplete = false;
 
   final TextEditingController _titleController = TextEditingController();
@@ -34,14 +34,14 @@ class _PhoneDeliverScreenState extends State<PhoneDeliverScreen> {
         for (var change in querySnapshot.docChanges) {
           if (change.type == DocumentChangeType.added) {
             Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
-            FlutterLocalNotification.showNotification(data);
+            GetIt.I<FlutterLocalNotification>().showNotification(data);
           }
         }
       } else {
         _isInitialLoadComplete = true;
       }
     });
-    FlutterLocalNotification.init();
+    GetIt.I<FlutterLocalNotification>().init();
   }
 
   @override
@@ -70,7 +70,7 @@ class _PhoneDeliverScreenState extends State<PhoneDeliverScreen> {
             ElevatedButton(
               onPressed: () async {
                 // Firestore에 데이터 추가
-                await FirebaseFirestore.instance.collection('medical').add({
+                await FirebaseFirestore.instance.collection('medicalData').add({
                   'title': _titleController.text,
                   'body': _bodyController.text,
                   'sender': _senderController.text,

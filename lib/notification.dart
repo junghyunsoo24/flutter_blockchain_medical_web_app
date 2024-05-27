@@ -9,9 +9,8 @@ import 'second.dart';
 import 'dart:io';
 
 class FlutterLocalNotification {
-  static final _winNotifyPlugin = WindowsNotification(applicationId: r"{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}\WindowsPowerShell\v1.0\powershell.exe");
 
-  static Future<void> init() async {
+  Future<void> init() async {
     if(Platform.isAndroid){
       const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
       final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
@@ -24,16 +23,16 @@ class FlutterLocalNotification {
     }
 
     else if(Platform.isWindows){
-      await _winNotifyPlugin.initNotificationCallBack((s) {
+      await GetIt.I<WindowsNotification>().initNotificationCallBack((s) {
         print(s.userInput);
         print(s.eventType);
       });
     }
   }
 
-  static Future<void> showNotification(Map<String, dynamic> payload) async {
+  Future<void> showNotification(Map<String, dynamic> payload) async {
     if(Platform.isWindows) {
-      _winNotifyPlugin.showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), alarmtTemplate);
+      GetIt.I<WindowsNotification>().showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), alarmtTemplate);
     }
 
     else if(Platform.isAndroid){
@@ -59,7 +58,7 @@ class FlutterLocalNotification {
   }
 
 
-  static Future onSelectNotification(NotificationResponse payload) async {
+  Future onSelectNotification(NotificationResponse payload) async {
     if (payload != null) {
       if (payload.payload != null) {
         try {
