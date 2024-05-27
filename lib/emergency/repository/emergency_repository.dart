@@ -41,6 +41,25 @@ class EmergencyRepository {
     }
   }
 
+  Future<List<Emergency>> fetchEmergencyViewHistory(String? userId) async {
+    final uri = Uri.parse('$baseUrl/patient/$userId/urgent-data-view-history')
+        .replace(queryParameters: {
+      'patientId': userId,
+    });
+
+    print(uri);
+    final response = await http.get(uri);
+    print(response.body);
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      final history = (data['history'] as List)
+          .map((history) => Emergency.myEmergencyDataHistoryFromJson(history))
+          .toList();
+      return history;
+    } else {
+      throw Exception('Failed to fetch questions');
+    }
+  }
 
 //
   // Future<void> deleteQuestion(int questionId) async {

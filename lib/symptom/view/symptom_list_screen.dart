@@ -92,7 +92,7 @@ class _SymptomListScreenState extends State<SymptomListScreen> {
                         children: [
                           SizedBox(height: 8.0),
                           Text(
-                            '증상 시작일: ${DateFormat('yyyy-MM-dd').format(symptom.startDate)}',
+                            '증상 시작일: ${DateFormat('yy-MM-dd').format(symptom.startDate)}',
                             style: TextStyle(
                               fontSize: 14.0,
                               color: Colors.grey,
@@ -100,7 +100,7 @@ class _SymptomListScreenState extends State<SymptomListScreen> {
                           ),
                           SizedBox(height: 4.0),
                           Text(
-                            '증상 종료일: ${DateFormat('yyyy-MM-dd').format(symptom.endDate)}',
+                            '증상 종료일: ${DateFormat('yy-MM-dd').format(symptom.endDate)}',
                             style: TextStyle(
                               fontSize: 14.0,
                               color: Colors.grey,

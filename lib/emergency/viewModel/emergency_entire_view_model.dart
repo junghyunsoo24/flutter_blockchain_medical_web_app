@@ -10,10 +10,11 @@ class EmergencyViewModel extends ChangeNotifier {
 
   final EmergencyRepository _repository;
   Emergency? _emergency;
-
+  List<Emergency> _emergencyDataHistory = [];
   EmergencyViewModel(this._repository);
 
   Emergency? get emergency => _emergency;
+  List<Emergency> get emergencyData => _emergencyDataHistory;
 
   Future<void> fetchEmergency(String? userId) async {
     try {
@@ -37,6 +38,15 @@ class EmergencyViewModel extends ChangeNotifier {
     } catch (e) {
       // Handle error
       print('Error deleting question: $e');
+    }
+  }
+
+  Future<void> fetchEmergencyViewHistory(String? userId) async {
+    try {
+      _emergencyDataHistory = await _repository.fetchEmergencyViewHistory(userId);
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching emergency data: $e');
     }
   }
   //
