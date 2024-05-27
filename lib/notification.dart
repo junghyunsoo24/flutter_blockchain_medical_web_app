@@ -32,7 +32,7 @@ class FlutterLocalNotification {
 
   Future<void> showNotification(Map<String, dynamic> payload) async {
     if(Platform.isWindows) {
-      GetIt.I<WindowsNotification>().showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), alarmtTemplate);
+    GetIt.I<WindowsNotification>().showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), alarmtTemplate);
     }
 
     else if(Platform.isAndroid){
@@ -56,7 +56,6 @@ class FlutterLocalNotification {
       );
     }
   }
-
 
   Future onSelectNotification(NotificationResponse payload) async {
     if (payload != null) {
