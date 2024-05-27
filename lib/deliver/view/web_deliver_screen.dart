@@ -16,7 +16,7 @@ class WebDeliverScreen extends StatefulWidget {
 }
 
 class _WebDeliverScreenState extends State<WebDeliverScreen> {
-  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('medicalTest').snapshots();
+  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('medicalData').snapshots();
   bool _isInitialLoadComplete = false;
 
   final TextEditingController _bodyController = TextEditingController();
@@ -49,7 +49,7 @@ class _WebDeliverScreenState extends State<WebDeliverScreen> {
         for (var change in querySnapshot.docChanges) {
           if (change.type == DocumentChangeType.added) {
             Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
-            FlutterLocalNotification.showNotification({
+            GetIt.I<FlutterLocalNotification>().showNotification({
               'title': '환자 추가 정보',
               'body': '${data['추가 증상']}, ${data['추가 의약품']}'
             });
@@ -59,7 +59,7 @@ class _WebDeliverScreenState extends State<WebDeliverScreen> {
         _isInitialLoadComplete = true;
       }
     });
-    FlutterLocalNotification.init();
+    GetIt.I<FlutterLocalNotification>().init();
   }
 
   @override
@@ -124,7 +124,7 @@ class _WebDeliverScreenState extends State<WebDeliverScreen> {
                 }
 
                 // Firestore에 데이터 추가
-                await FirebaseFirestore.instance.collection('medicalTest').add({
+                await FirebaseFirestore.instance.collection('medicalData').add({
                   '추가 증상': symptom,
                   '추가 의약품': medicine,
                   '상세 내용': _bodyController.text,
