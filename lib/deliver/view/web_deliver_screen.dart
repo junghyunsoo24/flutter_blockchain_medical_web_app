@@ -9,13 +9,13 @@ import '../../notification.dart';
 import '../../personalMedicine/model/personal_medicine.dart';
 import '../../symptom/model/symptom.dart';
 
-class DeliverScreen extends StatefulWidget {
+class WebDeliverScreen extends StatefulWidget {
 
   @override
-  _DeliverScreenState createState() => _DeliverScreenState();
+  _WebDeliverScreenState createState() => _WebDeliverScreenState();
 }
 
-class _DeliverScreenState extends State<DeliverScreen> {
+class _WebDeliverScreenState extends State<WebDeliverScreen> {
   final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('medicalTest').snapshots();
   bool _isInitialLoadComplete = false;
 
@@ -49,7 +49,10 @@ class _DeliverScreenState extends State<DeliverScreen> {
         for (var change in querySnapshot.docChanges) {
           if (change.type == DocumentChangeType.added) {
             Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
-            FlutterLocalNotification.showNotification(data);
+            FlutterLocalNotification.showNotification({
+              'title': '환자 추가 정보',
+              'body': '${data['추가 증상']}, ${data['추가 의약품']}'
+            });
           }
         }
       } else {
