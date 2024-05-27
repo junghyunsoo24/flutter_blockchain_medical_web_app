@@ -68,7 +68,7 @@ flutter:
     - asset/img/misc/
     - asset/svg/icon/
     - asset/rive/
-    - asset/config/.env
+    - asset/config/
   fonts:
     - family: NotoSans
       fonts:
