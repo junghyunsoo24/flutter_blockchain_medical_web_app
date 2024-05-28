@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import '../../data.dart';
@@ -16,6 +17,7 @@ class PatientSignupScreen extends StatefulWidget {
 }
 
 class _PatientSignupScreenState extends State<PatientSignupScreen> {
+  String? baseUrl = dotenv.env['BASE_URL'];
   final _formKey = GlobalKey<FormState>();
   String? _userId, _password, _name, _birthday;
   int? _gender;
@@ -23,6 +25,7 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
 
   Future<bool> submitPatientInfo() async {
     final url = Uri.parse('http://$realPhoneIp/api/v1/patient/sign-up');
+    print(url);
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
