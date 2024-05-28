@@ -9,7 +9,6 @@ import 'second.dart';
 import 'dart:io';
 
 class FlutterLocalNotification {
-
   Future<void> init() async {
     if(Platform.isAndroid){
       const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -21,7 +20,6 @@ class FlutterLocalNotification {
             onSelectNotification(payload);
           });
     }
-
     else if(Platform.isWindows){
       await GetIt.I<WindowsNotification>().initNotificationCallBack((s) {
         print(s.userInput);
@@ -32,7 +30,7 @@ class FlutterLocalNotification {
 
   Future<void> showNotification(Map<String, dynamic> payload) async {
     if(Platform.isWindows) {
-    GetIt.I<WindowsNotification>().showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), alarmtTemplate);
+      GetIt.I<WindowsNotification>().showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), alarmtTemplate);
     }
 
     else if(Platform.isAndroid){
@@ -63,14 +61,14 @@ class FlutterLocalNotification {
         try {
           final data = Map<String, dynamic>.fromEntries(
               payload.payload!.split('&').map((item) {
-                final List<String> parts = item.split('=');
-                if (parts.length == 2) {
-                  return MapEntry(Uri.decodeComponent(parts[0].trim()), Uri.decodeComponent(parts[1].trim()));
-                } else {
-                  throw FormatException("잘못된 데이터 포맷입니다.");
-                }
-              })
-          );
+            final List<String> parts = item.split('=');
+            if (parts.length == 2) {
+              return MapEntry(Uri.decodeComponent(parts[0].trim()),
+                  Uri.decodeComponent(parts[1].trim()));
+            } else {
+              throw FormatException("잘못된 데이터 포맷입니다.");
+            }
+          }));
 
           if (navigatorKey.currentState != null) {
             navigatorKey.currentState!.push(
@@ -88,9 +86,13 @@ class FlutterLocalNotification {
     }
   }
 
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 }
 
 String mapToQueryString(Map<String, dynamic> map) {
-  return map.entries.map((entry) => '${Uri.encodeComponent(entry.key)}=${Uri.encodeComponent(entry.value.toString())}').join('&');
+  return map.entries
+      .map((entry) =>
+          '${Uri.encodeComponent(entry.key)}=${Uri.encodeComponent(entry.value.toString())}')
+      .join('&');
 }

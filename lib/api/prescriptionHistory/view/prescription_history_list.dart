@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/prescription_history_request.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/api/prescriptionHistory/view/prescription_history_request.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/viewModel/prescription_view_model.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/viewModel/personal_medicine_view_model.dart';
@@ -83,8 +83,8 @@ class _PrescriptionHistoryListScreenState extends State<PrescriptionHistoryListS
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.double_arrow_rounded, color: Colors.white70),
-            SizedBox(height: 4), // 아이콘과 텍스트 사이의 간격 조절
-            Text('불러오기', style: TextStyle(color: Colors.white)), // 추가할 텍스트
+            SizedBox(height: 1), // 아이콘과 텍스트 사이의 간격 조절
+            Text('불러오기', style: TextStyle(color: Colors.white, fontSize:10)), // 추가할 텍스트
           ],
         ),
         backgroundColor: Colors.redAccent,

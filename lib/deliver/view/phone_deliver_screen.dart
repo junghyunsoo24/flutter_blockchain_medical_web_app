@@ -29,6 +29,8 @@ class _PhoneDeliverScreenState extends State<PhoneDeliverScreen> {
   void initState(){
     super.initState();
 
+    GetIt.I<FlutterLocalNotification>().init();
+
     _messagesStream.listen((querySnapshot) {
       if (_isInitialLoadComplete) {
         for (var change in querySnapshot.docChanges) {
@@ -41,7 +43,6 @@ class _PhoneDeliverScreenState extends State<PhoneDeliverScreen> {
         _isInitialLoadComplete = true;
       }
     });
-    GetIt.I<FlutterLocalNotification>().init();
   }
 
   @override

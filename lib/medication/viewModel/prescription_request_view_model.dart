@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:portfolio_flutter_blockchain_medical_web_app/medication/model/prescript_request_model.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/api/prescriptionHistory/model/prescript_request_model.dart';
 
 class PrescriptionRequestViewModel {
   Future<void> requestPrescriptionHistory(

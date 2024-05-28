@@ -5,7 +5,7 @@ import 'package:drift/drift.dart';
 import 'dart:io';
 
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/model/alarm.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/medication/model/prescription.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/api/prescriptionHistory/model/prescription.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/model/personal_medicine.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/model/symptom.dart';
 

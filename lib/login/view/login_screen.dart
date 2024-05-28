@@ -46,7 +46,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['result'] == 'success') {
-        print('의료진 로그인 성공!');
         ref.read(userInfoProvider).setUserId(username);
         return true;
       } else {
@@ -70,7 +69,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['result'] == 'success') {
-        print('환자 로그인 성공!');
         ref.read(userInfoProvider).setUserId(username);
         return true;
       } else {
@@ -264,10 +262,6 @@ class _SubTitle extends StatelessWidget {
   const _SubTitle({Key? key}) : super(key: key);
 
   @override
-
-
-
-
   Widget build(BuildContext context) {
     return const Text(
       '아이디와 비밀번호를 입력해서 로그인 해주세요!)',
