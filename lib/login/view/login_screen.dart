@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:core';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,6 +61,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<bool> patientLogin() async {
     final url = Uri.parse('http://$realPhoneIp/api/v1/sign-in');
+    print(url);
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
