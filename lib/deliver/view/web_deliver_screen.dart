@@ -45,6 +45,16 @@ class _WebDeliverScreenState extends State<WebDeliverScreen> {
   void initState(){
     super.initState();
     _loadData();
+
+    GetIt.I<FlutterLocalNotification>().init();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // 알림 메시지 처리 로직 추가
+      GetIt.I<FlutterLocalNotification>().showNotification({
+        'title': '환자 추가 정보',
+        'body': '$medicine, $symptom, ${_bodyController.text}'
+      });
+    });
   }
 
   @override
@@ -107,19 +117,10 @@ class _WebDeliverScreenState extends State<WebDeliverScreen> {
                   medicine =" 추가 의약품 없음";
                 }
 
-                // Firestore에 데이터 추가
                 await FirebaseFirestore.instance.collection('medicalData').add({
                   '추가 증상': symptom,
                   '추가 의약품': medicine,
                   '상세 내용': _bodyController.text,
-                });
-
-                FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-                  // 알림 메시지 처리 로직 추가
-                  GetIt.I<FlutterLocalNotification>().showNotification({
-                    'title': '환자 추가 정보',
-                    'body': '$medicine, $symptom, ${_bodyController.text}'
-                    });
                 });
 
                 // 데이터 추가 후, 필드 초기화
