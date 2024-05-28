@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+import '../../login/view/login_screen.dart';
+
+class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userInfo = ref.watch(userInfoProvider);
+    final userName = userInfo.name;
+    print("userName");
+    print("userName: ${userName}");
+
     return PreferredSize(
       preferredSize: Size.fromHeight(130.0),
       child: AppBar(
@@ -32,7 +40,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '김정민님. 환영합니다.',
+                '$userName님 환영합니다.',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
