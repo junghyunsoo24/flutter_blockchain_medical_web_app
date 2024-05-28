@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
@@ -5,6 +7,10 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/medication/viewMode
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/viewModel/prescription_view_model.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/viewModel/personal_medicine_view_model.dart';
+import 'package:http/http.dart' as http;
+
+
+import '../../../data.dart';
 
 class PrescriptionHistoryRequest extends StatefulWidget {
   const PrescriptionHistoryRequest({Key? key}) : super(key: key);
@@ -19,6 +25,49 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
   final _phoneController = TextEditingController();
   String? _selectedProvider; // 선택된 통신사 저장
   final _prescriptionRequestViewModel = PrescriptionRequestViewModel();
+
+  Future<bool> firstCheck() async {
+    final url = Uri.parse('http://$realPhoneIp/api/v1/medical-api/treatment-information/first-request');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'identity': _birthdayController.text,
+        'userName': _nameController.text,
+        'phoneNo': _phoneController.text,
+        'telecom': _selectedProvider,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  Future<bool> secondCheck() async {
+    final url = Uri.parse('http://$realPhoneIp/api/v1/medical-api/treatment-information/second-request');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'identity': _birthdayController.text,
+        'userName': _nameController.text,
+        'phoneNo': _phoneController.text,
+        'telecom': _selectedProvider,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +125,7 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
                   Text('통신사 선택'),
                   RadioListTile(
                     title: Text('SKT(알뜰폰)'),
-                    value: 'skt',
+                    value: '0',
                     groupValue: _selectedProvider,
                     onChanged: (value) {
                       setState(() {
@@ -86,7 +135,7 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
                   ),
                   RadioListTile(
                     title: Text('KT(알뜰폰)'),
-                    value: 'kt',
+                    value: '1',
                     groupValue: _selectedProvider,
                     onChanged: (value) {
                       setState(() {
@@ -96,7 +145,7 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
                   ),
                   RadioListTile(
                     title: Text('LG(알뜰폰)'),
-                    value: 'lg',
+                    value: '2',
                     groupValue: _selectedProvider,
                     onChanged: (value) {
                       setState(() {
@@ -108,19 +157,66 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
-                  if (_nameController.text.isNotEmpty &&
-                      _birthdayController.text.isNotEmpty &&
-                      _phoneController.text.isNotEmpty &&
-                      _selectedProvider != null) {
-                    _prescriptionRequestViewModel.requestPrescriptionHistory( // 환자의 데이터 viewModel로 전달
-                      _nameController.text,
-                      _birthdayController.text,
-                      _phoneController.text,
-                      _selectedProvider!,
-                    );
+                onPressed: () async {
+                  if (_nameController.text.isNotEmpty && _birthdayController.text.isNotEmpty && _phoneController.text.isNotEmpty && _selectedProvider != null) {
+                    bool firstSuccess = await firstCheck();
+                    if(firstSuccess){
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('1차인증 성공'),
+                          content: Text('카카오 지갑 확인시 2차인증 진행합니다.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('확인'),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      bool secondSuccess = await secondCheck();
+                      if(secondSuccess){
+
+                      }
+                      else{
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('2차인증 실패'),
+                            content: Text('카카오 지갑 인증을 확인해주세요.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('확인'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    }
+                    else{
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('1차인증 실패'),
+                          content: Text('잘못 작성하였습니다. 데이터를 다시 확인해주세요.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('확인'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                   } else {
-                    // 경고 메시지 표시
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
