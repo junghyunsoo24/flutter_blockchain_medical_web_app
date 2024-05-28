@@ -37,10 +37,15 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
     );
 
     if (response.statusCode == 200) {
-      print('환자 회원 가입 성공!');
-      return true;
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['result'] == 'success') {
+        return true;
+      } else {
+        print('서버에 등록되지 않아 환자 회원가입 실패..');
+        return false;
+      }
     } else {
-      print('환자 회원 가입 실패..');
+      print('서버 오류로 인한 회원가입 실패..');
       return false;
     }
   }
@@ -49,7 +54,7 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('환자 로그인'),
+        title: const Text('환자 회원가입'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -153,18 +158,23 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
 
                     bool success = await submitPatientInfo();
                     if (success) {
-                      await GetIt.I<MyDatabase>().addPatient(PatientsCompanion(
-                          userID: Value(_userId!),
-                          userPW: Value(_password!),
-                          name: Value(_name!),
-                          birthday: Value(_birthday!),
-                          gender: Value(_gender!),
-                          height: Value(_height!),
-                          weight: Value(_weight!),
-                          role: Value("1")
-                      ));
-
-                      Navigator.pop(context);
+                      if(!(await GetIt.I<MyDatabase>().isPatientIdExists(_userId!))){
+                        await GetIt.I<MyDatabase>().addPatient(PatientsCompanion(
+                            userID: Value(_userId!),
+                            userPW: Value(_password!),
+                            name: Value(_name!),
+                            birthday: Value(_birthday!),
+                            gender: Value(_gender!),
+                            height: Value(_height!),
+                            weight: Value(_weight!),
+                            role: Value("1")
+                        ));
+                        print("회원가입 성공하여 디비에 저장되었습니다.");
+                        Navigator.pop(context);
+                      }
+                      else{
+                        print("디비에 같은 정보가 이미 있거나 필수값을 입력하지 않았습니다");
+                      }
                     }
                     else{
                       showDialog(
