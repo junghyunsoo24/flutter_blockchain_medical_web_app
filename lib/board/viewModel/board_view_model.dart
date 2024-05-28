@@ -149,7 +149,7 @@ class BoardViewModel extends ChangeNotifier {
   void _showSuccessSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('긴급데이터 등록이 완료되었습니다.'),
+        content: Text('질문 등록이 완료되었습니다.'),
         duration: Duration(seconds: 3),
       ),
     );

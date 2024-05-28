@@ -32,8 +32,20 @@ class MyDatabase extends _$MyDatabase {
   Future<Patient?> getPatientByUserIdAndPassword(String userId, String password) async {
     final query = select(patients)
       ..where((tbl) => tbl.userID.equals(userId) & tbl.userPW.equals(password));
-    return query.getSingleOrNull();
+    final patient = await query.getSingleOrNull();
+    if (patient != null) {
+      print("여기");
+      print(patient.name);
+      return patient.copyWith(name: patient.name); // 사용자 이름 반환
+    }
+    return null;
   }
+
+  // Future<Patient?> getPatientByUserIdAndPassword(String userId, String password) async {
+  //   final query = select(patients)
+  //     ..where((tbl) => tbl.userID.equals(userId) & tbl.userPW.equals(password));
+  //   return query.getSingleOrNull();
+  // }
 
   //doctor
   Future<void> addDoctor(DoctorsCompanion data) async {

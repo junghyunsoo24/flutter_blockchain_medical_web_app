@@ -35,7 +35,7 @@ class _PatientSignupScreenState extends State<PatientSignupScreen> {
         'role': "patient"
       }),
     );
-
+    print(response.body);
     if (response.statusCode == 200) {
       print('환자 회원 가입 성공!');
       return true;
