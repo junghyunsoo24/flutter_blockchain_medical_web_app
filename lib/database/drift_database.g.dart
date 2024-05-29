@@ -2253,6 +2253,594 @@ class DoctorsCompanion extends UpdateCompanion<Doctor> {
   }
 }
 
+class $HealthChecksTable extends HealthChecks
+    with TableInfo<$HealthChecksTable, HealthCheck> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HealthChecksTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _resOrganizationNameMeta =
+      const VerificationMeta('resOrganizationName');
+  @override
+  late final GeneratedColumn<String> resOrganizationName =
+      GeneratedColumn<String>('res_organization_name', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resCheckupDateMeta =
+      const VerificationMeta('resCheckupDate');
+  @override
+  late final GeneratedColumn<DateTime> resCheckupDate =
+      GeneratedColumn<DateTime>('res_checkup_date', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _resHeightMeta =
+      const VerificationMeta('resHeight');
+  @override
+  late final GeneratedColumn<double> resHeight = GeneratedColumn<double>(
+      'res_height', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _resWeightMeta =
+      const VerificationMeta('resWeight');
+  @override
+  late final GeneratedColumn<double> resWeight = GeneratedColumn<double>(
+      'res_weight', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _resWaistMeta =
+      const VerificationMeta('resWaist');
+  @override
+  late final GeneratedColumn<double> resWaist = GeneratedColumn<double>(
+      'res_waist', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _resBMIMeta = const VerificationMeta('resBMI');
+  @override
+  late final GeneratedColumn<double> resBMI = GeneratedColumn<double>(
+      'res_b_m_i', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _resSightMeta =
+      const VerificationMeta('resSight');
+  @override
+  late final GeneratedColumn<String> resSight = GeneratedColumn<String>(
+      'res_sight', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resHearingMeta =
+      const VerificationMeta('resHearing');
+  @override
+  late final GeneratedColumn<String> resHearing = GeneratedColumn<String>(
+      'res_hearing', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resBloodPressureMeta =
+      const VerificationMeta('resBloodPressure');
+  @override
+  late final GeneratedColumn<String> resBloodPressure = GeneratedColumn<String>(
+      'res_blood_pressure', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resFastingBloodSugerMeta =
+      const VerificationMeta('resFastingBloodSuger');
+  @override
+  late final GeneratedColumn<double> resFastingBloodSuger =
+      GeneratedColumn<double>('res_fasting_blood_suger', aliasedName, false,
+          type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _resTotalCholesterolMeta =
+      const VerificationMeta('resTotalCholesterol');
+  @override
+  late final GeneratedColumn<String> resTotalCholesterol =
+      GeneratedColumn<String>('res_total_cholesterol', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        resOrganizationName,
+        resCheckupDate,
+        resHeight,
+        resWeight,
+        resWaist,
+        resBMI,
+        resSight,
+        resHearing,
+        resBloodPressure,
+        resFastingBloodSuger,
+        resTotalCholesterol
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'health_checks';
+  @override
+  VerificationContext validateIntegrity(Insertable<HealthCheck> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('res_organization_name')) {
+      context.handle(
+          _resOrganizationNameMeta,
+          resOrganizationName.isAcceptableOrUnknown(
+              data['res_organization_name']!, _resOrganizationNameMeta));
+    } else if (isInserting) {
+      context.missing(_resOrganizationNameMeta);
+    }
+    if (data.containsKey('res_checkup_date')) {
+      context.handle(
+          _resCheckupDateMeta,
+          resCheckupDate.isAcceptableOrUnknown(
+              data['res_checkup_date']!, _resCheckupDateMeta));
+    } else if (isInserting) {
+      context.missing(_resCheckupDateMeta);
+    }
+    if (data.containsKey('res_height')) {
+      context.handle(_resHeightMeta,
+          resHeight.isAcceptableOrUnknown(data['res_height']!, _resHeightMeta));
+    } else if (isInserting) {
+      context.missing(_resHeightMeta);
+    }
+    if (data.containsKey('res_weight')) {
+      context.handle(_resWeightMeta,
+          resWeight.isAcceptableOrUnknown(data['res_weight']!, _resWeightMeta));
+    } else if (isInserting) {
+      context.missing(_resWeightMeta);
+    }
+    if (data.containsKey('res_waist')) {
+      context.handle(_resWaistMeta,
+          resWaist.isAcceptableOrUnknown(data['res_waist']!, _resWaistMeta));
+    } else if (isInserting) {
+      context.missing(_resWaistMeta);
+    }
+    if (data.containsKey('res_b_m_i')) {
+      context.handle(_resBMIMeta,
+          resBMI.isAcceptableOrUnknown(data['res_b_m_i']!, _resBMIMeta));
+    } else if (isInserting) {
+      context.missing(_resBMIMeta);
+    }
+    if (data.containsKey('res_sight')) {
+      context.handle(_resSightMeta,
+          resSight.isAcceptableOrUnknown(data['res_sight']!, _resSightMeta));
+    } else if (isInserting) {
+      context.missing(_resSightMeta);
+    }
+    if (data.containsKey('res_hearing')) {
+      context.handle(
+          _resHearingMeta,
+          resHearing.isAcceptableOrUnknown(
+              data['res_hearing']!, _resHearingMeta));
+    } else if (isInserting) {
+      context.missing(_resHearingMeta);
+    }
+    if (data.containsKey('res_blood_pressure')) {
+      context.handle(
+          _resBloodPressureMeta,
+          resBloodPressure.isAcceptableOrUnknown(
+              data['res_blood_pressure']!, _resBloodPressureMeta));
+    } else if (isInserting) {
+      context.missing(_resBloodPressureMeta);
+    }
+    if (data.containsKey('res_fasting_blood_suger')) {
+      context.handle(
+          _resFastingBloodSugerMeta,
+          resFastingBloodSuger.isAcceptableOrUnknown(
+              data['res_fasting_blood_suger']!, _resFastingBloodSugerMeta));
+    } else if (isInserting) {
+      context.missing(_resFastingBloodSugerMeta);
+    }
+    if (data.containsKey('res_total_cholesterol')) {
+      context.handle(
+          _resTotalCholesterolMeta,
+          resTotalCholesterol.isAcceptableOrUnknown(
+              data['res_total_cholesterol']!, _resTotalCholesterolMeta));
+    } else if (isInserting) {
+      context.missing(_resTotalCholesterolMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HealthCheck map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HealthCheck(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      resOrganizationName: attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}res_organization_name'])!,
+      resCheckupDate: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}res_checkup_date'])!,
+      resHeight: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}res_height'])!,
+      resWeight: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}res_weight'])!,
+      resWaist: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}res_waist'])!,
+      resBMI: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}res_b_m_i'])!,
+      resSight: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_sight'])!,
+      resHearing: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_hearing'])!,
+      resBloodPressure: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_blood_pressure'])!,
+      resFastingBloodSuger: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}res_fasting_blood_suger'])!,
+      resTotalCholesterol: attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}res_total_cholesterol'])!,
+    );
+  }
+
+  @override
+  $HealthChecksTable createAlias(String alias) {
+    return $HealthChecksTable(attachedDatabase, alias);
+  }
+}
+
+class HealthCheck extends DataClass implements Insertable<HealthCheck> {
+  final int id;
+  final String resOrganizationName;
+  final DateTime resCheckupDate;
+  final double resHeight;
+  final double resWeight;
+  final double resWaist;
+  final double resBMI;
+  final String resSight;
+  final String resHearing;
+  final String resBloodPressure;
+  final double resFastingBloodSuger;
+  final String resTotalCholesterol;
+  const HealthCheck(
+      {required this.id,
+      required this.resOrganizationName,
+      required this.resCheckupDate,
+      required this.resHeight,
+      required this.resWeight,
+      required this.resWaist,
+      required this.resBMI,
+      required this.resSight,
+      required this.resHearing,
+      required this.resBloodPressure,
+      required this.resFastingBloodSuger,
+      required this.resTotalCholesterol});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['res_organization_name'] = Variable<String>(resOrganizationName);
+    map['res_checkup_date'] = Variable<DateTime>(resCheckupDate);
+    map['res_height'] = Variable<double>(resHeight);
+    map['res_weight'] = Variable<double>(resWeight);
+    map['res_waist'] = Variable<double>(resWaist);
+    map['res_b_m_i'] = Variable<double>(resBMI);
+    map['res_sight'] = Variable<String>(resSight);
+    map['res_hearing'] = Variable<String>(resHearing);
+    map['res_blood_pressure'] = Variable<String>(resBloodPressure);
+    map['res_fasting_blood_suger'] = Variable<double>(resFastingBloodSuger);
+    map['res_total_cholesterol'] = Variable<String>(resTotalCholesterol);
+    return map;
+  }
+
+  HealthChecksCompanion toCompanion(bool nullToAbsent) {
+    return HealthChecksCompanion(
+      id: Value(id),
+      resOrganizationName: Value(resOrganizationName),
+      resCheckupDate: Value(resCheckupDate),
+      resHeight: Value(resHeight),
+      resWeight: Value(resWeight),
+      resWaist: Value(resWaist),
+      resBMI: Value(resBMI),
+      resSight: Value(resSight),
+      resHearing: Value(resHearing),
+      resBloodPressure: Value(resBloodPressure),
+      resFastingBloodSuger: Value(resFastingBloodSuger),
+      resTotalCholesterol: Value(resTotalCholesterol),
+    );
+  }
+
+  factory HealthCheck.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HealthCheck(
+      id: serializer.fromJson<int>(json['id']),
+      resOrganizationName:
+          serializer.fromJson<String>(json['resOrganizationName']),
+      resCheckupDate: serializer.fromJson<DateTime>(json['resCheckupDate']),
+      resHeight: serializer.fromJson<double>(json['resHeight']),
+      resWeight: serializer.fromJson<double>(json['resWeight']),
+      resWaist: serializer.fromJson<double>(json['resWaist']),
+      resBMI: serializer.fromJson<double>(json['resBMI']),
+      resSight: serializer.fromJson<String>(json['resSight']),
+      resHearing: serializer.fromJson<String>(json['resHearing']),
+      resBloodPressure: serializer.fromJson<String>(json['resBloodPressure']),
+      resFastingBloodSuger:
+          serializer.fromJson<double>(json['resFastingBloodSuger']),
+      resTotalCholesterol:
+          serializer.fromJson<String>(json['resTotalCholesterol']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'resOrganizationName': serializer.toJson<String>(resOrganizationName),
+      'resCheckupDate': serializer.toJson<DateTime>(resCheckupDate),
+      'resHeight': serializer.toJson<double>(resHeight),
+      'resWeight': serializer.toJson<double>(resWeight),
+      'resWaist': serializer.toJson<double>(resWaist),
+      'resBMI': serializer.toJson<double>(resBMI),
+      'resSight': serializer.toJson<String>(resSight),
+      'resHearing': serializer.toJson<String>(resHearing),
+      'resBloodPressure': serializer.toJson<String>(resBloodPressure),
+      'resFastingBloodSuger': serializer.toJson<double>(resFastingBloodSuger),
+      'resTotalCholesterol': serializer.toJson<String>(resTotalCholesterol),
+    };
+  }
+
+  HealthCheck copyWith(
+          {int? id,
+          String? resOrganizationName,
+          DateTime? resCheckupDate,
+          double? resHeight,
+          double? resWeight,
+          double? resWaist,
+          double? resBMI,
+          String? resSight,
+          String? resHearing,
+          String? resBloodPressure,
+          double? resFastingBloodSuger,
+          String? resTotalCholesterol}) =>
+      HealthCheck(
+        id: id ?? this.id,
+        resOrganizationName: resOrganizationName ?? this.resOrganizationName,
+        resCheckupDate: resCheckupDate ?? this.resCheckupDate,
+        resHeight: resHeight ?? this.resHeight,
+        resWeight: resWeight ?? this.resWeight,
+        resWaist: resWaist ?? this.resWaist,
+        resBMI: resBMI ?? this.resBMI,
+        resSight: resSight ?? this.resSight,
+        resHearing: resHearing ?? this.resHearing,
+        resBloodPressure: resBloodPressure ?? this.resBloodPressure,
+        resFastingBloodSuger: resFastingBloodSuger ?? this.resFastingBloodSuger,
+        resTotalCholesterol: resTotalCholesterol ?? this.resTotalCholesterol,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('HealthCheck(')
+          ..write('id: $id, ')
+          ..write('resOrganizationName: $resOrganizationName, ')
+          ..write('resCheckupDate: $resCheckupDate, ')
+          ..write('resHeight: $resHeight, ')
+          ..write('resWeight: $resWeight, ')
+          ..write('resWaist: $resWaist, ')
+          ..write('resBMI: $resBMI, ')
+          ..write('resSight: $resSight, ')
+          ..write('resHearing: $resHearing, ')
+          ..write('resBloodPressure: $resBloodPressure, ')
+          ..write('resFastingBloodSuger: $resFastingBloodSuger, ')
+          ..write('resTotalCholesterol: $resTotalCholesterol')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      resOrganizationName,
+      resCheckupDate,
+      resHeight,
+      resWeight,
+      resWaist,
+      resBMI,
+      resSight,
+      resHearing,
+      resBloodPressure,
+      resFastingBloodSuger,
+      resTotalCholesterol);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HealthCheck &&
+          other.id == this.id &&
+          other.resOrganizationName == this.resOrganizationName &&
+          other.resCheckupDate == this.resCheckupDate &&
+          other.resHeight == this.resHeight &&
+          other.resWeight == this.resWeight &&
+          other.resWaist == this.resWaist &&
+          other.resBMI == this.resBMI &&
+          other.resSight == this.resSight &&
+          other.resHearing == this.resHearing &&
+          other.resBloodPressure == this.resBloodPressure &&
+          other.resFastingBloodSuger == this.resFastingBloodSuger &&
+          other.resTotalCholesterol == this.resTotalCholesterol);
+}
+
+class HealthChecksCompanion extends UpdateCompanion<HealthCheck> {
+  final Value<int> id;
+  final Value<String> resOrganizationName;
+  final Value<DateTime> resCheckupDate;
+  final Value<double> resHeight;
+  final Value<double> resWeight;
+  final Value<double> resWaist;
+  final Value<double> resBMI;
+  final Value<String> resSight;
+  final Value<String> resHearing;
+  final Value<String> resBloodPressure;
+  final Value<double> resFastingBloodSuger;
+  final Value<String> resTotalCholesterol;
+  const HealthChecksCompanion({
+    this.id = const Value.absent(),
+    this.resOrganizationName = const Value.absent(),
+    this.resCheckupDate = const Value.absent(),
+    this.resHeight = const Value.absent(),
+    this.resWeight = const Value.absent(),
+    this.resWaist = const Value.absent(),
+    this.resBMI = const Value.absent(),
+    this.resSight = const Value.absent(),
+    this.resHearing = const Value.absent(),
+    this.resBloodPressure = const Value.absent(),
+    this.resFastingBloodSuger = const Value.absent(),
+    this.resTotalCholesterol = const Value.absent(),
+  });
+  HealthChecksCompanion.insert({
+    this.id = const Value.absent(),
+    required String resOrganizationName,
+    required DateTime resCheckupDate,
+    required double resHeight,
+    required double resWeight,
+    required double resWaist,
+    required double resBMI,
+    required String resSight,
+    required String resHearing,
+    required String resBloodPressure,
+    required double resFastingBloodSuger,
+    required String resTotalCholesterol,
+  })  : resOrganizationName = Value(resOrganizationName),
+        resCheckupDate = Value(resCheckupDate),
+        resHeight = Value(resHeight),
+        resWeight = Value(resWeight),
+        resWaist = Value(resWaist),
+        resBMI = Value(resBMI),
+        resSight = Value(resSight),
+        resHearing = Value(resHearing),
+        resBloodPressure = Value(resBloodPressure),
+        resFastingBloodSuger = Value(resFastingBloodSuger),
+        resTotalCholesterol = Value(resTotalCholesterol);
+  static Insertable<HealthCheck> custom({
+    Expression<int>? id,
+    Expression<String>? resOrganizationName,
+    Expression<DateTime>? resCheckupDate,
+    Expression<double>? resHeight,
+    Expression<double>? resWeight,
+    Expression<double>? resWaist,
+    Expression<double>? resBMI,
+    Expression<String>? resSight,
+    Expression<String>? resHearing,
+    Expression<String>? resBloodPressure,
+    Expression<double>? resFastingBloodSuger,
+    Expression<String>? resTotalCholesterol,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (resOrganizationName != null)
+        'res_organization_name': resOrganizationName,
+      if (resCheckupDate != null) 'res_checkup_date': resCheckupDate,
+      if (resHeight != null) 'res_height': resHeight,
+      if (resWeight != null) 'res_weight': resWeight,
+      if (resWaist != null) 'res_waist': resWaist,
+      if (resBMI != null) 'res_b_m_i': resBMI,
+      if (resSight != null) 'res_sight': resSight,
+      if (resHearing != null) 'res_hearing': resHearing,
+      if (resBloodPressure != null) 'res_blood_pressure': resBloodPressure,
+      if (resFastingBloodSuger != null)
+        'res_fasting_blood_suger': resFastingBloodSuger,
+      if (resTotalCholesterol != null)
+        'res_total_cholesterol': resTotalCholesterol,
+    });
+  }
+
+  HealthChecksCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? resOrganizationName,
+      Value<DateTime>? resCheckupDate,
+      Value<double>? resHeight,
+      Value<double>? resWeight,
+      Value<double>? resWaist,
+      Value<double>? resBMI,
+      Value<String>? resSight,
+      Value<String>? resHearing,
+      Value<String>? resBloodPressure,
+      Value<double>? resFastingBloodSuger,
+      Value<String>? resTotalCholesterol}) {
+    return HealthChecksCompanion(
+      id: id ?? this.id,
+      resOrganizationName: resOrganizationName ?? this.resOrganizationName,
+      resCheckupDate: resCheckupDate ?? this.resCheckupDate,
+      resHeight: resHeight ?? this.resHeight,
+      resWeight: resWeight ?? this.resWeight,
+      resWaist: resWaist ?? this.resWaist,
+      resBMI: resBMI ?? this.resBMI,
+      resSight: resSight ?? this.resSight,
+      resHearing: resHearing ?? this.resHearing,
+      resBloodPressure: resBloodPressure ?? this.resBloodPressure,
+      resFastingBloodSuger: resFastingBloodSuger ?? this.resFastingBloodSuger,
+      resTotalCholesterol: resTotalCholesterol ?? this.resTotalCholesterol,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (resOrganizationName.present) {
+      map['res_organization_name'] =
+          Variable<String>(resOrganizationName.value);
+    }
+    if (resCheckupDate.present) {
+      map['res_checkup_date'] = Variable<DateTime>(resCheckupDate.value);
+    }
+    if (resHeight.present) {
+      map['res_height'] = Variable<double>(resHeight.value);
+    }
+    if (resWeight.present) {
+      map['res_weight'] = Variable<double>(resWeight.value);
+    }
+    if (resWaist.present) {
+      map['res_waist'] = Variable<double>(resWaist.value);
+    }
+    if (resBMI.present) {
+      map['res_b_m_i'] = Variable<double>(resBMI.value);
+    }
+    if (resSight.present) {
+      map['res_sight'] = Variable<String>(resSight.value);
+    }
+    if (resHearing.present) {
+      map['res_hearing'] = Variable<String>(resHearing.value);
+    }
+    if (resBloodPressure.present) {
+      map['res_blood_pressure'] = Variable<String>(resBloodPressure.value);
+    }
+    if (resFastingBloodSuger.present) {
+      map['res_fasting_blood_suger'] =
+          Variable<double>(resFastingBloodSuger.value);
+    }
+    if (resTotalCholesterol.present) {
+      map['res_total_cholesterol'] =
+          Variable<String>(resTotalCholesterol.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HealthChecksCompanion(')
+          ..write('id: $id, ')
+          ..write('resOrganizationName: $resOrganizationName, ')
+          ..write('resCheckupDate: $resCheckupDate, ')
+          ..write('resHeight: $resHeight, ')
+          ..write('resWeight: $resWeight, ')
+          ..write('resWaist: $resWaist, ')
+          ..write('resBMI: $resBMI, ')
+          ..write('resSight: $resSight, ')
+          ..write('resHearing: $resHearing, ')
+          ..write('resBloodPressure: $resBloodPressure, ')
+          ..write('resFastingBloodSuger: $resFastingBloodSuger, ')
+          ..write('resTotalCholesterol: $resTotalCholesterol')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   late final $AlarmsTable alarms = $AlarmsTable(this);
@@ -2262,10 +2850,18 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   late final $PrescriptionsTable prescriptions = $PrescriptionsTable(this);
   late final $PatientsTable patients = $PatientsTable(this);
   late final $DoctorsTable doctors = $DoctorsTable(this);
+  late final $HealthChecksTable healthChecks = $HealthChecksTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [alarms, symptoms, personalMedicines, prescriptions, patients, doctors];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        alarms,
+        symptoms,
+        personalMedicines,
+        prescriptions,
+        patients,
+        doctors,
+        healthChecks
+      ];
 }
