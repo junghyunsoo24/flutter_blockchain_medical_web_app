@@ -31,22 +31,3 @@ class UserInfo extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-//
-// class UserInfo extends ChangeNotifier {
-//   String _userId = '';
-//   String _name = '';
-//
-//   String get userId => _userId;
-//   String get name => _name;
-//
-//   void setUserId(String userId) {
-//     _userId = userId;
-//     notifyListeners();
-//   }
-//   void setName(String name) {
-//     _name = name;
-//     notifyListeners();
-//   }
-//
-// }

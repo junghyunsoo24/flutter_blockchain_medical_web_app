@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/doctor_root_tab.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/root_tab.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/doctor_info.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/doctor_signup_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/patient_signup_screen.dart';
 import '../../colors.dart';
@@ -18,6 +19,10 @@ import 'package:http/http.dart' as http;
 
 import '../model/user_info.dart';
 final userInfoProvider = ChangeNotifierProvider((ref) => UserInfo());
+final doctorInfoProvider = ChangeNotifierProvider((ref) => DoctorInfo());
+final myDatabaseProvider = Provider<MyDatabase>((ref) {
+  return MyDatabase();
+});
 
 class LoginScreen extends ConsumerStatefulWidget {
   static String get routeName => 'login';
@@ -121,6 +126,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         if(await GetIt.I<MyDatabase>().isPatientIdExists(username)){
                           final patient = await GetIt.I<MyDatabase>().getPatientByUserIdAndPassword(username, password);
                           if (patient != null) {
+                            ref.read(userInfoProvider).setUserId(username);
+                            ref.read(userInfoProvider).setUserInfo(patient);
                             print("환자 로그인 성공!");
                             Navigator.push(
                               context,
@@ -158,6 +165,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         if(await GetIt.I<MyDatabase>().isDoctorIdExists(username)){
                           final doctor = await GetIt.I<MyDatabase>().getDoctorByUserIdAndPassword(username, password);
                           if (doctor != null) {
+                            ref.read(doctorInfoProvider).setDoctorId(username);
+                            ref.read(doctorInfoProvider).setDoctorInfo(doctor);
                             print("의료진 로그인 성공!");
                             Navigator.push(
                               context,
