@@ -162,11 +162,11 @@ LazyDatabase _openConnection() {
     if (Platform.isWindows) {
       final dbFolder = await getApplicationSupportDirectory();
       final file = File(p.join(dbFolder.path, 'desktop_db.sqlite'));
+      print("Database folder path: ${dbFolder.path}");
       return NativeDatabase(file);
     } else {
       final dbFolder = await getApplicationDocumentsDirectory();
       final file = File(p.join(dbFolder.path, 'mobile_db.sqlite'));
-      print("Database folder path: ${dbFolder.path}");
       return NativeDatabase(file);
     }
   });

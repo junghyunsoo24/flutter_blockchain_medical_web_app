@@ -13,11 +13,10 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/patient_
 import '../../colors.dart';
 import '../../data.dart';
 import '../../home/layout/default_layout.dart';
-import '../../main.dart';
 import '../component/custom_text_form.field.dart';
 import 'package:http/http.dart' as http;
-
 import '../model/user_info.dart';
+
 final userInfoProvider = ChangeNotifierProvider((ref) => UserInfo());
 final doctorInfoProvider = ChangeNotifierProvider((ref) => DoctorInfo());
 final myDatabaseProvider = Provider<MyDatabase>((ref) {
@@ -33,12 +32,10 @@ class LoginScreen extends ConsumerStatefulWidget {
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   String username = '';
   String password = '';
   bool isMobile = true;
-
 
   Future<bool> doctorLogin() async {
     final url = Uri.parse('http://$webIp/api/v1/sign-in');
