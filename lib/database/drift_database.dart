@@ -40,6 +40,11 @@ class MyDatabase extends _$MyDatabase {
     }
     return null;
   }
+  Future<bool> isPatientIdExists(String userId) async {
+    final query = select(patients)..where((tbl) => tbl.userID.equals(userId)); // patients 테이블에서 userID가 일치하는 행 조회
+    final result = await query.getSingleOrNull(); // 결과를 가져옴 (없으면 null)
+    return result != null; // 결과가 있으면 true, 없으면 false 반환
+  }
 
   // Future<Patient?> getPatientByUserIdAndPassword(String userId, String password) async {
   //   final query = select(patients)
@@ -59,6 +64,11 @@ class MyDatabase extends _$MyDatabase {
     final query = select(doctors)
       ..where((tbl) => tbl.userID.equals(userId) & tbl.userPW.equals(password));
     return query.getSingleOrNull();
+  }
+  Future<bool> isDoctorIdExists(String userId) async {
+    final query = select(doctors)..where((tbl) => tbl.userID.equals(userId)); // doctors 테이블에서 userID가 일치하는 행 조회
+    final result = await query.getSingleOrNull(); // 결과를 가져옴 (없으면 null)
+    return result != null; // 결과가 있으면 true, 없으면 false 반환
   }
 
 

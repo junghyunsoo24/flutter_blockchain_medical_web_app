@@ -40,10 +40,9 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['result'] == 'success') {
-        print('의료진 회원가입 성공!');
         return true;
       } else {
-        print('의료진 회원가입 실패..');
+        print('서버에 등록되지 않아 의료진 회원가입 실패..');
         return false;
       }
     } else {
@@ -56,7 +55,7 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('의사 로그인'),
+        title: const Text('의사 회원가입'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -133,15 +132,18 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
 
                     bool success = await submitDoctorInfo();
                     if(success) {
-                      await GetIt.I<MyDatabase>().addDoctor(DoctorsCompanion(
-                          userID: Value(_userID!),
-                          userPW: Value(_userPW!),
-                          name: Value(_name!),
-                          field: Value(_field!),
-                          hospital: Value(_hospital!),
-                          introduction: Value(_introduction!)
-                      ));
-                      Navigator.pop(context);
+                      if(!(await GetIt.I<MyDatabase>().isDoctorIdExists(_userID!))){
+                        await GetIt.I<MyDatabase>().addDoctor(DoctorsCompanion(
+                            userID: Value(_userID!),
+                            userPW: Value(_userPW!),
+                            name: Value(_name!),
+                            field: Value(_field!),
+                            hospital: Value(_hospital!),
+                            introduction: Value(_introduction!)
+                        ));
+                        print("회원가입 성공하여 디비에 저장되었습니다.");
+                        Navigator.pop(context);
+                      }
                     }
                     else{
                       ScaffoldMessenger.of(context).showMaterialBanner(

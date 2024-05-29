@@ -18,9 +18,6 @@ import 'package:http/http.dart' as http;
 
 import '../model/user_info.dart';
 final userInfoProvider = ChangeNotifierProvider((ref) => UserInfo());
-final myDatabaseProvider = Provider<MyDatabase>((ref) {
-  return MyDatabase();
-});
 
 class LoginScreen extends ConsumerStatefulWidget {
   static String get routeName => 'login';
@@ -45,14 +42,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'id': username, 'pw': password}),
     );
-
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['result'] == 'success') {
-        ref.read(userInfoProvider).setUserId(username);
         return true;
       } else {
-        print('의료진 로그인 실패..');
+        print('서버에 정보가 없어 의료진 로그인 실패..');
         return false;
       }
     } else {
@@ -61,36 +56,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
-  // Future<bool> patientLogin() async {
-  //   final url = Uri.parse('http://$realPhoneIp/api/v1/sign-in');
-  //   print(url);
-  //   final response = await http.post(
-  //     url,
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: jsonEncode({'id': username, 'pw': password}),
-  //   );
-  //   if (response.statusCode == 200) {
-  //     final responseBody = jsonDecode(response.body);
-  //     if (responseBody['result'] == 'success') {
-  //       final userId = responseBody['userId'];
-  //       final patient = await ref.read(myDatabaseProvider).getPatientByUserIdAndPassword(userId, password);
-  //       if (patient != null) {
-  //         ref.read(userInfoProvider).setUserId(userId);
-  //         ref.read(userInfoProvider).setName(patient.name);
-  //         return true;
-  //       } else {
-  //         print('환자 로그인 실패..');
-  //         return false;
-  //       }
-  //     } else {
-  //       print('환자 로그인 실패..');
-  //       return false;
-  //     }
-  //   } else {
-  //     print('서버 오류로 인한 로그인 실패..');
-  //     return false;
-  //   }
-  // }
   Future<bool> patientLogin() async {
     final url = Uri.parse('http://$realPhoneIp/api/v1/sign-in');
     print(url);
@@ -102,18 +67,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['result'] == 'success') {
-        final patient = await ref.read(myDatabaseProvider).getPatientByUserIdAndPassword(username, password);
-        if (patient != null) {
-          //ref.read(userInfoProvider).setUserId(username);
-          ref.read(userInfoProvider).setUserInfo(patient);
-          //ref.read(userInfoProvider).setName(patient.name);
           return true;
-        } else {
-          print('환자 정보 조회 실패..');
-          return false;
-        }
       } else {
-        print('환자 로그인 실패..');
+        print('서버에 정보가 없어 환자 로그인 실패..');
         return false;
       }
     } else {
@@ -121,30 +77,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       return false;
     }
   }
-
-
-  // Future<bool> patientLogin() async {
-  //   final url = Uri.parse('http://$realPhoneIp/api/v1/sign-in');
-  //   print(url);
-  //   final response = await http.post(
-  //     url,
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: jsonEncode({'id': username, 'pw': password}),
-  //   );
-  //   if (response.statusCode == 200) {
-  //     final responseBody = jsonDecode(response.body);
-  //     if (responseBody['result'] == 'success') {
-  //       ref.read(userInfoProvider).setUserId(username);
-  //       return true;
-  //     } else {
-  //       print('환자 로그인 실패..');
-  //       return false;
-  //     }
-  //   } else {
-  //     print('서버 오류로 인한 로그인 실패..');
-  //     return false;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -186,13 +118,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     if (Platform.isAndroid) {
                       bool patientSuccess = await patientLogin();
                       if(patientSuccess) {
-                        final patient = await GetIt.I<MyDatabase>()
-                            .getPatientByUserIdAndPassword(username, password);
-                        if (patient != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => RootTab()),
-                          );
+                        if(await GetIt.I<MyDatabase>().isPatientIdExists(username)){
+                          final patient = await GetIt.I<MyDatabase>().getPatientByUserIdAndPassword(username, password);
+                          if (patient != null) {
+                            print("환자 로그인 성공!");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RootTab()),
+                            );
+                          }
+                        }
+                        else{
+                          print("디비에 정보가 없어 로그인에 실패하였습니다");
                         }
                       }
                       else{
@@ -218,15 +155,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     else if(Platform.isWindows) {
                       bool doctorSuccess = await doctorLogin();
                       if(doctorSuccess) {
-                        final doctor = await GetIt.I<MyDatabase>()
-                            .getDoctorByUserIdAndPassword(username, password);
-                        if (doctor != null) {
-                          // 로그인 성공, 다른 화면으로 이동
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DoctorRootTab()),
-                          );
+                        if(await GetIt.I<MyDatabase>().isDoctorIdExists(username)){
+                          final doctor = await GetIt.I<MyDatabase>().getDoctorByUserIdAndPassword(username, password);
+                          if (doctor != null) {
+                            print("의료진 로그인 성공!");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DoctorRootTab()),
+                            );
+                          }
+                        }
+                        else{
+                          print('디비에 정보가 없어 로그인에 실패하였습니다');
                         }
                       }
                       else{
