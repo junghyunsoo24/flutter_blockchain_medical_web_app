@@ -7,11 +7,19 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_li
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/my_board_list.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/my_comment_list.dart';
 
+import '../login/view/login_screen.dart';
+
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userInfo = ref.watch(userInfoProvider);
+    final userName = userInfo.name;
+    final userBirthday = userInfo.birthday;
+    final userGender = userInfo.gender;
+    final userHeight = userInfo.height;
+    final userWeight = userInfo.weight;
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -38,15 +46,15 @@ class ProfileScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('홍길동', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text('$userName님', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         SizedBox(height: 8),
-                        Text('1990년 1월 1일', style: TextStyle(fontSize: 16)),
+                        Text('생년월일 $userBirthday', style: TextStyle(fontSize: 16)),
                         SizedBox(height: 8),
-                        Text('남성', style: TextStyle(fontSize: 16)),
+                        Text('성별 $userGender', style: TextStyle(fontSize: 16)),
                         SizedBox(height: 8),
-                        Text('175cm', style: TextStyle(fontSize: 16)),
+                        Text('키 $userHeight cm', style: TextStyle(fontSize: 16)),
                         SizedBox(height: 8),
-                        Text('70kg', style: TextStyle(fontSize: 16)),
+                        Text('몸무게 $userWeight kg', style: TextStyle(fontSize: 16)),
                       ],
                     ),
                   ),

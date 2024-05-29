@@ -10,12 +10,15 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/sympto
 
 import '../../deliver/view/web_deliver_screen.dart';
 import '../../emergency/view/emergency_list_screen.dart';
+import '../../login/view/login_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userInfo = ref.watch(userInfoProvider);
+    final userName = userInfo.name;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -174,7 +177,7 @@ class HomeScreen extends ConsumerWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
-                    '의료진에게 정민님의 데이터를 전송하세요!',
+                    '의료진에게 $userName님의 데이터를 전송하세요!',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.normal,

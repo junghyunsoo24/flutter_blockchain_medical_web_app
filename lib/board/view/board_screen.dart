@@ -20,14 +20,6 @@ class BoardScreen extends ConsumerWidget {
     final viewModel = ref.watch(boardViewModelProvider);
     String userId = ref.read(userInfoProvider).userId;
 
-    void _showSuccessSnackBar() {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('질문 등록이 완료되었습니다.'),
-          duration: Duration(seconds: 3),
-        ),
-      );
-    }
     void _navigateToBoardListScreen() {
       Navigator.pushReplacement(
         context,
@@ -172,6 +164,8 @@ class BoardScreen extends ConsumerWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    print("userId");
+                    print(userId);
                     viewModel.submitForm(userId, context).then((_) {
                       _navigateToBoardListScreen();
                     }).catchError((error) {
