@@ -22,6 +22,18 @@ part 'drift_database.g.dart';
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
+  //healthCheck
+  Future<void> addHealthCheck(HealthChecksCompanion data) async {
+    await into(healthChecks).insert(data);
+  }
+  Future<bool> isSameCheckupDateExists(String checkupDate) async {
+    if (checkupDate.isEmpty) return false;
+    final query = select(healthChecks)
+      ..where((t) => t.resCheckupDate.equals(DateTime.parse(checkupDate)));
+    final result = await query.get();
+    return result.isNotEmpty;
+  }
+
   //patient
   Future<void> addPatient(PatientsCompanion data) async {
     await into(patients).insert(data);
@@ -35,8 +47,6 @@ class MyDatabase extends _$MyDatabase {
       ..where((tbl) => tbl.userID.equals(userId) & tbl.userPW.equals(password));
     final patient = await query.getSingleOrNull();
     if (patient != null) {
-      print("여기");
-      print(patient.name);
       return patient.copyWith(name: patient.name); // 사용자 이름 반환
     }
     return null;
@@ -149,8 +159,15 @@ class MyDatabase extends _$MyDatabase {
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return NativeDatabase(file);
+    if (Platform.isWindows) {
+      final dbFolder = await getApplicationSupportDirectory();
+      final file = File(p.join(dbFolder.path, 'desktop_db.sqlite'));
+      return NativeDatabase(file);
+    } else {
+      final dbFolder = await getApplicationDocumentsDirectory();
+      final file = File(p.join(dbFolder.path, 'mobile_db.sqlite'));
+      print("Database folder path: ${dbFolder.path}");
+      return NativeDatabase(file);
+    }
   });
 }

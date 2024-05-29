@@ -1,9 +1,14 @@
 import 'dart:convert';
-
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/api/healthCheck/view/healthCheck_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/home_screen.dart';
 import '../../../data.dart';
+import '../../../database/drift_database.dart';
 
 class HealthCheckRequest extends StatefulWidget {
   const HealthCheckRequest({Key? key}) : super(key: key);
@@ -20,7 +25,8 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
   //final _prescriptionRequestViewModel = PrescriptionRequestViewModel();
 
   Future<bool> firstCheck() async {
-    final url = Uri.parse('http://$realPhoneIp/api/v1/medical-api/health-checkup-result/first-request');
+    final url = Uri.parse(
+        'http://$realPhoneIp/api/v1/medical-api/health-checkup-result/first-request');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -34,14 +40,25 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
 
     if (response.statusCode == 200) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
 
+  DateTime? _parseDateString(String? dateString) {
+    if (dateString == null) return null;
+    try {
+      DateTime dateTime = DateTime.parse("${dateString.substring(4)}-${dateString.substring(0, 2)}-${dateString.substring(2, 4)}");
+      return dateTime;
+    } catch (e) {
+      print('Invalid date format: $e');
+      return null;
+    }
+  }
+
   Future<bool> secondCheck() async {
-    final url = Uri.parse('http://$realPhoneIp/api/v1/medical-api/health-checkup-result/second-request');
+    final url = Uri.parse(
+        'http://$realPhoneIp/api/v1/medical-api/health-checkup-result/second-request');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -54,9 +71,45 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
     );
 
     if (response.statusCode == 200) {
-      return true;
-    }
-    else{
+      final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if ((jsonBody['result']['extraMessage'] == "") && (jsonBody['result']['message'] == "성공")) {
+        final data = jsonBody['data'];
+        final resResultList = data['resResultList'][0];
+        final resPreviewList = data['resPreviewList'][0];
+
+        if ((resPreviewList['resCheckupDate'] != "") &&  (!await GetIt.I<MyDatabase>().isSameCheckupDateExists(resResultList['resCheckupDate']))) {
+            await GetIt.I<MyDatabase>().addHealthCheck(HealthChecksCompanion(
+              resOrganizationName: Value(resResultList['resOrganizationName']),
+              resCheckupDate: Value(DateTime.parse(resResultList['resCheckupDate'])),
+              resHeight: Value(double.tryParse(resPreviewList['resHeight']) ?? 0.0),
+              resWeight: Value(double.tryParse(resPreviewList['resWeight']) ?? 0.0),
+              resWaist: Value(double.tryParse(resPreviewList['resWaist']) ?? 0.0),
+              resBMI: Value(double.tryParse(resPreviewList['resBMI']) ?? 0.0),
+              resSight: Value(resPreviewList['resSight']),
+              resHearing: Value(resPreviewList['resHearing']),
+              resBloodPressure: Value(resPreviewList['resBloodPressure']),
+              resFastingBloodSuger: Value(double.tryParse(resPreviewList['resFastingBloodSuger']) ?? 0.0),
+              resTotalCholesterol: Value(resPreviewList['resTotalCholesterol']),
+            ));
+          print('건강검진을 디비에 처음 저장합니다.');
+          return true;
+        } else {
+          print("이미 같은날짜에 건강검진을 디비에 저장하였습니다.");
+          return false;
+        }
+      } else if (jsonBody['result']['message'] == "이미 응답이 완료된 요청입니다.") {
+        print('이미 응답이 완료된 요청입니다.');
+        return false;
+      } else if (jsonBody['result']['message'] ==
+          "동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.") {
+        print('동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.');
+        return false;
+      } else {
+        print('API 요청 처리가 정상 진행 중입니다. 추가 정보를 입력하세요.');
+        return false;
+      }
+    } else {
+      print('서버에 요청이 오지 않았습니다.');
       return false;
     }
   }
@@ -65,7 +118,8 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('건강검진 내역 불러오기', style: TextStyle(fontWeight: FontWeight.bold)),
+        title:
+            Text('건강검진 내역 불러오기', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -151,48 +205,33 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
               SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
+                  final outerContext = context;
                   if (_nameController.text.isNotEmpty && _birthdayController.text.isNotEmpty && _phoneController.text.isNotEmpty && _selectedProvider != null) {
                     bool firstSuccess = await firstCheck();
-                    if(firstSuccess){
+                    if (firstSuccess) {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
                           title: Text('1차인증 성공'),
-                          content: Text('카카오 지갑 확인시 2차인증 진행합니다.'),
+                          content: Text('카카오 지갑 인증 후 확인버튼 눌러주세요.'),
                           actions: [
                             TextButton(
-                              onPressed: () {
+                              onPressed: () async{
                                 Navigator.of(context).pop();
+                                bool secondSuccess = await secondCheck();
+                                if (secondSuccess) {
+                                  print("디비에 저장하엿습니다.");
+                                  Navigator.of(outerContext).pop();
+                                } else {
+
+                                }
                               },
                               child: Text('확인'),
                             ),
                           ],
                         ),
                       );
-
-                      bool secondSuccess = await secondCheck();
-                      // if(secondSuccess){
-                      //
-                      // }
-                      // else{
-                      //   showDialog(
-                      //     context: context,
-                      //     builder: (context) => AlertDialog(
-                      //       title: Text('2차인증 실패'),
-                      //       content: Text('카카오 지갑 인증을 확인해주세요.'),
-                      //       actions: [
-                      //         TextButton(
-                      //           onPressed: () {
-                      //             Navigator.of(context).pop();
-                      //           },
-                      //           child: Text('확인'),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   );
-                      // }
-                    }
-                    else{
+                    } else {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
