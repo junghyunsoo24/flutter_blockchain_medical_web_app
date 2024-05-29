@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'dart:io';
 import '../../login/view/login_screen.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userInfo = ref.watch(userInfoProvider);
-    final userName = userInfo.name;
-    print("userName");
-    print("userName: ${userName}");
+    final doctorInfo = ref.watch(doctorInfoProvider);
+    late String userName;
+    if (Platform.isAndroid) {
+      userName = userInfo.name;
+    }
+    else if(Platform.isWindows){
+      userName = doctorInfo.name;
+    }
+    else{
+      userName = "";
+    }
 
     return PreferredSize(
       preferredSize: Size.fromHeight(130.0),
