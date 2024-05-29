@@ -54,9 +54,26 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
     );
 
     if (response.statusCode == 200) {
-      return true;
+      final Map<String, dynamic> jsonBody = jsonDecode(response.body);
+      if (jsonBody['result']['extraMessage'] == "" && jsonBody['result']['message'] == "성공") {
+        print('haha');
+        return true;
+      }
+      else if(jsonBody['result']['message'] == "이미 응답이 완료된 요청입니다."){
+        print('이미 응답이 완료된 요청입니다.');
+        return false;
+      }
+      else if(jsonBody['result']['message'] == "동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요."){
+        print('동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.');
+        return false;
+      }
+      else{
+        print('API 요청 처리가 정상 진행 중입니다. 추가 정보를 입력하세요.');
+        return false;
+      }
     }
     else{
+      print('서버에 요청이 오지 않았습니다.');
       return false;
     }
   }
@@ -171,26 +188,26 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
                       );
 
                       bool secondSuccess = await secondCheck();
-                      // if(secondSuccess){
-                      //
-                      // }
-                      // else{
-                      //   showDialog(
-                      //     context: context,
-                      //     builder: (context) => AlertDialog(
-                      //       title: Text('2차인증 실패'),
-                      //       content: Text('카카오 지갑 인증을 확인해주세요.'),
-                      //       actions: [
-                      //         TextButton(
-                      //           onPressed: () {
-                      //             Navigator.of(context).pop();
-                      //           },
-                      //           child: Text('확인'),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   );
-                      // }
+                      if(secondSuccess){
+
+                      }
+                      else{
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('2차인증 실패'),
+                            content: Text('카카오 지갑 인증을 확인해주세요.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('확인'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     }
                     else{
                       showDialog(
