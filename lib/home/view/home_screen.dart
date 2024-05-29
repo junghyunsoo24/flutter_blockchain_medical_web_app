@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/api/healthCheck/view/healthCheck_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/emergency/view/emergency_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/api/prescriptionHistory/view/prescription_history_list.dart';
@@ -355,7 +356,7 @@ class HomeScreen extends ConsumerWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => DetailScreen()),
+                          MaterialPageRoute(builder: (context) => HealthCheckScreen()),
                         );
                       },
                       child: Container(

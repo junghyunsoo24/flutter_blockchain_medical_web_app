@@ -9,13 +9,14 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/api/prescriptionHis
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/model/personal_medicine.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/model/symptom.dart';
 
+import '../api/healthCheck/model/healthCheck.dart';
 import '../user/model/doctor.dart';
 import '../user/model/patient.dart';
 
 part 'drift_database.g.dart';
 
 @DriftDatabase(
-    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors],
+    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors, HealthChecks],
 )
 
 class MyDatabase extends _$MyDatabase {
