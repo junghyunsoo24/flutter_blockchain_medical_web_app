@@ -9,15 +9,15 @@ class SecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Second Page'),
+        title: const Text('전문가 텍스트 화면'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('추가 증상: ${payload['추가 증상']}'),
-            Text('추가 의약품: ${payload['추가 의약품']}'),
-            Text('상세 내용: ${payload['상세 내용']}'),
+            Text('전문의: ${payload['전문의 이름']}'),
+            Text('제목: ${payload['제목']}'),
+            Text('내용: ${payload['내용']}'),
           ],
         ),
       ),

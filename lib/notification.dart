@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -11,6 +10,7 @@ import 'dart:io';
 class FlutterLocalNotification {
   Future<void> init() async {
     if(Platform.isAndroid){
+      print('나는야 핸드폰');
       const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
       final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
 
@@ -21,22 +21,32 @@ class FlutterLocalNotification {
           });
     }
     else if(Platform.isWindows){
+      print('나는야 데스크톱');
       await GetIt.I<WindowsNotification>().initNotificationCallBack((s) {
-        print(s.userInput);
-        print(s.eventType);
       });
     }
   }
 
   Future<void> showNotification(Map<String, dynamic> payload) async {
-    if(Platform.isWindows) {
-      GetIt.I<WindowsNotification>().showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), alarmtTemplate);
+    if (Platform.isWindows) {
+      String userName = payload['환자 이름'] ?? '정보 없음';
+      String medicine = payload['추가 의약품'] ?? '정보 없음';
+      String symptom = payload['추가 증상'] ?? '정보 없음';
+      String detail = payload['상세 내용'] ?? '정보 없음';
+
+      String updatedTemplate = alarmtTemplate
+          .replaceAll('userName', userName)
+          .replaceAll('medicine', medicine)
+          .replaceAll('symptom', symptom)
+          .replaceAll('detail', detail);
+
+      GetIt.I<WindowsNotification>().showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), updatedTemplate);
     }
 
     else if(Platform.isAndroid){
       const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
         'channel_id',
-        'channel_name',
+        'channel_title',
         channelDescription: 'channel_description',
         importance: Importance.max,
         priority: Priority.high,
@@ -47,8 +57,9 @@ class FlutterLocalNotification {
 
       await GetIt.I<FlutterLocalNotificationsPlugin>().show(
         0,
-        payload['title'] ?? '환자 추가 정보',
-        payload['body'] ?? '증상, 의약품',
+        payload['전문의 이름'] ?? '이름 없음',
+        payload['제목'] ?? '제목 없음',
+
         notificationDetails,
         payload: payloadString,
       );
