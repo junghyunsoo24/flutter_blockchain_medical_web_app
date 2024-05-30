@@ -9,32 +9,25 @@ import 'home_screen.dart';
 
 class RootTab extends StatefulWidget {
   static String get routeName => 'home';
-
   const RootTab({Key? key}) : super(key: key);
-
   @override
   State<RootTab> createState() => _RootTabState();
 }
 
-class _RootTabState extends State<RootTab>
-    with SingleTickerProviderStateMixin {
+class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   late TabController controller;
-
   int index = 0;
 
   @override
   void initState() {
     super.initState();
-
     controller = TabController(length: 4, vsync: this);
-
     controller.addListener(tabListener);
   }
 
   @override
   void dispose() {
     controller.removeListener(tabListener);
-
     super.dispose();
   }
 
@@ -75,7 +68,6 @@ class _RootTabState extends State<RootTab>
             icon: Icon(Icons.person_outlined),
             label: '마이 페이지',
           ),
-
         ],
       ),
       child: TabBarView(

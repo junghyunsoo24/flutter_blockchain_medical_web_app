@@ -9,17 +9,30 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/api/prescriptionHis
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/model/personal_medicine.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/model/symptom.dart';
 
+import '../api/healthCheck/model/healthCheck.dart';
 import '../user/model/doctor.dart';
 import '../user/model/patient.dart';
 
 part 'drift_database.g.dart';
 
 @DriftDatabase(
-    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors],
+    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors, HealthChecks],
 )
 
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
+
+  //healthCheck
+  Future<void> addHealthCheck(HealthChecksCompanion data) async {
+    await into(healthChecks).insert(data);
+  }
+  Future<bool> isSameCheckupDateExists(String checkupDate) async {
+    if (checkupDate.isEmpty) return false;
+    final query = select(healthChecks)
+      ..where((t) => t.resCheckupDate.equals(DateTime.parse(checkupDate)));
+    final result = await query.get();
+    return result.isNotEmpty;
+  }
 
   //patient
   Future<void> addPatient(PatientsCompanion data) async {
@@ -34,11 +47,14 @@ class MyDatabase extends _$MyDatabase {
       ..where((tbl) => tbl.userID.equals(userId) & tbl.userPW.equals(password));
     final patient = await query.getSingleOrNull();
     if (patient != null) {
-      print("여기");
-      print(patient.name);
       return patient.copyWith(name: patient.name); // 사용자 이름 반환
     }
     return null;
+  }
+  Future<bool> isPatientIdExists(String userId) async {
+    final query = select(patients)..where((tbl) => tbl.userID.equals(userId)); // patients 테이블에서 userID가 일치하는 행 조회
+    final result = await query.getSingleOrNull(); // 결과를 가져옴 (없으면 null)
+    return result != null; // 결과가 있으면 true, 없으면 false 반환
   }
 
   // Future<Patient?> getPatientByUserIdAndPassword(String userId, String password) async {
@@ -59,6 +75,11 @@ class MyDatabase extends _$MyDatabase {
     final query = select(doctors)
       ..where((tbl) => tbl.userID.equals(userId) & tbl.userPW.equals(password));
     return query.getSingleOrNull();
+  }
+  Future<bool> isDoctorIdExists(String userId) async {
+    final query = select(doctors)..where((tbl) => tbl.userID.equals(userId)); // doctors 테이블에서 userID가 일치하는 행 조회
+    final result = await query.getSingleOrNull(); // 결과를 가져옴 (없으면 null)
+    return result != null; // 결과가 있으면 true, 없으면 false 반환
   }
 
 
@@ -138,8 +159,15 @@ class MyDatabase extends _$MyDatabase {
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return NativeDatabase(file);
+    if (Platform.isWindows) {
+      final dbFolder = await getApplicationSupportDirectory();
+      final file = File(p.join(dbFolder.path, 'desktop_db.sqlite'));
+      print("Database folder path: ${dbFolder.path}");
+      return NativeDatabase(file);
+    } else {
+      final dbFolder = await getApplicationDocumentsDirectory();
+      final file = File(p.join(dbFolder.path, 'mobile_db.sqlite'));
+      return NativeDatabase(file);
+    }
   });
 }

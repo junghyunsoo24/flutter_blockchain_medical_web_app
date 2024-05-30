@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/api/prescriptionHistory/view/prescription_history_request.dart';
@@ -7,16 +8,20 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/medication/viewMode
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/viewModel/personal_medicine_view_model.dart';
 
-class PrescriptionHistoryListScreen extends StatefulWidget{
+import '../../../login/view/login_screen.dart';
+
+class PrescriptionHistoryListScreen extends ConsumerStatefulWidget {
   const PrescriptionHistoryListScreen({Key? key}) : super(key: key);
 
   @override
   _PrescriptionHistoryListScreenState createState() => _PrescriptionHistoryListScreenState();
 }
 
-class _PrescriptionHistoryListScreenState extends State<PrescriptionHistoryListScreen>{
+class _PrescriptionHistoryListScreenState extends ConsumerState<PrescriptionHistoryListScreen>{
   late List<Prescription> prescriptions = [];
   late final PrescriptionViewModel _viewModel;
+  late String userName;
+
   @override
   void initState() {
     super.initState();
@@ -26,8 +31,6 @@ class _PrescriptionHistoryListScreenState extends State<PrescriptionHistoryListS
 
   Future<void> _loadMedicines() async {
     final prescriptionList = await _viewModel.getPrescriptions(); //모든 의약품 가져오기
-    print("처방내역 작동");
-    print(prescriptionList);
     setState(() {
       prescriptions = prescriptionList;
     });
@@ -35,9 +38,11 @@ class _PrescriptionHistoryListScreenState extends State<PrescriptionHistoryListS
 
   @override
   Widget build(BuildContext context) {
+    final userInfo = ref.watch(userInfoProvider);
+    userName = userInfo.name;
     return Scaffold(
       appBar: AppBar(
-        title: Text('김정민 님의 처방내역', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('$userName님의 처방 내역', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: Column(
         children: [
