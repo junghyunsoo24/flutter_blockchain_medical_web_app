@@ -17,9 +17,9 @@ const realPhoneIp = '202.31.201.254:80';
 
 String getIp() {
   if (Platform.isAndroid) {
-    return emulatorIp;
+    return realPhoneIp;
   } else if (Platform.isIOS) {
-    return emulatorIp;
+    return realPhoneIp;
   } else if (Platform.isWindows) {
     return webIp;
   } else {
