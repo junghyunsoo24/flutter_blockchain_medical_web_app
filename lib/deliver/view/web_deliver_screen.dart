@@ -7,14 +7,14 @@ import '../../login/view/login_screen.dart';
 import '../../notification.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class WebDeliverScreen extends ConsumerStatefulWidget  {
-
+class WebDeliverScreen extends ConsumerStatefulWidget {
   @override
   _WebDeliverScreenState createState() => _WebDeliverScreenState();
 }
 
 class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
-  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('doctorToPatient').snapshots();
+  final Stream<QuerySnapshot> _messagesStream =
+      FirebaseFirestore.instance.collection('doctorToPatient').snapshots();
   bool _isInitialLoadComplete = false;
 
   final TextEditingController _bodyController = TextEditingController();
@@ -35,7 +35,7 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _loadData();
 
@@ -55,7 +55,8 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
       if (_isInitialLoadComplete) {
         for (var change in querySnapshot.docChanges) {
           if (change.type == DocumentChangeType.added) {
-            Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
+            Map<String, dynamic> data =
+                change.doc.data() as Map<String, dynamic>;
             GetIt.I<FlutterLocalNotification>().showNotification(data);
           }
         }
@@ -71,79 +72,125 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
     userName = userInfo.name;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('메시지 전송'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            DropdownButton<String>(
-              value: _selectedSymptom,
-              hint: Text('증상 선택'),
-              onChanged: (value) {
-                setState(() {
-                  _selectedSymptom = value;
-                });
-              },
-              items: _symptoms.map((symptom) {
-                return DropdownMenuItem<String>(
-                  value: symptom.symptom,
-                  child: Text(symptom.symptom),
-                );
-              }).toList(),
-            ),
-            DropdownButton<String>(
-              value: _selectedMedicine,
-              hint: Text('개인 의약품 선택'),
-              onChanged: (value) {
-                setState(() {
-                  _selectedMedicine = value;
-                });
-              },
-              items: _medicines.map((medicine) {
-                return DropdownMenuItem<String>(
-                  value: medicine.pillName,
-                  child: Text(medicine.pillName),
-                );
-              }).toList(),
-            ),
-            TextField(
-              controller: _bodyController,
-              decoration: InputDecoration(labelText: '상세 내용'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                if (_selectedSymptom != null) {
-                  symptom = _selectedSymptom!;
-                }
-                else{
-                  symptom =" 추가 증상 없음";
-                }
-                if (_selectedMedicine != null) {
-                  medicine = _selectedMedicine!;
-                }
-                else{
-                  medicine =" 추가 의약품 없음";
-                }
-
-                await FirebaseFirestore.instance.collection('patientToDoctor').add({
-                  '환자 이름': userName,
-                  '추가 증상': symptom,
-                  '추가 의약품': medicine,
-                  '상세 내용': _bodyController.text,
-                });
-
-                // 데이터 추가 후, 필드 초기화
-                _bodyController.clear();
-              },
-              child: Text('확인'),
-            ),
-          ],
+        appBar: AppBar(
+          title: Text('메시지 전송'),
+          backgroundColor: Colors.lightBlueAccent, // 앱바 색상 변경
+          leading: Icon(Icons.message), // 앱바에 메시지 아이콘 추가
         ),
-      ),
-    );
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DropdownButton<String>(
+                  value: _selectedSymptom,
+                  hint: Text('증상 선택'),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedSymptom = value;
+                    });
+                  },
+                  items: _symptoms.map((symptom) {
+                    return DropdownMenuItem<String>(
+                      value: symptom.symptom,
+                      child: Text(symptom.symptom),
+                    );
+                  }).toList(),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.blue, // 드롭다운 텍스트 색상 변경
+                  ),
+                  dropdownColor: Colors.white,
+                  // 드롭다운 배경색 변경
+                  elevation: 8,
+                  // 드롭다운 그림자 효과 추가
+                  isExpanded: true, // 드롭다운 너비를 화면 가득 채움
+                ),
+                SizedBox(height: 16.0),
+                DropdownButton<String>(
+                  value: _selectedMedicine,
+                  hint: Text('개인 의약품 선택'),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedMedicine = value;
+                    });
+                  },
+                  items: _medicines.map((medicine) {
+                    return DropdownMenuItem<String>(
+                      value: medicine.pillName,
+                      child: Text(medicine.pillName),
+                    );
+                  }).toList(),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.blue, // 드롭다운 텍스트 색상 변경
+                  ),
+                  dropdownColor: Colors.white,
+                  // 드롭다운 배경색 변경
+                  elevation: 8,
+                  // 드롭다운 그림자 효과 추가
+                  isExpanded: true, // 드롭다운 너비를 화면 가득 채움
+                ),
+                SizedBox(height: 16.0),
+                TextField(
+                  controller: _bodyController,
+                  decoration: InputDecoration(
+                    labelText: '상세 내용',
+                    labelStyle: TextStyle(
+                      color: Colors.blue, // 텍스트필드 라벨 색상 변경
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0), // 텍스트필드 모서리 둥글게
+                      borderSide: BorderSide(
+                        color: Colors.blue, // 텍스트필드 테두리 색상 변경
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_selectedSymptom != null) {
+                      symptom = _selectedSymptom!;
+                    } else {
+                      symptom = " 추가 증상 없음";
+                    }
+                    if (_selectedMedicine != null) {
+                      medicine = _selectedMedicine!;
+                    } else {
+                      medicine = " 추가 의약품 없음";
+                    }
+
+                    await FirebaseFirestore.instance
+                        .collection('patientToDoctor')
+                        .add({
+                      '환자 이름': userName,
+                      '추가 증상': symptom,
+                      '추가 의약품': medicine,
+                      '상세 내용': _bodyController.text,
+                    });
+
+                    // 데이터 추가 후, 필드 초기화
+                    _bodyController.clear();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.check), // 확인 버튼에 아이콘 추가
+                      SizedBox(width: 8.0),
+                      Text('확인'),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, // 버튼 색상 변경
+                    padding: EdgeInsets.symmetric(vertical: 16.0), // 버튼 패딩 조정
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   @override
