@@ -46,7 +46,7 @@ void main() async {
 
   FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
 
-  await dotenv.load(fileName: 'asset/config/.env');
+  //await dotenv.load(fileName: 'asset/config/.env');
 
   runApp(
     const ProviderScope(
