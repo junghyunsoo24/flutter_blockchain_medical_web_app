@@ -131,7 +131,7 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
               Text(
                 '아래 내용을 입력하고, 버튼을 누르면, 카카오톡 인증이 실시됩니다.',
                 style: TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 14.0,
                   color: Colors.grey,
                 ),
               ),

@@ -51,13 +51,13 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 '$userName님 환영합니다.',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
+                  fontSize: 17.0,
                 ),
               ),
               Text(
                 '나만의 건강 블록에 오신 걸 환영합니다!',
                 style: TextStyle(
-                  fontSize: 14.0,
+                  fontSize: 13.0,
                 ),
               ),
             ],
@@ -71,5 +71,5 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(130.0);
+  Size get preferredSize => Size.fromHeight(100.0);
 }

@@ -57,7 +57,7 @@ class FlutterLocalNotification {
 
       await GetIt.I<FlutterLocalNotificationsPlugin>().show(
         0,
-        payload['전문의 이름'] ?? '이름 없음',
+        '전문의 이름: ${payload['전문의 이름'] ?? '이름 없음'}',
         payload['제목'] ?? '제목 없음',
 
         notificationDetails,
