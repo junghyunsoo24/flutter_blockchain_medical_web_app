@@ -17,11 +17,26 @@ import '../user/model/patient.dart';
 part 'drift_database.g.dart';
 
 @DriftDatabase(
-    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors, HealthChecks, DoctorAlarms],
+    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors, HealthChecks, DoctorAlarms, Prescriptions],
 )
 
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
+
+  Future<void> addPrescriptions(PrescriptionsCompanion data) async {
+    await into(prescriptions).insert(data);
+  }
+  Future<bool> isSameExistsPrescriptions(PrescriptionsCompanion data) async {
+    final existingPrescription = await (select(prescriptions)
+      ..where((p) => p.resTreatDate.equals(data.resTreatDate.value))
+      ..where((p) => p.resPrescribeDrugName.equals(data.resPrescribeDrugName.value))
+      ..where((p) => p.resPrescribeDays.equals(data.resPrescribeDays.value))
+      ..limit(1))
+        .getSingleOrNull();
+
+    return existingPrescription != null;
+  }
+
 
   //doctorAlarm
   Future<void> addDoctorAlarm(DoctorAlarmsCompanion data) async {
