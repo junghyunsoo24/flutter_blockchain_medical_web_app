@@ -2841,6 +2841,294 @@ class HealthChecksCompanion extends UpdateCompanion<HealthCheck> {
   }
 }
 
+class $DoctorAlarmsTable extends DoctorAlarms
+    with TableInfo<$DoctorAlarmsTable, DoctorAlarm> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DoctorAlarmsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _userNameMeta =
+      const VerificationMeta('userName');
+  @override
+  late final GeneratedColumn<String> userName = GeneratedColumn<String>(
+      'user_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _medicineMeta =
+      const VerificationMeta('medicine');
+  @override
+  late final GeneratedColumn<String> medicine = GeneratedColumn<String>(
+      'medicine', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _symptomMeta =
+      const VerificationMeta('symptom');
+  @override
+  late final GeneratedColumn<String> symptom = GeneratedColumn<String>(
+      'symptom', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _detailMeta = const VerificationMeta('detail');
+  @override
+  late final GeneratedColumn<String> detail = GeneratedColumn<String>(
+      'detail', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, userName, medicine, symptom, detail];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'doctor_alarms';
+  @override
+  VerificationContext validateIntegrity(Insertable<DoctorAlarm> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_name')) {
+      context.handle(_userNameMeta,
+          userName.isAcceptableOrUnknown(data['user_name']!, _userNameMeta));
+    } else if (isInserting) {
+      context.missing(_userNameMeta);
+    }
+    if (data.containsKey('medicine')) {
+      context.handle(_medicineMeta,
+          medicine.isAcceptableOrUnknown(data['medicine']!, _medicineMeta));
+    } else if (isInserting) {
+      context.missing(_medicineMeta);
+    }
+    if (data.containsKey('symptom')) {
+      context.handle(_symptomMeta,
+          symptom.isAcceptableOrUnknown(data['symptom']!, _symptomMeta));
+    } else if (isInserting) {
+      context.missing(_symptomMeta);
+    }
+    if (data.containsKey('detail')) {
+      context.handle(_detailMeta,
+          detail.isAcceptableOrUnknown(data['detail']!, _detailMeta));
+    } else if (isInserting) {
+      context.missing(_detailMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DoctorAlarm map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DoctorAlarm(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      userName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_name'])!,
+      medicine: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}medicine'])!,
+      symptom: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}symptom'])!,
+      detail: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}detail'])!,
+    );
+  }
+
+  @override
+  $DoctorAlarmsTable createAlias(String alias) {
+    return $DoctorAlarmsTable(attachedDatabase, alias);
+  }
+}
+
+class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
+  final int id;
+  final String userName;
+  final String medicine;
+  final String symptom;
+  final String detail;
+  const DoctorAlarm(
+      {required this.id,
+      required this.userName,
+      required this.medicine,
+      required this.symptom,
+      required this.detail});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['user_name'] = Variable<String>(userName);
+    map['medicine'] = Variable<String>(medicine);
+    map['symptom'] = Variable<String>(symptom);
+    map['detail'] = Variable<String>(detail);
+    return map;
+  }
+
+  DoctorAlarmsCompanion toCompanion(bool nullToAbsent) {
+    return DoctorAlarmsCompanion(
+      id: Value(id),
+      userName: Value(userName),
+      medicine: Value(medicine),
+      symptom: Value(symptom),
+      detail: Value(detail),
+    );
+  }
+
+  factory DoctorAlarm.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DoctorAlarm(
+      id: serializer.fromJson<int>(json['id']),
+      userName: serializer.fromJson<String>(json['userName']),
+      medicine: serializer.fromJson<String>(json['medicine']),
+      symptom: serializer.fromJson<String>(json['symptom']),
+      detail: serializer.fromJson<String>(json['detail']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userName': serializer.toJson<String>(userName),
+      'medicine': serializer.toJson<String>(medicine),
+      'symptom': serializer.toJson<String>(symptom),
+      'detail': serializer.toJson<String>(detail),
+    };
+  }
+
+  DoctorAlarm copyWith(
+          {int? id,
+          String? userName,
+          String? medicine,
+          String? symptom,
+          String? detail}) =>
+      DoctorAlarm(
+        id: id ?? this.id,
+        userName: userName ?? this.userName,
+        medicine: medicine ?? this.medicine,
+        symptom: symptom ?? this.symptom,
+        detail: detail ?? this.detail,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DoctorAlarm(')
+          ..write('id: $id, ')
+          ..write('userName: $userName, ')
+          ..write('medicine: $medicine, ')
+          ..write('symptom: $symptom, ')
+          ..write('detail: $detail')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, userName, medicine, symptom, detail);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DoctorAlarm &&
+          other.id == this.id &&
+          other.userName == this.userName &&
+          other.medicine == this.medicine &&
+          other.symptom == this.symptom &&
+          other.detail == this.detail);
+}
+
+class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
+  final Value<int> id;
+  final Value<String> userName;
+  final Value<String> medicine;
+  final Value<String> symptom;
+  final Value<String> detail;
+  const DoctorAlarmsCompanion({
+    this.id = const Value.absent(),
+    this.userName = const Value.absent(),
+    this.medicine = const Value.absent(),
+    this.symptom = const Value.absent(),
+    this.detail = const Value.absent(),
+  });
+  DoctorAlarmsCompanion.insert({
+    this.id = const Value.absent(),
+    required String userName,
+    required String medicine,
+    required String symptom,
+    required String detail,
+  })  : userName = Value(userName),
+        medicine = Value(medicine),
+        symptom = Value(symptom),
+        detail = Value(detail);
+  static Insertable<DoctorAlarm> custom({
+    Expression<int>? id,
+    Expression<String>? userName,
+    Expression<String>? medicine,
+    Expression<String>? symptom,
+    Expression<String>? detail,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userName != null) 'user_name': userName,
+      if (medicine != null) 'medicine': medicine,
+      if (symptom != null) 'symptom': symptom,
+      if (detail != null) 'detail': detail,
+    });
+  }
+
+  DoctorAlarmsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? userName,
+      Value<String>? medicine,
+      Value<String>? symptom,
+      Value<String>? detail}) {
+    return DoctorAlarmsCompanion(
+      id: id ?? this.id,
+      userName: userName ?? this.userName,
+      medicine: medicine ?? this.medicine,
+      symptom: symptom ?? this.symptom,
+      detail: detail ?? this.detail,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userName.present) {
+      map['user_name'] = Variable<String>(userName.value);
+    }
+    if (medicine.present) {
+      map['medicine'] = Variable<String>(medicine.value);
+    }
+    if (symptom.present) {
+      map['symptom'] = Variable<String>(symptom.value);
+    }
+    if (detail.present) {
+      map['detail'] = Variable<String>(detail.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DoctorAlarmsCompanion(')
+          ..write('id: $id, ')
+          ..write('userName: $userName, ')
+          ..write('medicine: $medicine, ')
+          ..write('symptom: $symptom, ')
+          ..write('detail: $detail')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   late final $AlarmsTable alarms = $AlarmsTable(this);
@@ -2851,6 +3139,7 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   late final $PatientsTable patients = $PatientsTable(this);
   late final $DoctorsTable doctors = $DoctorsTable(this);
   late final $HealthChecksTable healthChecks = $HealthChecksTable(this);
+  late final $DoctorAlarmsTable doctorAlarms = $DoctorAlarmsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2862,6 +3151,7 @@ abstract class _$MyDatabase extends GeneratedDatabase {
         prescriptions,
         patients,
         doctors,
-        healthChecks
+        healthChecks,
+        doctorAlarms
       ];
 }

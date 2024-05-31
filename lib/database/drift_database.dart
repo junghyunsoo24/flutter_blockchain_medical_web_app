@@ -10,17 +10,23 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/mo
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/model/symptom.dart';
 
 import '../api/healthCheck/model/healthCheck.dart';
+import '../deliver/model/doctor_alarm.dart';
 import '../user/model/doctor.dart';
 import '../user/model/patient.dart';
 
 part 'drift_database.g.dart';
 
 @DriftDatabase(
-    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors, HealthChecks],
+    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors, HealthChecks, DoctorAlarms],
 )
 
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
+
+  //doctorAlarm
+  Future<void> addDoctorAlarm(DoctorAlarmsCompanion data) async {
+    await into(doctorAlarms).insert(data);
+  }
 
   //healthCheck
   Future<void> addHealthCheck(HealthChecksCompanion data) async {

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/login/view/login_screen.dart';
 import 'package:windows_notification/windows_notification.dart';
-import 'notification.dart';
+import 'deliver/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

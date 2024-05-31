@@ -1,11 +1,13 @@
+import 'package:drift/drift.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/second_window_page.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/deliver/view/second_window_page.dart';
 import 'package:windows_notification/notification_message.dart';
 import 'package:windows_notification/windows_notification.dart';
-import 'deliver/alarm_template.dart';
-import 'second.dart';
+import '../database/drift_database.dart';
+import 'alarm_template.dart';
+import 'view/second.dart';
 import 'dart:io';
 
 class FlutterLocalNotification {
@@ -44,6 +46,13 @@ class FlutterLocalNotification {
           .replaceAll('detail', detail);
 
       GetIt.I<WindowsNotification>().showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), updatedTemplate);
+
+      await GetIt.I<MyDatabase>().addDoctorAlarm(DoctorAlarmsCompanion(
+        userName: Value(userName),
+        medicine: Value(medicine),
+        symptom: Value(symptom),
+        detail: Value(detail),
+      ));
     }
 
     else if(Platform.isAndroid){
@@ -101,6 +110,7 @@ class FlutterLocalNotification {
   }
 
   Future onSelectWindowNotification() async {
+
     if (navigatorKey.currentState != null) {
       navigatorKey.currentState!.push(
         MaterialPageRoute(
