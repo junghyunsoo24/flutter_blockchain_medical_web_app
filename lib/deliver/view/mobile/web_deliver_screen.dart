@@ -14,7 +14,7 @@ class WebDeliverScreen extends ConsumerStatefulWidget {
 
 class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
   final Stream<QuerySnapshot> _messagesStream =
-      FirebaseFirestore.instance.collection('doctorToPatient').snapshots();
+  FirebaseFirestore.instance.collection('doctorToPatient').snapshots();
   bool _isInitialLoadComplete = false;
 
   final TextEditingController _bodyController = TextEditingController();
@@ -56,7 +56,7 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
         for (var change in querySnapshot.docChanges) {
           if (change.type == DocumentChangeType.added) {
             Map<String, dynamic> data =
-                change.doc.data() as Map<String, dynamic>;
+            change.doc.data() as Map<String, dynamic>;
             GetIt.I<FlutterLocalNotification>().showNotification(data);
           }
         }

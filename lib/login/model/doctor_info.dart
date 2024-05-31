@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-
 import '../../database/drift_database.dart';
+
 class DoctorInfo extends ChangeNotifier {
   String _userId = '';
   String _name = '';
