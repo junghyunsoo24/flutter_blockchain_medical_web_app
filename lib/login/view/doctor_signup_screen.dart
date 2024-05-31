@@ -40,6 +40,7 @@ class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['result'] == 'success') {
+        print('서버에 응답은 성공');
         return true;
       } else {
         print('서버에 등록되지 않아 의료진 회원가입 실패..');

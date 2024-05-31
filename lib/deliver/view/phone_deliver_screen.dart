@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../login/view/login_screen.dart';
-import '../../notification.dart';
+import '../notification.dart';
 
 class PhoneDeliverScreen extends ConsumerStatefulWidget {
 

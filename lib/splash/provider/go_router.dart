@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/main.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/user/provider/auth_provider.dart';
 
-import '../../notification.dart';
+import '../../deliver/notification.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   // watch - 값이 변경될때마다 다시 빌드

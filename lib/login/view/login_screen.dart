@@ -230,7 +230,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         MaterialPageRoute(
                             builder: (context) => PatientSignupScreen()),
                       );
-                    } else {
+                    } else if(Platform.isWindows) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
