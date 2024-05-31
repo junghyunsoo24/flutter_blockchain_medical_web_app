@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift; // drift 임포트 추가
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import '../../database/drift_database.dart';
+import '../../../database/drift_database.dart';
 
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:get_it/get_it.dart';
 
-import '../blockchain_service.dart';
+import '../../blockchain_service.dart';
 
 class SecondWindowPage extends StatelessWidget {
   final blockchainService = BlockchainService();
@@ -71,7 +71,7 @@ class SecondWindowPage extends StatelessWidget {
                                     : '의료 데이터가 변조되었습니다.'),
                                 actions: [
                                   TextButton(
-                                    child: Text('확인'),
+                                    child: Text('검증하기'),
                                     onPressed: () => Navigator.of(context).pop(),
                                   ),
                                 ],

@@ -5,7 +5,7 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/api/healthCheck/vie
 import 'package:portfolio_flutter_blockchain_medical_web_app/api/prescriptionHistory/view/prescription_history_list.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_list_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/view/symptom_list_screen.dart';
-import '../../deliver/view/web_deliver_screen.dart';
+import '../../deliver/view/mobile/web_deliver_screen.dart';
 import '../../emergency/view/emergency_list_screen.dart';
 import '../../login/view/login_screen.dart';
 
