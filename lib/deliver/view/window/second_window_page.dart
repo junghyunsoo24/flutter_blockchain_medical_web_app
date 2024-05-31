@@ -71,14 +71,14 @@ class SecondWindowPage extends StatelessWidget {
                                     : '의료 데이터가 변조되었습니다.'),
                                 actions: [
                                   TextButton(
-                                    child: Text('검증하기'),
+                                    child: Text('확인'),
                                     onPressed: () => Navigator.of(context).pop(),
                                   ),
                                 ],
                               ),
                             );
                           },
-                          child: Text('확인'),
+                          child: Text('검증하기'),
                         ),
                       ],
                     ),
