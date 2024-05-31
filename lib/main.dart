@@ -25,8 +25,6 @@ void main() async {
   FlutterLocalNotification flutterLocalNotification = FlutterLocalNotification();
   GetIt.I.registerSingleton<FlutterLocalNotification>(flutterLocalNotification);
 
-  GetIt.I<FlutterLocalNotification>().init();
-
   WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isAndroid) {
