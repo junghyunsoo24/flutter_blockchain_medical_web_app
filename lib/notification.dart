@@ -1,6 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/second_window_page.dart';
 import 'package:windows_notification/notification_message.dart';
 import 'package:windows_notification/windows_notification.dart';
 import 'deliver/alarm_template.dart';
@@ -23,6 +24,8 @@ class FlutterLocalNotification {
     else if(Platform.isWindows){
       print('나는야 데스크톱');
       await GetIt.I<WindowsNotification>().initNotificationCallBack((s) {
+        onSelectWindowNotification();
+
       });
     }
   }
@@ -94,6 +97,18 @@ class FlutterLocalNotification {
           print('데이터 파싱 중 에러 발생: $e');
         }
       }
+    }
+  }
+
+  Future onSelectWindowNotification() async {
+    if (navigatorKey.currentState != null) {
+      navigatorKey.currentState!.push(
+        MaterialPageRoute(
+          builder: (context) => SecondWindowPage(),
+        ),
+      );
+    } else {
+      print('navigatorKey가 비어있습니다.');
     }
   }
 
