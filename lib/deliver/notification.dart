@@ -2,12 +2,12 @@ import 'package:drift/drift.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/deliver/view/second_window_page.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/deliver/view/window/second_window_page.dart';
 import 'package:windows_notification/notification_message.dart';
 import 'package:windows_notification/windows_notification.dart';
 import '../database/drift_database.dart';
 import 'alarm_template.dart';
-import 'view/second.dart';
+import 'view/mobile/second.dart';
 import 'dart:io';
 
 class FlutterLocalNotification {

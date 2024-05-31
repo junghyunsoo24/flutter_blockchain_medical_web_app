@@ -1,7 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../deliver/view/phone_deliver_screen.dart';
+import '../../deliver/view/window/phone_deliver_screen.dart';
 
 class DoctorHomeScreen extends ConsumerWidget {
   const DoctorHomeScreen({Key? key}) : super(key: key);

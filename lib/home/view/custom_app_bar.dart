@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/deliver/view/window/second_window_page.dart';
 import 'dart:io';
 import '../../login/view/login_screen.dart';
 
@@ -64,7 +65,14 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
           )
         ),
         actions: <Widget>[
-          IconButton(onPressed: (){}, icon: Icon(Icons.notifications_active))
+          IconButton(onPressed: (){
+            if (Platform.isWindows) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SecondWindowPage()),
+              );
+            } //
+          }, icon: Icon(Icons.notifications_active))
         ],
       ),
     );
