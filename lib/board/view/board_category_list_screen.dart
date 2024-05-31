@@ -1,7 +1,10 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_list_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_screen.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/medication/view/DetailScreen.dart';
 
 class BoardCategoryListScreen extends ConsumerWidget {
   const BoardCategoryListScreen({Key? key}) : super(key: key);
@@ -134,6 +137,23 @@ class BoardCategoryListScreen extends ConsumerWidget {
           ),
         ),
       ),
+      floatingActionButton: Platform.isAndroid
+          ? FloatingActionButton( // 플로팅 액션 버튼을 조건부로 표시
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BoardScreen()),
+          );
+        },
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        elevation: 8.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Icon(Icons.add),
+      )
+          : null,
     );
   }
 

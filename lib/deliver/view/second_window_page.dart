@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-
 import 'package:drift/drift.dart' as drift; // drift 임포트 추가
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-
 import '../../database/drift_database.dart';
-// ... (기존 코드)
+
+import 'package:flutter/material.dart';
+import 'package:drift/drift.dart' as drift;
+import 'package:get_it/get_it.dart';
+
+import '../blockchain_service.dart';
 
 class SecondWindowPage extends StatelessWidget {
+  final blockchainService = BlockchainService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,13 +24,12 @@ class SecondWindowPage extends StatelessWidget {
           future: GetIt.I<MyDatabase>().select(GetIt.I<MyDatabase>().doctorAlarms).get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // 데이터 로딩 중 표시
+              return CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}'); // 에러 발생 시 표시
+              return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No data found'); // 데이터가 없을 경우 표시
+              return Text('No data found');
             } else {
-              // 데이터가 있을 경우 화면에 표시
               final alarms = snapshot.data!;
               return ListView.builder(
                 itemCount: alarms.length,
@@ -39,6 +43,43 @@ class SecondWindowPage extends StatelessWidget {
                         Text('약물: ${alarm.medicine}'),
                         Text('증상: ${alarm.symptom}'),
                         Text('세부 정보: ${alarm.detail}'),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await blockchainService.registerNodes();
+
+                            var medicalData = {
+                              "patient_id": alarm.id,
+                              "name": alarm.userName,
+                              "diagnosis": alarm.symptom,
+                              "treatment": alarm.medicine
+                            };
+
+                            var contractAddress = await blockchainService.storeHashOnBlockchain(
+                                blockchainService.calculateHash(medicalData)
+                            );
+
+                            var isVerified = await blockchainService.verifyMedicalData(
+                                medicalData, contractAddress
+                            );
+
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('의료 데이터 검증 결과'),
+                                content: Text(isVerified
+                                    ? '의료 데이터의 무결성이 확인되었습니다.'
+                                    : '의료 데이터가 변조되었습니다.'),
+                                actions: [
+                                  TextButton(
+                                    child: Text('확인'),
+                                    onPressed: () => Navigator.of(context).pop(),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: Text('확인'),
+                        ),
                       ],
                     ),
                   );
