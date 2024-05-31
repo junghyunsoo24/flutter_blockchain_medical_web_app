@@ -17,22 +17,21 @@ class PrescriptionHistoryListScreen extends ConsumerStatefulWidget {
   _PrescriptionHistoryListScreenState createState() => _PrescriptionHistoryListScreenState();
 }
 
-class _PrescriptionHistoryListScreenState extends ConsumerState<PrescriptionHistoryListScreen>{
+class _PrescriptionHistoryListScreenState extends ConsumerState<PrescriptionHistoryListScreen> {
   late List<Prescription> prescriptions = [];
-  late final PrescriptionViewModel _viewModel;
   late String userName;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = PrescriptionViewModel();
-    _loadMedicines();
+    _loadPrescriptions();
   }
 
-  Future<void> _loadMedicines() async {
-    final prescriptionList = await _viewModel.getPrescriptions(); //모든 의약품 가져오기
+  Future<void> _loadPrescriptions() async {
+    final query = GetIt.I<MyDatabase>().select(GetIt.I<MyDatabase>().prescriptions);
+    final prescriptionsList = await query.get();
     setState(() {
-      prescriptions = prescriptionList;
+      prescriptions = prescriptionsList;
     });
   }
 
@@ -40,42 +39,98 @@ class _PrescriptionHistoryListScreenState extends ConsumerState<PrescriptionHist
   Widget build(BuildContext context) {
     final userInfo = ref.watch(userInfoProvider);
     userName = userInfo.name;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('$userName님의 처방 내역', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('$userName님의 처방 내역', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        backgroundColor: Colors.blue,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: prescriptions.length,
-              itemBuilder: (context, index) {
-                Prescription prescription = prescriptions[index];
-                return ListTile(
-                  title: Text("약국명 : "+prescription.resHospitalName),
-                  subtitle: Text('처방 일자 : ${prescription.resTreatDate}'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('의약품 명: ${prescription.resPrescribeDrugName}'),
-                      SizedBox(width: 8.0),
-                      Text('처방약품 효능: ${prescription.resPrescribeDrugEffect}'),
-                      SizedBox(width: 8.0),
-                      Text('복약일수: ${prescription.resPrescribeDays}'),
-                      SizedBox(width: 8.0),
-                      Text('투약 횟수: ${prescription.count}'),
-                      SizedBox(width: 8.0),
-                      // IconButton(
-                      //   icon: Icon(Icons.delete),
-                      //   onPressed: () => _deleteMedicine(medicine),
-                      // ),
-                    ],
-                  ),
-                );
-              },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.separated(
+                itemCount: prescriptions.length,
+                separatorBuilder: (context, index) => SizedBox(height: 16.0),
+                itemBuilder: (context, index) {
+                  Prescription prescription = prescriptions[index];
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '병의원(약국)명칭: ${prescription.resHospitalName}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            '처방 일자: ${prescription.resTreatDate}',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          SizedBox(height: 16.0),
+                          Wrap(
+                            spacing: 8.0,
+                            children: [
+                              Text(
+                                '의약품 명: ${prescription.resPrescribeDrugName}',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                '처방약품 효능: ${prescription.resPrescribeDrugEffect}',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                '복약일수: ${prescription.resPrescribeDays}',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                '투약 횟수: ${prescription.resPrescribeDays}',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -88,13 +143,12 @@ class _PrescriptionHistoryListScreenState extends ConsumerState<PrescriptionHist
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.double_arrow_rounded, color: Colors.white70),
-            SizedBox(height: 1), // 아이콘과 텍스트 사이의 간격 조절
-            Text('불러오기', style: TextStyle(color: Colors.white, fontSize:10)), // 추가할 텍스트
+            SizedBox(height: 1),
+            Text('불러오기', style: TextStyle(color: Colors.white, fontSize: 10)),
           ],
         ),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.blue,
       ),
-
     );
   }
 }

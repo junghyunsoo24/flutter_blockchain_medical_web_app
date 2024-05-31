@@ -23,26 +23,26 @@ class PrescriptionViewModel extends ChangeNotifier {
   ValueNotifier<List<Prescription>> get prescription => _prescription;
 
   Future<void> loadSymptoms() async {
-    final prescriptionList = await getPrescriptions();
-    _prescription.value = prescriptionList;
+    //final prescriptionList = await getPrescriptions();
+    //_prescription.value = prescriptionList;
   }
 
-  Future<void> savePrescription(String resHospitalName, DateTime resTreatDate,String resPrescribeDrugName, String resPrescribeDrugEffect,
-      String resMedicationDirection, String resPrescribeDays, int count, String resDrugImageLink) async {
-    await GetIt.I<MyDatabase>().insertPrescription(PrescriptionsCompanion(
-        resHospitalName: Value(resHospitalName),
-        resTreatDate: Value(resTreatDate),
-        resPrescribeDrugName: Value(resPrescribeDrugName),
-        resPrescribeDrugEffect: Value(resPrescribeDrugEffect),
-        resMedicationDirection: Value(resMedicationDirection),
-        resPrescribeDays: Value(resPrescribeDays),
-        count: Value(count),
-        resDrugImageLink: Value(resDrugImageLink),
-    ));
-    loadSymptoms();
-  }
-  Future<List<Prescription>> getPrescriptions() async {
-    return await _repository.getAllPrescriptions();
-  }
+  // Future<void> savePrescription(String resHospitalName, DateTime resTreatDate,String resPrescribeDrugName, String resPrescribeDrugEffect,
+  //     String resMedicationDirection, String resPrescribeDays, int count, String resDrugImageLink) async {
+  //   await GetIt.I<MyDatabase>().insertPrescription(PrescriptionsCompanion(
+  //       resHospitalName: Value(resHospitalName),
+  //       resTreatDate: Value(resTreatDate),
+  //       resPrescribeDrugName: Value(resPrescribeDrugName),
+  //       resPrescribeDrugEffect: Value(resPrescribeDrugEffect),
+  //       resMedicationDirection: Value(resMedicationDirection),
+  //       resPrescribeDays: Value(resPrescribeDays),
+  //       count: Value(count),
+  //       resDrugImageLink: Value(resDrugImageLink),
+  //   ));
+  //   loadSymptoms();
+  // }
+  // Future<List<Prescription>> getPrescriptions() async {
+  //   return await _repository.getAllPrescriptions();
+  // }
 
 }

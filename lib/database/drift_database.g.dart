@@ -962,26 +962,24 @@ class $PrescriptionsTable extends Prescriptions
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _resHospitalNameMeta =
-      const VerificationMeta('resHospitalName');
-  @override
-  late final GeneratedColumn<String> resHospitalName = GeneratedColumn<String>(
-      'res_hospital_name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _creationTimeMeta =
-      const VerificationMeta('creationTime');
-  @override
-  late final GeneratedColumn<DateTime> creationTime = GeneratedColumn<DateTime>(
-      'creation_time', aliasedName, false,
-      type: DriftSqlType.dateTime,
-      requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
   static const VerificationMeta _resTreatDateMeta =
       const VerificationMeta('resTreatDate');
   @override
-  late final GeneratedColumn<DateTime> resTreatDate = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> resTreatDate = GeneratedColumn<String>(
       'res_treat_date', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resTreatTypeDetMeta =
+      const VerificationMeta('resTreatTypeDet');
+  @override
+  late final GeneratedColumn<String> resTreatTypeDet = GeneratedColumn<String>(
+      'res_treat_type_det', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resPrescribeCntDetMeta =
+      const VerificationMeta('resPrescribeCntDet');
+  @override
+  late final GeneratedColumn<String> resPrescribeCntDet =
+      GeneratedColumn<String>('res_prescribe_cnt_det', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _resPrescribeDrugNameMeta =
       const VerificationMeta('resPrescribeDrugName');
   @override
@@ -994,41 +992,112 @@ class $PrescriptionsTable extends Prescriptions
   late final GeneratedColumn<String> resPrescribeDrugEffect =
       GeneratedColumn<String>('res_prescribe_drug_effect', aliasedName, false,
           type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _resMedicationDirectionMeta =
-      const VerificationMeta('resMedicationDirection');
-  @override
-  late final GeneratedColumn<String> resMedicationDirection =
-      GeneratedColumn<String>('res_medication_direction', aliasedName, false,
-          type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _resPrescribeDaysMeta =
       const VerificationMeta('resPrescribeDays');
   @override
   late final GeneratedColumn<String> resPrescribeDays = GeneratedColumn<String>(
       'res_prescribe_days', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _countMeta = const VerificationMeta('count');
+  static const VerificationMeta _resDrugCodeMeta =
+      const VerificationMeta('resDrugCode');
   @override
-  late final GeneratedColumn<int> count = GeneratedColumn<int>(
-      'count', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+  late final GeneratedColumn<String> resDrugCode = GeneratedColumn<String>(
+      'res_drug_code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _resDrugImageLinkMeta =
       const VerificationMeta('resDrugImageLink');
   @override
   late final GeneratedColumn<String> resDrugImageLink = GeneratedColumn<String>(
       'res_drug_image_link', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resMedicationDirectionMeta =
+      const VerificationMeta('resMedicationDirection');
+  @override
+  late final GeneratedColumn<String> resMedicationDirection =
+      GeneratedColumn<String>('res_medication_direction', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resBrandMeta =
+      const VerificationMeta('resBrand');
+  @override
+  late final GeneratedColumn<String> resBrand = GeneratedColumn<String>(
+      'res_brand', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resATCCodeMeta =
+      const VerificationMeta('resATCCode');
+  @override
+  late final GeneratedColumn<String> resATCCode = GeneratedColumn<String>(
+      'res_a_t_c_code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resFormulaMeta =
+      const VerificationMeta('resFormula');
+  @override
+  late final GeneratedColumn<String> resFormula = GeneratedColumn<String>(
+      'res_formula', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resHospitalNameMeta =
+      const VerificationMeta('resHospitalName');
+  @override
+  late final GeneratedColumn<String> resHospitalName = GeneratedColumn<String>(
+      'res_hospital_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resTreatStartDateMeta =
+      const VerificationMeta('resTreatStartDate');
+  @override
+  late final GeneratedColumn<String> resTreatStartDate =
+      GeneratedColumn<String>('res_treat_start_date', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resTreatTypeMeta =
+      const VerificationMeta('resTreatType');
+  @override
+  late final GeneratedColumn<String> resTreatType = GeneratedColumn<String>(
+      'res_treat_type', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resVisitDaysMeta =
+      const VerificationMeta('resVisitDays');
+  @override
+  late final GeneratedColumn<String> resVisitDays = GeneratedColumn<String>(
+      'res_visit_days', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resPrescribeCntMeta =
+      const VerificationMeta('resPrescribeCnt');
+  @override
+  late final GeneratedColumn<String> resPrescribeCnt = GeneratedColumn<String>(
+      'res_prescribe_cnt', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resMedicationCntMeta =
+      const VerificationMeta('resMedicationCnt');
+  @override
+  late final GeneratedColumn<String> resMedicationCnt = GeneratedColumn<String>(
+      'res_medication_cnt', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resTypeMeta =
+      const VerificationMeta('resType');
+  @override
+  late final GeneratedColumn<String> resType = GeneratedColumn<String>(
+      'res_type', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        resHospitalName,
-        creationTime,
         resTreatDate,
+        resTreatTypeDet,
+        resPrescribeCntDet,
         resPrescribeDrugName,
         resPrescribeDrugEffect,
-        resMedicationDirection,
         resPrescribeDays,
-        count,
-        resDrugImageLink
+        resDrugCode,
+        resDrugImageLink,
+        resMedicationDirection,
+        resBrand,
+        resATCCode,
+        resFormula,
+        resHospitalName,
+        resTreatStartDate,
+        resTreatType,
+        resVisitDays,
+        resPrescribeCnt,
+        resMedicationCnt,
+        resType
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1043,20 +1112,6 @@ class $PrescriptionsTable extends Prescriptions
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('res_hospital_name')) {
-      context.handle(
-          _resHospitalNameMeta,
-          resHospitalName.isAcceptableOrUnknown(
-              data['res_hospital_name']!, _resHospitalNameMeta));
-    } else if (isInserting) {
-      context.missing(_resHospitalNameMeta);
-    }
-    if (data.containsKey('creation_time')) {
-      context.handle(
-          _creationTimeMeta,
-          creationTime.isAcceptableOrUnknown(
-              data['creation_time']!, _creationTimeMeta));
-    }
     if (data.containsKey('res_treat_date')) {
       context.handle(
           _resTreatDateMeta,
@@ -1064,6 +1119,22 @@ class $PrescriptionsTable extends Prescriptions
               data['res_treat_date']!, _resTreatDateMeta));
     } else if (isInserting) {
       context.missing(_resTreatDateMeta);
+    }
+    if (data.containsKey('res_treat_type_det')) {
+      context.handle(
+          _resTreatTypeDetMeta,
+          resTreatTypeDet.isAcceptableOrUnknown(
+              data['res_treat_type_det']!, _resTreatTypeDetMeta));
+    } else if (isInserting) {
+      context.missing(_resTreatTypeDetMeta);
+    }
+    if (data.containsKey('res_prescribe_cnt_det')) {
+      context.handle(
+          _resPrescribeCntDetMeta,
+          resPrescribeCntDet.isAcceptableOrUnknown(
+              data['res_prescribe_cnt_det']!, _resPrescribeCntDetMeta));
+    } else if (isInserting) {
+      context.missing(_resPrescribeCntDetMeta);
     }
     if (data.containsKey('res_prescribe_drug_name')) {
       context.handle(
@@ -1081,14 +1152,6 @@ class $PrescriptionsTable extends Prescriptions
     } else if (isInserting) {
       context.missing(_resPrescribeDrugEffectMeta);
     }
-    if (data.containsKey('res_medication_direction')) {
-      context.handle(
-          _resMedicationDirectionMeta,
-          resMedicationDirection.isAcceptableOrUnknown(
-              data['res_medication_direction']!, _resMedicationDirectionMeta));
-    } else if (isInserting) {
-      context.missing(_resMedicationDirectionMeta);
-    }
     if (data.containsKey('res_prescribe_days')) {
       context.handle(
           _resPrescribeDaysMeta,
@@ -1097,11 +1160,13 @@ class $PrescriptionsTable extends Prescriptions
     } else if (isInserting) {
       context.missing(_resPrescribeDaysMeta);
     }
-    if (data.containsKey('count')) {
+    if (data.containsKey('res_drug_code')) {
       context.handle(
-          _countMeta, count.isAcceptableOrUnknown(data['count']!, _countMeta));
+          _resDrugCodeMeta,
+          resDrugCode.isAcceptableOrUnknown(
+              data['res_drug_code']!, _resDrugCodeMeta));
     } else if (isInserting) {
-      context.missing(_countMeta);
+      context.missing(_resDrugCodeMeta);
     }
     if (data.containsKey('res_drug_image_link')) {
       context.handle(
@@ -1110,6 +1175,90 @@ class $PrescriptionsTable extends Prescriptions
               data['res_drug_image_link']!, _resDrugImageLinkMeta));
     } else if (isInserting) {
       context.missing(_resDrugImageLinkMeta);
+    }
+    if (data.containsKey('res_medication_direction')) {
+      context.handle(
+          _resMedicationDirectionMeta,
+          resMedicationDirection.isAcceptableOrUnknown(
+              data['res_medication_direction']!, _resMedicationDirectionMeta));
+    } else if (isInserting) {
+      context.missing(_resMedicationDirectionMeta);
+    }
+    if (data.containsKey('res_brand')) {
+      context.handle(_resBrandMeta,
+          resBrand.isAcceptableOrUnknown(data['res_brand']!, _resBrandMeta));
+    } else if (isInserting) {
+      context.missing(_resBrandMeta);
+    }
+    if (data.containsKey('res_a_t_c_code')) {
+      context.handle(
+          _resATCCodeMeta,
+          resATCCode.isAcceptableOrUnknown(
+              data['res_a_t_c_code']!, _resATCCodeMeta));
+    } else if (isInserting) {
+      context.missing(_resATCCodeMeta);
+    }
+    if (data.containsKey('res_formula')) {
+      context.handle(
+          _resFormulaMeta,
+          resFormula.isAcceptableOrUnknown(
+              data['res_formula']!, _resFormulaMeta));
+    } else if (isInserting) {
+      context.missing(_resFormulaMeta);
+    }
+    if (data.containsKey('res_hospital_name')) {
+      context.handle(
+          _resHospitalNameMeta,
+          resHospitalName.isAcceptableOrUnknown(
+              data['res_hospital_name']!, _resHospitalNameMeta));
+    } else if (isInserting) {
+      context.missing(_resHospitalNameMeta);
+    }
+    if (data.containsKey('res_treat_start_date')) {
+      context.handle(
+          _resTreatStartDateMeta,
+          resTreatStartDate.isAcceptableOrUnknown(
+              data['res_treat_start_date']!, _resTreatStartDateMeta));
+    } else if (isInserting) {
+      context.missing(_resTreatStartDateMeta);
+    }
+    if (data.containsKey('res_treat_type')) {
+      context.handle(
+          _resTreatTypeMeta,
+          resTreatType.isAcceptableOrUnknown(
+              data['res_treat_type']!, _resTreatTypeMeta));
+    } else if (isInserting) {
+      context.missing(_resTreatTypeMeta);
+    }
+    if (data.containsKey('res_visit_days')) {
+      context.handle(
+          _resVisitDaysMeta,
+          resVisitDays.isAcceptableOrUnknown(
+              data['res_visit_days']!, _resVisitDaysMeta));
+    } else if (isInserting) {
+      context.missing(_resVisitDaysMeta);
+    }
+    if (data.containsKey('res_prescribe_cnt')) {
+      context.handle(
+          _resPrescribeCntMeta,
+          resPrescribeCnt.isAcceptableOrUnknown(
+              data['res_prescribe_cnt']!, _resPrescribeCntMeta));
+    } else if (isInserting) {
+      context.missing(_resPrescribeCntMeta);
+    }
+    if (data.containsKey('res_medication_cnt')) {
+      context.handle(
+          _resMedicationCntMeta,
+          resMedicationCnt.isAcceptableOrUnknown(
+              data['res_medication_cnt']!, _resMedicationCntMeta));
+    } else if (isInserting) {
+      context.missing(_resMedicationCntMeta);
+    }
+    if (data.containsKey('res_type')) {
+      context.handle(_resTypeMeta,
+          resType.isAcceptableOrUnknown(data['res_type']!, _resTypeMeta));
+    } else if (isInserting) {
+      context.missing(_resTypeMeta);
     }
     return context;
   }
@@ -1122,27 +1271,47 @@ class $PrescriptionsTable extends Prescriptions
     return Prescription(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      resHospitalName: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}res_hospital_name'])!,
-      creationTime: attachedDatabase.typeMapping.read(
-          DriftSqlType.dateTime, data['${effectivePrefix}creation_time'])!,
-      resTreatDate: attachedDatabase.typeMapping.read(
-          DriftSqlType.dateTime, data['${effectivePrefix}res_treat_date'])!,
+      resTreatDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_treat_date'])!,
+      resTreatTypeDet: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_treat_type_det'])!,
+      resPrescribeCntDet: attachedDatabase.typeMapping.read(DriftSqlType.string,
+          data['${effectivePrefix}res_prescribe_cnt_det'])!,
       resPrescribeDrugName: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}res_prescribe_drug_name'])!,
       resPrescribeDrugEffect: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}res_prescribe_drug_effect'])!,
+      resPrescribeDays: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_prescribe_days'])!,
+      resDrugCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_drug_code'])!,
+      resDrugImageLink: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_drug_image_link'])!,
       resMedicationDirection: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}res_medication_direction'])!,
-      resPrescribeDays: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}res_prescribe_days'])!,
-      count: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}count'])!,
-      resDrugImageLink: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}res_drug_image_link'])!,
+      resBrand: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_brand'])!,
+      resATCCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_a_t_c_code'])!,
+      resFormula: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_formula'])!,
+      resHospitalName: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_hospital_name'])!,
+      resTreatStartDate: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_treat_start_date'])!,
+      resTreatType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_treat_type'])!,
+      resVisitDays: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_visit_days'])!,
+      resPrescribeCnt: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_prescribe_cnt'])!,
+      resMedicationCnt: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_medication_cnt'])!,
+      resType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_type'])!,
     );
   }
 
@@ -1154,54 +1323,94 @@ class $PrescriptionsTable extends Prescriptions
 
 class Prescription extends DataClass implements Insertable<Prescription> {
   final int id;
-  final String resHospitalName;
-  final DateTime creationTime;
-  final DateTime resTreatDate;
+  final String resTreatDate;
+  final String resTreatTypeDet;
+  final String resPrescribeCntDet;
   final String resPrescribeDrugName;
   final String resPrescribeDrugEffect;
-  final String resMedicationDirection;
   final String resPrescribeDays;
-  final int count;
+  final String resDrugCode;
   final String resDrugImageLink;
+  final String resMedicationDirection;
+  final String resBrand;
+  final String resATCCode;
+  final String resFormula;
+  final String resHospitalName;
+  final String resTreatStartDate;
+  final String resTreatType;
+  final String resVisitDays;
+  final String resPrescribeCnt;
+  final String resMedicationCnt;
+  final String resType;
   const Prescription(
       {required this.id,
-      required this.resHospitalName,
-      required this.creationTime,
       required this.resTreatDate,
+      required this.resTreatTypeDet,
+      required this.resPrescribeCntDet,
       required this.resPrescribeDrugName,
       required this.resPrescribeDrugEffect,
-      required this.resMedicationDirection,
       required this.resPrescribeDays,
-      required this.count,
-      required this.resDrugImageLink});
+      required this.resDrugCode,
+      required this.resDrugImageLink,
+      required this.resMedicationDirection,
+      required this.resBrand,
+      required this.resATCCode,
+      required this.resFormula,
+      required this.resHospitalName,
+      required this.resTreatStartDate,
+      required this.resTreatType,
+      required this.resVisitDays,
+      required this.resPrescribeCnt,
+      required this.resMedicationCnt,
+      required this.resType});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['res_hospital_name'] = Variable<String>(resHospitalName);
-    map['creation_time'] = Variable<DateTime>(creationTime);
-    map['res_treat_date'] = Variable<DateTime>(resTreatDate);
+    map['res_treat_date'] = Variable<String>(resTreatDate);
+    map['res_treat_type_det'] = Variable<String>(resTreatTypeDet);
+    map['res_prescribe_cnt_det'] = Variable<String>(resPrescribeCntDet);
     map['res_prescribe_drug_name'] = Variable<String>(resPrescribeDrugName);
     map['res_prescribe_drug_effect'] = Variable<String>(resPrescribeDrugEffect);
-    map['res_medication_direction'] = Variable<String>(resMedicationDirection);
     map['res_prescribe_days'] = Variable<String>(resPrescribeDays);
-    map['count'] = Variable<int>(count);
+    map['res_drug_code'] = Variable<String>(resDrugCode);
     map['res_drug_image_link'] = Variable<String>(resDrugImageLink);
+    map['res_medication_direction'] = Variable<String>(resMedicationDirection);
+    map['res_brand'] = Variable<String>(resBrand);
+    map['res_a_t_c_code'] = Variable<String>(resATCCode);
+    map['res_formula'] = Variable<String>(resFormula);
+    map['res_hospital_name'] = Variable<String>(resHospitalName);
+    map['res_treat_start_date'] = Variable<String>(resTreatStartDate);
+    map['res_treat_type'] = Variable<String>(resTreatType);
+    map['res_visit_days'] = Variable<String>(resVisitDays);
+    map['res_prescribe_cnt'] = Variable<String>(resPrescribeCnt);
+    map['res_medication_cnt'] = Variable<String>(resMedicationCnt);
+    map['res_type'] = Variable<String>(resType);
     return map;
   }
 
   PrescriptionsCompanion toCompanion(bool nullToAbsent) {
     return PrescriptionsCompanion(
       id: Value(id),
-      resHospitalName: Value(resHospitalName),
-      creationTime: Value(creationTime),
       resTreatDate: Value(resTreatDate),
+      resTreatTypeDet: Value(resTreatTypeDet),
+      resPrescribeCntDet: Value(resPrescribeCntDet),
       resPrescribeDrugName: Value(resPrescribeDrugName),
       resPrescribeDrugEffect: Value(resPrescribeDrugEffect),
-      resMedicationDirection: Value(resMedicationDirection),
       resPrescribeDays: Value(resPrescribeDays),
-      count: Value(count),
+      resDrugCode: Value(resDrugCode),
       resDrugImageLink: Value(resDrugImageLink),
+      resMedicationDirection: Value(resMedicationDirection),
+      resBrand: Value(resBrand),
+      resATCCode: Value(resATCCode),
+      resFormula: Value(resFormula),
+      resHospitalName: Value(resHospitalName),
+      resTreatStartDate: Value(resTreatStartDate),
+      resTreatType: Value(resTreatType),
+      resVisitDays: Value(resVisitDays),
+      resPrescribeCnt: Value(resPrescribeCnt),
+      resMedicationCnt: Value(resMedicationCnt),
+      resType: Value(resType),
     );
   }
 
@@ -1210,18 +1419,29 @@ class Prescription extends DataClass implements Insertable<Prescription> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Prescription(
       id: serializer.fromJson<int>(json['id']),
-      resHospitalName: serializer.fromJson<String>(json['resHospitalName']),
-      creationTime: serializer.fromJson<DateTime>(json['creationTime']),
-      resTreatDate: serializer.fromJson<DateTime>(json['resTreatDate']),
+      resTreatDate: serializer.fromJson<String>(json['resTreatDate']),
+      resTreatTypeDet: serializer.fromJson<String>(json['resTreatTypeDet']),
+      resPrescribeCntDet:
+          serializer.fromJson<String>(json['resPrescribeCntDet']),
       resPrescribeDrugName:
           serializer.fromJson<String>(json['resPrescribeDrugName']),
       resPrescribeDrugEffect:
           serializer.fromJson<String>(json['resPrescribeDrugEffect']),
+      resPrescribeDays: serializer.fromJson<String>(json['resPrescribeDays']),
+      resDrugCode: serializer.fromJson<String>(json['resDrugCode']),
+      resDrugImageLink: serializer.fromJson<String>(json['resDrugImageLink']),
       resMedicationDirection:
           serializer.fromJson<String>(json['resMedicationDirection']),
-      resPrescribeDays: serializer.fromJson<String>(json['resPrescribeDays']),
-      count: serializer.fromJson<int>(json['count']),
-      resDrugImageLink: serializer.fromJson<String>(json['resDrugImageLink']),
+      resBrand: serializer.fromJson<String>(json['resBrand']),
+      resATCCode: serializer.fromJson<String>(json['resATCCode']),
+      resFormula: serializer.fromJson<String>(json['resFormula']),
+      resHospitalName: serializer.fromJson<String>(json['resHospitalName']),
+      resTreatStartDate: serializer.fromJson<String>(json['resTreatStartDate']),
+      resTreatType: serializer.fromJson<String>(json['resTreatType']),
+      resVisitDays: serializer.fromJson<String>(json['resVisitDays']),
+      resPrescribeCnt: serializer.fromJson<String>(json['resPrescribeCnt']),
+      resMedicationCnt: serializer.fromJson<String>(json['resMedicationCnt']),
+      resType: serializer.fromJson<String>(json['resType']),
     );
   }
   @override
@@ -1229,58 +1449,98 @@ class Prescription extends DataClass implements Insertable<Prescription> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'resHospitalName': serializer.toJson<String>(resHospitalName),
-      'creationTime': serializer.toJson<DateTime>(creationTime),
-      'resTreatDate': serializer.toJson<DateTime>(resTreatDate),
+      'resTreatDate': serializer.toJson<String>(resTreatDate),
+      'resTreatTypeDet': serializer.toJson<String>(resTreatTypeDet),
+      'resPrescribeCntDet': serializer.toJson<String>(resPrescribeCntDet),
       'resPrescribeDrugName': serializer.toJson<String>(resPrescribeDrugName),
       'resPrescribeDrugEffect':
           serializer.toJson<String>(resPrescribeDrugEffect),
+      'resPrescribeDays': serializer.toJson<String>(resPrescribeDays),
+      'resDrugCode': serializer.toJson<String>(resDrugCode),
+      'resDrugImageLink': serializer.toJson<String>(resDrugImageLink),
       'resMedicationDirection':
           serializer.toJson<String>(resMedicationDirection),
-      'resPrescribeDays': serializer.toJson<String>(resPrescribeDays),
-      'count': serializer.toJson<int>(count),
-      'resDrugImageLink': serializer.toJson<String>(resDrugImageLink),
+      'resBrand': serializer.toJson<String>(resBrand),
+      'resATCCode': serializer.toJson<String>(resATCCode),
+      'resFormula': serializer.toJson<String>(resFormula),
+      'resHospitalName': serializer.toJson<String>(resHospitalName),
+      'resTreatStartDate': serializer.toJson<String>(resTreatStartDate),
+      'resTreatType': serializer.toJson<String>(resTreatType),
+      'resVisitDays': serializer.toJson<String>(resVisitDays),
+      'resPrescribeCnt': serializer.toJson<String>(resPrescribeCnt),
+      'resMedicationCnt': serializer.toJson<String>(resMedicationCnt),
+      'resType': serializer.toJson<String>(resType),
     };
   }
 
   Prescription copyWith(
           {int? id,
-          String? resHospitalName,
-          DateTime? creationTime,
-          DateTime? resTreatDate,
+          String? resTreatDate,
+          String? resTreatTypeDet,
+          String? resPrescribeCntDet,
           String? resPrescribeDrugName,
           String? resPrescribeDrugEffect,
-          String? resMedicationDirection,
           String? resPrescribeDays,
-          int? count,
-          String? resDrugImageLink}) =>
+          String? resDrugCode,
+          String? resDrugImageLink,
+          String? resMedicationDirection,
+          String? resBrand,
+          String? resATCCode,
+          String? resFormula,
+          String? resHospitalName,
+          String? resTreatStartDate,
+          String? resTreatType,
+          String? resVisitDays,
+          String? resPrescribeCnt,
+          String? resMedicationCnt,
+          String? resType}) =>
       Prescription(
         id: id ?? this.id,
-        resHospitalName: resHospitalName ?? this.resHospitalName,
-        creationTime: creationTime ?? this.creationTime,
         resTreatDate: resTreatDate ?? this.resTreatDate,
+        resTreatTypeDet: resTreatTypeDet ?? this.resTreatTypeDet,
+        resPrescribeCntDet: resPrescribeCntDet ?? this.resPrescribeCntDet,
         resPrescribeDrugName: resPrescribeDrugName ?? this.resPrescribeDrugName,
         resPrescribeDrugEffect:
             resPrescribeDrugEffect ?? this.resPrescribeDrugEffect,
+        resPrescribeDays: resPrescribeDays ?? this.resPrescribeDays,
+        resDrugCode: resDrugCode ?? this.resDrugCode,
+        resDrugImageLink: resDrugImageLink ?? this.resDrugImageLink,
         resMedicationDirection:
             resMedicationDirection ?? this.resMedicationDirection,
-        resPrescribeDays: resPrescribeDays ?? this.resPrescribeDays,
-        count: count ?? this.count,
-        resDrugImageLink: resDrugImageLink ?? this.resDrugImageLink,
+        resBrand: resBrand ?? this.resBrand,
+        resATCCode: resATCCode ?? this.resATCCode,
+        resFormula: resFormula ?? this.resFormula,
+        resHospitalName: resHospitalName ?? this.resHospitalName,
+        resTreatStartDate: resTreatStartDate ?? this.resTreatStartDate,
+        resTreatType: resTreatType ?? this.resTreatType,
+        resVisitDays: resVisitDays ?? this.resVisitDays,
+        resPrescribeCnt: resPrescribeCnt ?? this.resPrescribeCnt,
+        resMedicationCnt: resMedicationCnt ?? this.resMedicationCnt,
+        resType: resType ?? this.resType,
       );
   @override
   String toString() {
     return (StringBuffer('Prescription(')
           ..write('id: $id, ')
-          ..write('resHospitalName: $resHospitalName, ')
-          ..write('creationTime: $creationTime, ')
           ..write('resTreatDate: $resTreatDate, ')
+          ..write('resTreatTypeDet: $resTreatTypeDet, ')
+          ..write('resPrescribeCntDet: $resPrescribeCntDet, ')
           ..write('resPrescribeDrugName: $resPrescribeDrugName, ')
           ..write('resPrescribeDrugEffect: $resPrescribeDrugEffect, ')
-          ..write('resMedicationDirection: $resMedicationDirection, ')
           ..write('resPrescribeDays: $resPrescribeDays, ')
-          ..write('count: $count, ')
-          ..write('resDrugImageLink: $resDrugImageLink')
+          ..write('resDrugCode: $resDrugCode, ')
+          ..write('resDrugImageLink: $resDrugImageLink, ')
+          ..write('resMedicationDirection: $resMedicationDirection, ')
+          ..write('resBrand: $resBrand, ')
+          ..write('resATCCode: $resATCCode, ')
+          ..write('resFormula: $resFormula, ')
+          ..write('resHospitalName: $resHospitalName, ')
+          ..write('resTreatStartDate: $resTreatStartDate, ')
+          ..write('resTreatType: $resTreatType, ')
+          ..write('resVisitDays: $resVisitDays, ')
+          ..write('resPrescribeCnt: $resPrescribeCnt, ')
+          ..write('resMedicationCnt: $resMedicationCnt, ')
+          ..write('resType: $resType')
           ..write(')'))
         .toString();
   }
@@ -1288,126 +1548,228 @@ class Prescription extends DataClass implements Insertable<Prescription> {
   @override
   int get hashCode => Object.hash(
       id,
-      resHospitalName,
-      creationTime,
       resTreatDate,
+      resTreatTypeDet,
+      resPrescribeCntDet,
       resPrescribeDrugName,
       resPrescribeDrugEffect,
-      resMedicationDirection,
       resPrescribeDays,
-      count,
-      resDrugImageLink);
+      resDrugCode,
+      resDrugImageLink,
+      resMedicationDirection,
+      resBrand,
+      resATCCode,
+      resFormula,
+      resHospitalName,
+      resTreatStartDate,
+      resTreatType,
+      resVisitDays,
+      resPrescribeCnt,
+      resMedicationCnt,
+      resType);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Prescription &&
           other.id == this.id &&
-          other.resHospitalName == this.resHospitalName &&
-          other.creationTime == this.creationTime &&
           other.resTreatDate == this.resTreatDate &&
+          other.resTreatTypeDet == this.resTreatTypeDet &&
+          other.resPrescribeCntDet == this.resPrescribeCntDet &&
           other.resPrescribeDrugName == this.resPrescribeDrugName &&
           other.resPrescribeDrugEffect == this.resPrescribeDrugEffect &&
-          other.resMedicationDirection == this.resMedicationDirection &&
           other.resPrescribeDays == this.resPrescribeDays &&
-          other.count == this.count &&
-          other.resDrugImageLink == this.resDrugImageLink);
+          other.resDrugCode == this.resDrugCode &&
+          other.resDrugImageLink == this.resDrugImageLink &&
+          other.resMedicationDirection == this.resMedicationDirection &&
+          other.resBrand == this.resBrand &&
+          other.resATCCode == this.resATCCode &&
+          other.resFormula == this.resFormula &&
+          other.resHospitalName == this.resHospitalName &&
+          other.resTreatStartDate == this.resTreatStartDate &&
+          other.resTreatType == this.resTreatType &&
+          other.resVisitDays == this.resVisitDays &&
+          other.resPrescribeCnt == this.resPrescribeCnt &&
+          other.resMedicationCnt == this.resMedicationCnt &&
+          other.resType == this.resType);
 }
 
 class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
   final Value<int> id;
-  final Value<String> resHospitalName;
-  final Value<DateTime> creationTime;
-  final Value<DateTime> resTreatDate;
+  final Value<String> resTreatDate;
+  final Value<String> resTreatTypeDet;
+  final Value<String> resPrescribeCntDet;
   final Value<String> resPrescribeDrugName;
   final Value<String> resPrescribeDrugEffect;
-  final Value<String> resMedicationDirection;
   final Value<String> resPrescribeDays;
-  final Value<int> count;
+  final Value<String> resDrugCode;
   final Value<String> resDrugImageLink;
+  final Value<String> resMedicationDirection;
+  final Value<String> resBrand;
+  final Value<String> resATCCode;
+  final Value<String> resFormula;
+  final Value<String> resHospitalName;
+  final Value<String> resTreatStartDate;
+  final Value<String> resTreatType;
+  final Value<String> resVisitDays;
+  final Value<String> resPrescribeCnt;
+  final Value<String> resMedicationCnt;
+  final Value<String> resType;
   const PrescriptionsCompanion({
     this.id = const Value.absent(),
-    this.resHospitalName = const Value.absent(),
-    this.creationTime = const Value.absent(),
     this.resTreatDate = const Value.absent(),
+    this.resTreatTypeDet = const Value.absent(),
+    this.resPrescribeCntDet = const Value.absent(),
     this.resPrescribeDrugName = const Value.absent(),
     this.resPrescribeDrugEffect = const Value.absent(),
-    this.resMedicationDirection = const Value.absent(),
     this.resPrescribeDays = const Value.absent(),
-    this.count = const Value.absent(),
+    this.resDrugCode = const Value.absent(),
     this.resDrugImageLink = const Value.absent(),
+    this.resMedicationDirection = const Value.absent(),
+    this.resBrand = const Value.absent(),
+    this.resATCCode = const Value.absent(),
+    this.resFormula = const Value.absent(),
+    this.resHospitalName = const Value.absent(),
+    this.resTreatStartDate = const Value.absent(),
+    this.resTreatType = const Value.absent(),
+    this.resVisitDays = const Value.absent(),
+    this.resPrescribeCnt = const Value.absent(),
+    this.resMedicationCnt = const Value.absent(),
+    this.resType = const Value.absent(),
   });
   PrescriptionsCompanion.insert({
     this.id = const Value.absent(),
-    required String resHospitalName,
-    this.creationTime = const Value.absent(),
-    required DateTime resTreatDate,
+    required String resTreatDate,
+    required String resTreatTypeDet,
+    required String resPrescribeCntDet,
     required String resPrescribeDrugName,
     required String resPrescribeDrugEffect,
-    required String resMedicationDirection,
     required String resPrescribeDays,
-    required int count,
+    required String resDrugCode,
     required String resDrugImageLink,
-  })  : resHospitalName = Value(resHospitalName),
-        resTreatDate = Value(resTreatDate),
+    required String resMedicationDirection,
+    required String resBrand,
+    required String resATCCode,
+    required String resFormula,
+    required String resHospitalName,
+    required String resTreatStartDate,
+    required String resTreatType,
+    required String resVisitDays,
+    required String resPrescribeCnt,
+    required String resMedicationCnt,
+    required String resType,
+  })  : resTreatDate = Value(resTreatDate),
+        resTreatTypeDet = Value(resTreatTypeDet),
+        resPrescribeCntDet = Value(resPrescribeCntDet),
         resPrescribeDrugName = Value(resPrescribeDrugName),
         resPrescribeDrugEffect = Value(resPrescribeDrugEffect),
-        resMedicationDirection = Value(resMedicationDirection),
         resPrescribeDays = Value(resPrescribeDays),
-        count = Value(count),
-        resDrugImageLink = Value(resDrugImageLink);
+        resDrugCode = Value(resDrugCode),
+        resDrugImageLink = Value(resDrugImageLink),
+        resMedicationDirection = Value(resMedicationDirection),
+        resBrand = Value(resBrand),
+        resATCCode = Value(resATCCode),
+        resFormula = Value(resFormula),
+        resHospitalName = Value(resHospitalName),
+        resTreatStartDate = Value(resTreatStartDate),
+        resTreatType = Value(resTreatType),
+        resVisitDays = Value(resVisitDays),
+        resPrescribeCnt = Value(resPrescribeCnt),
+        resMedicationCnt = Value(resMedicationCnt),
+        resType = Value(resType);
   static Insertable<Prescription> custom({
     Expression<int>? id,
-    Expression<String>? resHospitalName,
-    Expression<DateTime>? creationTime,
-    Expression<DateTime>? resTreatDate,
+    Expression<String>? resTreatDate,
+    Expression<String>? resTreatTypeDet,
+    Expression<String>? resPrescribeCntDet,
     Expression<String>? resPrescribeDrugName,
     Expression<String>? resPrescribeDrugEffect,
-    Expression<String>? resMedicationDirection,
     Expression<String>? resPrescribeDays,
-    Expression<int>? count,
+    Expression<String>? resDrugCode,
     Expression<String>? resDrugImageLink,
+    Expression<String>? resMedicationDirection,
+    Expression<String>? resBrand,
+    Expression<String>? resATCCode,
+    Expression<String>? resFormula,
+    Expression<String>? resHospitalName,
+    Expression<String>? resTreatStartDate,
+    Expression<String>? resTreatType,
+    Expression<String>? resVisitDays,
+    Expression<String>? resPrescribeCnt,
+    Expression<String>? resMedicationCnt,
+    Expression<String>? resType,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (resHospitalName != null) 'res_hospital_name': resHospitalName,
-      if (creationTime != null) 'creation_time': creationTime,
       if (resTreatDate != null) 'res_treat_date': resTreatDate,
+      if (resTreatTypeDet != null) 'res_treat_type_det': resTreatTypeDet,
+      if (resPrescribeCntDet != null)
+        'res_prescribe_cnt_det': resPrescribeCntDet,
       if (resPrescribeDrugName != null)
         'res_prescribe_drug_name': resPrescribeDrugName,
       if (resPrescribeDrugEffect != null)
         'res_prescribe_drug_effect': resPrescribeDrugEffect,
+      if (resPrescribeDays != null) 'res_prescribe_days': resPrescribeDays,
+      if (resDrugCode != null) 'res_drug_code': resDrugCode,
+      if (resDrugImageLink != null) 'res_drug_image_link': resDrugImageLink,
       if (resMedicationDirection != null)
         'res_medication_direction': resMedicationDirection,
-      if (resPrescribeDays != null) 'res_prescribe_days': resPrescribeDays,
-      if (count != null) 'count': count,
-      if (resDrugImageLink != null) 'res_drug_image_link': resDrugImageLink,
+      if (resBrand != null) 'res_brand': resBrand,
+      if (resATCCode != null) 'res_a_t_c_code': resATCCode,
+      if (resFormula != null) 'res_formula': resFormula,
+      if (resHospitalName != null) 'res_hospital_name': resHospitalName,
+      if (resTreatStartDate != null) 'res_treat_start_date': resTreatStartDate,
+      if (resTreatType != null) 'res_treat_type': resTreatType,
+      if (resVisitDays != null) 'res_visit_days': resVisitDays,
+      if (resPrescribeCnt != null) 'res_prescribe_cnt': resPrescribeCnt,
+      if (resMedicationCnt != null) 'res_medication_cnt': resMedicationCnt,
+      if (resType != null) 'res_type': resType,
     });
   }
 
   PrescriptionsCompanion copyWith(
       {Value<int>? id,
-      Value<String>? resHospitalName,
-      Value<DateTime>? creationTime,
-      Value<DateTime>? resTreatDate,
+      Value<String>? resTreatDate,
+      Value<String>? resTreatTypeDet,
+      Value<String>? resPrescribeCntDet,
       Value<String>? resPrescribeDrugName,
       Value<String>? resPrescribeDrugEffect,
-      Value<String>? resMedicationDirection,
       Value<String>? resPrescribeDays,
-      Value<int>? count,
-      Value<String>? resDrugImageLink}) {
+      Value<String>? resDrugCode,
+      Value<String>? resDrugImageLink,
+      Value<String>? resMedicationDirection,
+      Value<String>? resBrand,
+      Value<String>? resATCCode,
+      Value<String>? resFormula,
+      Value<String>? resHospitalName,
+      Value<String>? resTreatStartDate,
+      Value<String>? resTreatType,
+      Value<String>? resVisitDays,
+      Value<String>? resPrescribeCnt,
+      Value<String>? resMedicationCnt,
+      Value<String>? resType}) {
     return PrescriptionsCompanion(
       id: id ?? this.id,
-      resHospitalName: resHospitalName ?? this.resHospitalName,
-      creationTime: creationTime ?? this.creationTime,
       resTreatDate: resTreatDate ?? this.resTreatDate,
+      resTreatTypeDet: resTreatTypeDet ?? this.resTreatTypeDet,
+      resPrescribeCntDet: resPrescribeCntDet ?? this.resPrescribeCntDet,
       resPrescribeDrugName: resPrescribeDrugName ?? this.resPrescribeDrugName,
       resPrescribeDrugEffect:
           resPrescribeDrugEffect ?? this.resPrescribeDrugEffect,
+      resPrescribeDays: resPrescribeDays ?? this.resPrescribeDays,
+      resDrugCode: resDrugCode ?? this.resDrugCode,
+      resDrugImageLink: resDrugImageLink ?? this.resDrugImageLink,
       resMedicationDirection:
           resMedicationDirection ?? this.resMedicationDirection,
-      resPrescribeDays: resPrescribeDays ?? this.resPrescribeDays,
-      count: count ?? this.count,
-      resDrugImageLink: resDrugImageLink ?? this.resDrugImageLink,
+      resBrand: resBrand ?? this.resBrand,
+      resATCCode: resATCCode ?? this.resATCCode,
+      resFormula: resFormula ?? this.resFormula,
+      resHospitalName: resHospitalName ?? this.resHospitalName,
+      resTreatStartDate: resTreatStartDate ?? this.resTreatStartDate,
+      resTreatType: resTreatType ?? this.resTreatType,
+      resVisitDays: resVisitDays ?? this.resVisitDays,
+      resPrescribeCnt: resPrescribeCnt ?? this.resPrescribeCnt,
+      resMedicationCnt: resMedicationCnt ?? this.resMedicationCnt,
+      resType: resType ?? this.resType,
     );
   }
 
@@ -1417,14 +1779,14 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (resHospitalName.present) {
-      map['res_hospital_name'] = Variable<String>(resHospitalName.value);
-    }
-    if (creationTime.present) {
-      map['creation_time'] = Variable<DateTime>(creationTime.value);
-    }
     if (resTreatDate.present) {
-      map['res_treat_date'] = Variable<DateTime>(resTreatDate.value);
+      map['res_treat_date'] = Variable<String>(resTreatDate.value);
+    }
+    if (resTreatTypeDet.present) {
+      map['res_treat_type_det'] = Variable<String>(resTreatTypeDet.value);
+    }
+    if (resPrescribeCntDet.present) {
+      map['res_prescribe_cnt_det'] = Variable<String>(resPrescribeCntDet.value);
     }
     if (resPrescribeDrugName.present) {
       map['res_prescribe_drug_name'] =
@@ -1434,18 +1796,48 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
       map['res_prescribe_drug_effect'] =
           Variable<String>(resPrescribeDrugEffect.value);
     }
+    if (resPrescribeDays.present) {
+      map['res_prescribe_days'] = Variable<String>(resPrescribeDays.value);
+    }
+    if (resDrugCode.present) {
+      map['res_drug_code'] = Variable<String>(resDrugCode.value);
+    }
+    if (resDrugImageLink.present) {
+      map['res_drug_image_link'] = Variable<String>(resDrugImageLink.value);
+    }
     if (resMedicationDirection.present) {
       map['res_medication_direction'] =
           Variable<String>(resMedicationDirection.value);
     }
-    if (resPrescribeDays.present) {
-      map['res_prescribe_days'] = Variable<String>(resPrescribeDays.value);
+    if (resBrand.present) {
+      map['res_brand'] = Variable<String>(resBrand.value);
     }
-    if (count.present) {
-      map['count'] = Variable<int>(count.value);
+    if (resATCCode.present) {
+      map['res_a_t_c_code'] = Variable<String>(resATCCode.value);
     }
-    if (resDrugImageLink.present) {
-      map['res_drug_image_link'] = Variable<String>(resDrugImageLink.value);
+    if (resFormula.present) {
+      map['res_formula'] = Variable<String>(resFormula.value);
+    }
+    if (resHospitalName.present) {
+      map['res_hospital_name'] = Variable<String>(resHospitalName.value);
+    }
+    if (resTreatStartDate.present) {
+      map['res_treat_start_date'] = Variable<String>(resTreatStartDate.value);
+    }
+    if (resTreatType.present) {
+      map['res_treat_type'] = Variable<String>(resTreatType.value);
+    }
+    if (resVisitDays.present) {
+      map['res_visit_days'] = Variable<String>(resVisitDays.value);
+    }
+    if (resPrescribeCnt.present) {
+      map['res_prescribe_cnt'] = Variable<String>(resPrescribeCnt.value);
+    }
+    if (resMedicationCnt.present) {
+      map['res_medication_cnt'] = Variable<String>(resMedicationCnt.value);
+    }
+    if (resType.present) {
+      map['res_type'] = Variable<String>(resType.value);
     }
     return map;
   }
@@ -1454,15 +1846,25 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
   String toString() {
     return (StringBuffer('PrescriptionsCompanion(')
           ..write('id: $id, ')
-          ..write('resHospitalName: $resHospitalName, ')
-          ..write('creationTime: $creationTime, ')
           ..write('resTreatDate: $resTreatDate, ')
+          ..write('resTreatTypeDet: $resTreatTypeDet, ')
+          ..write('resPrescribeCntDet: $resPrescribeCntDet, ')
           ..write('resPrescribeDrugName: $resPrescribeDrugName, ')
           ..write('resPrescribeDrugEffect: $resPrescribeDrugEffect, ')
-          ..write('resMedicationDirection: $resMedicationDirection, ')
           ..write('resPrescribeDays: $resPrescribeDays, ')
-          ..write('count: $count, ')
-          ..write('resDrugImageLink: $resDrugImageLink')
+          ..write('resDrugCode: $resDrugCode, ')
+          ..write('resDrugImageLink: $resDrugImageLink, ')
+          ..write('resMedicationDirection: $resMedicationDirection, ')
+          ..write('resBrand: $resBrand, ')
+          ..write('resATCCode: $resATCCode, ')
+          ..write('resFormula: $resFormula, ')
+          ..write('resHospitalName: $resHospitalName, ')
+          ..write('resTreatStartDate: $resTreatStartDate, ')
+          ..write('resTreatType: $resTreatType, ')
+          ..write('resVisitDays: $resVisitDays, ')
+          ..write('resPrescribeCnt: $resPrescribeCnt, ')
+          ..write('resMedicationCnt: $resMedicationCnt, ')
+          ..write('resType: $resType')
           ..write(')'))
         .toString();
   }
