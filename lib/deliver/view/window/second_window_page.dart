@@ -17,7 +17,7 @@ class SecondWindowPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('세부 정보 페이지'),
+        title: Text('알림 정보 페이지'),
       ),
       body: Center(
         child: FutureBuilder<List<DoctorAlarm>>(
