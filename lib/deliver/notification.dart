@@ -81,6 +81,7 @@ class FlutterLocalNotification {
 
   static Map<String, dynamic>? lastPayload;
 
+
   Future onSelectNotification(NotificationResponse payload) async {
     if (payload != null) {
       if (payload.payload != null) {

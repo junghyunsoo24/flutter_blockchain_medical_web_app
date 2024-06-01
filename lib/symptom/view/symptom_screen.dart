@@ -125,7 +125,13 @@ class _SymptomScreenState extends State<SymptomScreen> {
                             duration: Duration(seconds: 3),
                           ),
                         );
-                        Navigator.pop(context);
+                        //Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SymptomListScreen(),
+                          ),
+                        );
                       }
                     }
                   },

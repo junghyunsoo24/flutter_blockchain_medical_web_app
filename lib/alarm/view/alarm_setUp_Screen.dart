@@ -109,7 +109,13 @@ class _AlarmSetupScreenState extends State<AlarmSetupScreen> {
                             duration: Duration(seconds: 3),
                           ),
                         );
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AlarmListScreen(),
+                          ),
+                        );
                       }
                     }
                   },

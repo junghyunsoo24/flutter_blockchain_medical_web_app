@@ -21,6 +21,8 @@ class BoardScreen extends ConsumerWidget {
     String userId = ref.read(userInfoProvider).userId;
 
     void _navigateToBoardListScreen() {
+      print("ㅎㅎㅎ");
+      print(viewModel.selectedCategory);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
