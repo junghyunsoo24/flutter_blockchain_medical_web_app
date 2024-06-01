@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/doctor_info.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/user_info.dart';
+import 'dart:io';
 
-class BlockchainService {
-  static const String baseUrl = 'http://172.30.67.135:5000';
+import '../login/model/doctor_info.dart';
+import '../login/model/user_info.dart';
+
+class PhoneBlockchainService {
+  final user = UserInfo();
+  final doctor = DoctorInfo();
+  static const base = '172.30.67.135';
+  static const String baseUrl = 'http://$base:5000';
 
   Future<void> registerNodes() async {
+    print("haha2");
+    print(user.userId);
+    print(doctor.userId);
     var headers = {'Content-Type': 'application/json; charset=utf-8'};
-    var data1 = {'nodes': 'http://172.30.67.135:5001'};
-    var data2 = {'nodes': 'http://172.30.67.135:5002'};
+    var data1 = {'nodes': 'http://$base:5001'};
+    var data2 = {'nodes': 'http://$base:5002'};
 
     await http.post(Uri.parse('$baseUrl/nodes/register'),
         headers: headers, body: jsonEncode(data1));
@@ -25,11 +33,11 @@ class BlockchainService {
     return hashBytes.toString();
   }
 
-  Future<String> storeHashOnBlockchain(String dataHash, int sender) async {
+  Future<String> storeHashOnBlockchain(String dataHash) async {
     var headers = {'Content-Type': 'application/json; charset=utf-8'};
     var data = {
-      "sender": sender,
-      "recipient": "blockchain",
+      "sender": user.userId,
+      "recipient": doctor.userId,
       "amount": 0,
       "smart_contract": {
         "contract_code": "def store_hash():\n    return '$dataHash'"
@@ -58,7 +66,9 @@ class BlockchainService {
     return '';
   }
 
-  Future<bool> verifyMedicalData(String originHash, String storedHash) async {
-    return originHash == storedHash;
+  Future<bool> verifyMedicalData(Map<String, dynamic> medicalData, String contractAddress) async {
+    var dataHash = calculateHash(medicalData);
+    var storedHash = await getHashFromBlockchain(contractAddress);
+    return dataHash == storedHash;
   }
 }
