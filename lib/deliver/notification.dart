@@ -75,8 +75,11 @@ class FlutterLocalNotification {
         notificationDetails,
         payload: payloadString,
       );
+
     }
   }
+
+  static Map<String, dynamic>? lastPayload;
 
   Future onSelectNotification(NotificationResponse payload) async {
     if (payload != null) {
@@ -84,21 +87,30 @@ class FlutterLocalNotification {
         try {
           final data = Map<String, dynamic>.fromEntries(
               payload.payload!.split('&').map((item) {
-            final List<String> parts = item.split('=');
-            if (parts.length == 2) {
-              return MapEntry(Uri.decodeComponent(parts[0].trim()),
-                  Uri.decodeComponent(parts[1].trim()));
-            } else {
-              throw FormatException("잘못된 데이터 포맷입니다.");
-            }
-          }));
+                final List<String> parts = item.split('=');
+                if (parts.length == 2) {
+                  return MapEntry(Uri.decodeComponent(parts[0].trim()),
+                      Uri.decodeComponent(parts[1].trim()));
+
+                } else {
+                  throw FormatException("잘못된 데이터 포맷입니다.");
+                }
+              }));
 
           if (navigatorKey.currentState != null) {
+            await GetIt.I<MyDatabase>().addPatientAlarm(PatientAlarmsCompanion(
+              userName: Value(data['전문의 이름']),
+              title: Value(data['제목']),
+              body: Value(data['내용']),
+            ));
+            print(data['전문의 이름']);
+            print("haha");
             navigatorKey.currentState!.push(
               MaterialPageRoute(
                 builder: (context) => SecondPage(payload: data),
               ),
             );
+            lastPayload = data;
           } else {
             print('navigatorKey가 비어있습니다.');
           }
@@ -110,7 +122,6 @@ class FlutterLocalNotification {
   }
 
   Future onSelectWindowNotification() async {
-
     if (navigatorKey.currentState != null) {
       navigatorKey.currentState!.push(
         MaterialPageRoute(

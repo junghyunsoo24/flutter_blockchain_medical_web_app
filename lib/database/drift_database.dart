@@ -11,13 +11,14 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/symptom/model/sympt
 
 import '../api/healthCheck/model/healthCheck.dart';
 import '../deliver/model/doctor_alarm.dart';
+import '../deliver/model/patient_alarm.dart';
 import '../user/model/doctor.dart';
 import '../user/model/patient.dart';
 
 part 'drift_database.g.dart';
 
 @DriftDatabase(
-    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors, HealthChecks, DoctorAlarms, Prescriptions],
+    tables: [Alarms, Symptoms, PersonalMedicines, Prescriptions, Patients, Doctors, HealthChecks, DoctorAlarms, Prescriptions, PatientAlarms],
 )
 
 class MyDatabase extends _$MyDatabase {
@@ -37,6 +38,10 @@ class MyDatabase extends _$MyDatabase {
     return existingPrescription != null;
   }
 
+  //patientAlarm
+  Future<void> addPatientAlarm(PatientAlarmsCompanion data) async {
+    await into(patientAlarms).insert(data);
+  }
 
   //doctorAlarm
   Future<void> addDoctorAlarm(DoctorAlarmsCompanion data) async {
