@@ -11,9 +11,9 @@ const emulatorIp = '10.0.2.2:8080';
 //const realPhoneIp = '172.30.67.135:8080';
 const webIp = 'localhost:8080';
 
-//const realPhoneIp = '202.31.202.189:80';
+const realPhoneIp = '202.31.201.254';
 //const realPhoneIp = '202.31.201.254:80';
-const realPhoneIp = '192.168.0.9:8080';
+//const realPhoneIp = '192.168.0.9:8080';
 
 String getIp() {
   if (Platform.isAndroid) {
