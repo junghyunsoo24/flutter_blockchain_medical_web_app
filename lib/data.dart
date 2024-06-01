@@ -5,15 +5,12 @@ const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN';
 const REFRESH_TOKEN_KEY = 'REFRESH_TOKEN';
 
 const emulatorIp = '10.0.2.2:8080';
+const webIp = '192.168.219.102:8080';
+const realPhoneIp = '192.168.219.102:8080';
+const firstBlockchainIp = '192.168.219.102:5000';
+const secondBlockchainIp = '192.168.219.102:5001';
+const thirdBlockchainIp = '192.168.219.102:5002';
 
-// const realPhoneIp = '192.168.248.103:3000';
-
-//const realPhoneIp = '172.30.67.135:8080';
-const webIp = 'localhost:8080';
-
-const realPhoneIp = '202.31.201.254';
-//const realPhoneIp = '202.31.201.254:80';
-//const realPhoneIp = '192.168.0.9:8080';
 
 String getIp() {
   if (Platform.isAndroid) {

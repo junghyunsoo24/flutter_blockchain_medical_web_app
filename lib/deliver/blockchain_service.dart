@@ -4,14 +4,15 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/doctor_info.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/user_info.dart';
+import '../data.dart';
 
 class BlockchainService {
-  static const String baseUrl = 'http://172.30.67.135:5000';
+  static const String baseUrl = 'http://$firstBlockchainIp';
 
   Future<void> registerNodes() async {
     var headers = {'Content-Type': 'application/json; charset=utf-8'};
-    var data1 = {'nodes': 'http://172.30.67.135:5001'};
-    var data2 = {'nodes': 'http://172.30.67.135:5002'};
+    var data1 = {'nodes': 'http://$secondBlockchainIp'};
+    var data2 = {'nodes': 'http://$thirdBlockchainIp'};
 
     await http.post(Uri.parse('$baseUrl/nodes/register'),
         headers: headers, body: jsonEncode(data1));
