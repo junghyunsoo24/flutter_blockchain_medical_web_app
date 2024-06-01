@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/deliver/view/window/second_window_page.dart';
 import 'dart:io';
+import '../../deliver/notification.dart';
+import '../../deliver/view/mobile/second.dart';
 import '../../login/view/login_screen.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userInfo = ref.watch(userInfoProvider);
@@ -66,12 +69,19 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
         ),
         actions: <Widget>[
           IconButton(onPressed: (){
+            Map<String, dynamic>? data = FlutterLocalNotification.lastPayload;
             if (Platform.isWindows) {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SecondWindowPage()),
               );
-            } //
+            }
+            else if(Platform.isAndroid){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SecondPage(payload: data)),
+              );
+            }
           }, icon: Icon(Icons.notifications_active))
         ],
       ),

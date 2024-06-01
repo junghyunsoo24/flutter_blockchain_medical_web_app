@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/doctor_info.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/user_info.dart';
 
 class BlockchainService {
   static const String baseUrl = 'http://localhost:5000';
@@ -23,10 +25,10 @@ class BlockchainService {
     return hashBytes.toString();
   }
 
-  Future<String> storeHashOnBlockchain(String dataHash) async {
+  Future<String> storeHashOnBlockchain(String dataHash, int sender) async {
     var headers = {'Content-Type': 'application/json; charset=utf-8'};
     var data = {
-      "sender": "medical_institute",
+      "sender": sender,
       "recipient": "blockchain",
       "amount": 0,
       "smart_contract": {
@@ -56,9 +58,7 @@ class BlockchainService {
     return '';
   }
 
-  Future<bool> verifyMedicalData(Map<String, dynamic> medicalData, String contractAddress) async {
-    var dataHash = calculateHash(medicalData);
-    var storedHash = await getHashFromBlockchain(contractAddress);
-    return dataHash == storedHash;
+  Future<bool> verifyMedicalData(String originHash, String storedHash) async {
+    return originHash == storedHash;
   }
 }
