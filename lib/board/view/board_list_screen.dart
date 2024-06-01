@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/board/model/question.dart';
@@ -77,7 +79,8 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Platform.isAndroid
+          ? FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -86,7 +89,8 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
         },
         backgroundColor: Colors.blue[50],
         child: const Icon(Icons.add),
-      ),
+      )
+          : null,
     );
   }
 

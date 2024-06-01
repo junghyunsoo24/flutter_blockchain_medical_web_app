@@ -15,9 +15,10 @@ class SecondWindowPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('세부 정보 페이지'),
+        title: Text('알림 정보 페이지'),
       ),
       body: Center(
         child: FutureBuilder<List<DoctorAlarm>>(
@@ -36,7 +37,7 @@ class SecondWindowPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final alarm = alarms[index];
                   return ListTile(
-                    title: Text('사용자 이름: ${alarm.userName}'),
+                    title: Text('보낸 환자 이름: ${alarm.userName}'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -53,20 +54,42 @@ class SecondWindowPage extends StatelessWidget {
                               "diagnosis": alarm.symptom,
                               "treatment": alarm.medicine
                             };
+                            var originDataHash = blockchainService.calculateHash(medicalData);
+                            //직접 계산한 해시값
+
+                            var changeData = {
+                              "patient_id": alarm.id + 1,
+                              "name": alarm.userName,
+                              "diagnosis": alarm.symptom,
+                              "treatment": alarm.medicine
+                            };
+                            var changeDataHash = blockchainService.calculateHash(changeData);
+                            //변조된 직접 계산한 해시값
+
 
                             var contractAddress = await blockchainService.storeHashOnBlockchain(
-                                blockchainService.calculateHash(medicalData)
+                                blockchainService.calculateHash(medicalData), alarm.id
                             );
+                            var dataHash = await blockchainService.getHashFromBlockchain(contractAddress);
+                            //블록체인에 저장된 해시값
+
 
                             var isVerified = await blockchainService.verifyMedicalData(
-                                medicalData, contractAddress
-                            );
+                                originDataHash, dataHash
+                            ); //true
+
+                            var isNotVerified = await blockchainService.verifyMedicalData(
+                                changeDataHash, dataHash
+                            ); //false
+
+                            //직접 계산한 해시값과 블록체인에 저장된 해시값을 비교하여 같으면 true반환
+
 
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: Text('의료 데이터 검증 결과'),
-                                content: Text(isVerified
+                                content: Text(isNotVerified
                                     ? '의료 데이터의 무결성이 확인되었습니다.'
                                     : '의료 데이터가 변조되었습니다.'),
                                 actions: [
