@@ -4,8 +4,6 @@ import 'package:get_it/get_it.dart';
 import '../../../database/drift_database.dart';
 import '../../blockchain_service.dart';
 
-import '../../phone_blockchain_service.dart';
-
 class SecondPage extends StatelessWidget {
   final Map<String, dynamic>? payload;
   SecondPage({Key? key, required this.payload}) : super(key: key);

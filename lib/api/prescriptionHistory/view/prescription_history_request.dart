@@ -124,7 +124,7 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
       return Scaffold(
         appBar: AppBar(
           title:
-          Text('건강검진 내역 불러오기', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('처방 내역 불러오기', style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         body: SingleChildScrollView(
           child: Padding(

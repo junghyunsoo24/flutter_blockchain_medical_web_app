@@ -308,10 +308,10 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => PrescriptionHistoryListScreen()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => PrescriptionHistoryListScreen()),
+                        // );
                       },
                       child: Container(
                         decoration: BoxDecoration(
