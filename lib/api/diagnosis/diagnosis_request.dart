@@ -10,21 +10,21 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/home_scre
 import '../../../data.dart';
 import '../../../database/drift_database.dart';
 
-class HealthCheckRequest extends StatefulWidget {
-  const HealthCheckRequest({Key? key}) : super(key: key);
+class DiagnosisRequest extends StatefulWidget {
+  const DiagnosisRequest({Key? key}) : super(key: key);
 
   @override
-  _HealthCheckRequestState createState() => _HealthCheckRequestState();
+  _DiagnosisRequestState createState() => _DiagnosisRequestState();
 }
 
-class _HealthCheckRequestState extends State<HealthCheckRequest> {
+class _DiagnosisRequestState extends State<DiagnosisRequest> {
   final _nameController = TextEditingController();
   final _birthdayController = TextEditingController();
   final _phoneController = TextEditingController();
   String? _selectedProvider; // 선택된 통신사 저장
   //final _prescriptionRequestViewModel = PrescriptionRequestViewModel();
 
-  Future<bool> firstCheck() async {
+  Future<bool> secondCheck() async {
     final url = Uri.parse(
         'http://$realPhoneIp/api/v1/medical-api/health-checkup-result/first-request');
     final response = await http.post(
@@ -56,7 +56,7 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
     }
   }
 
-  Future<bool> secondCheck() async {
+  Future<bool> firstCheck() async {
     try { // 예외 처리 추가
       final url = Uri.parse('http://$realPhoneIp/api/v1/medical-api/health-checkup-result/second-request');
       final response = await http.post(
@@ -136,7 +136,7 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
     return Scaffold(
       appBar: AppBar(
         title:
-            Text('건강검진 내역 불러오기', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('진료 내용 불러오기', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(
