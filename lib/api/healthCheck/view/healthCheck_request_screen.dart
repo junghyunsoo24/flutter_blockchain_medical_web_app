@@ -57,27 +57,27 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
   }
 
   Future<bool> secondCheck() async {
-    final url = Uri.parse(
-        'http://$realPhoneIp/api/v1/medical-api/health-checkup-result/second-request');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'identity': _birthdayController.text,
-        'userName': _nameController.text,
-        'phoneNo': _phoneController.text,
-        'telecom': _selectedProvider,
-      }),
-    );
+    try { // 예외 처리 추가
+      final url = Uri.parse('http://$realPhoneIp/api/v1/medical-api/health-checkup-result/second-request');
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'identity': _birthdayController.text,
+          'userName': _nameController.text,
+          'phoneNo': _phoneController.text,
+          'telecom': _selectedProvider,
+        }),
+      );
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
-      if ((jsonBody['result']['extraMessage'] == "") && (jsonBody['result']['message'] == "성공")) {
-        final data = jsonBody['data'];
-        final resResultList = data['resResultList'][0];
-        final resPreviewList = data['resPreviewList'][0];
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
+        if ((jsonBody['result']['extraMessage'] == "") && (jsonBody['result']['message'] == "성공")) {
+          final data = jsonBody['data'];
+          final resResultList = data['resResultList'][0];
+          final resPreviewList = data['resPreviewList'][0];
 
-        if ((resPreviewList['resCheckupDate'] != "") &&  (!await GetIt.I<MyDatabase>().isSameCheckupDateExists(resResultList['resCheckupDate']))) {
+          if ((resPreviewList['resCheckupDate'] != "") &&  (!await GetIt.I<MyDatabase>().isSameCheckupDateExists(resResultList['resCheckupDate']))) {
             await GetIt.I<MyDatabase>().addHealthCheck(HealthChecksCompanion(
               resOrganizationName: Value(resResultList['resOrganizationName']),
               resCheckupDate: Value(DateTime.parse(resResultList['resCheckupDate'])),
@@ -91,25 +91,42 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
               resFastingBloodSuger: Value(double.tryParse(resPreviewList['resFastingBloodSuger']) ?? 0.0),
               resTotalCholesterol: Value(resPreviewList['resTotalCholesterol']),
             ));
-          print('건강검진을 디비에 처음 저장합니다.');
-          return true;
+            print('건강검진을 디비에 처음 저장합니다.');
+            return true;
+          } else {
+            print("이미 같은날짜에 건강검진을 디비에 저장하였습니다.");
+            return false;
+          }
+        } else if (jsonBody['result']['message'] == "이미 응답이 완료된 요청입니다.") {
+          print('이미 응답이 완료된 요청입니다.');
+          return false;
+        } else if (jsonBody['result']['message'] ==
+            "동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.") {
+          print('동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.');
+          return false;
         } else {
-          print("이미 같은날짜에 건강검진을 디비에 저장하였습니다.");
+          print('API 요청 처리가 정상 진행 중입니다. 추가 정보를 입력하세요.');
           return false;
         }
-      } else if (jsonBody['result']['message'] == "이미 응답이 완료된 요청입니다.") {
-        print('이미 응답이 완료된 요청입니다.');
-        return false;
-      } else if (jsonBody['result']['message'] ==
-          "동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.") {
-        print('동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.');
-        return false;
+      } else if (response.statusCode == 500) { // 500 에러 처리
+        throw Exception('서버 오류 발생 (500)');
       } else {
-        print('API 요청 처리가 정상 진행 중입니다. 추가 정보를 입력하세요.');
-        return false;
+        throw Exception('서버 요청 실패 (상태 코드: ${response.statusCode})'); // 일반적인 오류 처리
       }
-    } else {
-      print('서버에 요청이 오지 않았습니다.');
+    } catch (e) { // 예외 발생 시 다이얼로그 표시
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('API측 오류'),
+          content: Text("API측이 현재 제공하지 않습니다."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('확인'),
+            ),
+          ],
+        ),
+      );
       return false;
     }
   }
