@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:drift/drift.dart' as drift; // drift 임포트 추가
-import 'package:flutter/material.dart';
+// drift 임포트 추가
 import 'package:get_it/get_it.dart';
 import '../../../database/drift_database.dart';
 
-import 'package:flutter/material.dart';
-import 'package:drift/drift.dart' as drift;
-import 'package:get_it/get_it.dart';
 
 import '../../blockchain_service.dart';
 
@@ -70,7 +66,7 @@ class SecondWindowPage extends StatelessWidget {
                             var contractAddress = await blockchainService.storeHashOnBlockchain(
                                 blockchainService.calculateHash(medicalData), alarm.id
                             );
-                            var dataHash = await blockchainService.getHashFromBlockchain(contractAddress);
+                            var dataHash = await blockchainService.getHashFromBlockchain(contractAddress!);
                             //블록체인에 저장된 해시값
 
 

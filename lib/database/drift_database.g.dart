@@ -3531,6 +3531,253 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
   }
 }
 
+class $PatientAlarmsTable extends PatientAlarms
+    with TableInfo<$PatientAlarmsTable, PatientAlarm> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PatientAlarmsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _userNameMeta =
+      const VerificationMeta('userName');
+  @override
+  late final GeneratedColumn<String> userName = GeneratedColumn<String>(
+      'user_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+      'title', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+      'body', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, userName, title, body];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'patient_alarms';
+  @override
+  VerificationContext validateIntegrity(Insertable<PatientAlarm> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_name')) {
+      context.handle(_userNameMeta,
+          userName.isAcceptableOrUnknown(data['user_name']!, _userNameMeta));
+    } else if (isInserting) {
+      context.missing(_userNameMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('body')) {
+      context.handle(
+          _bodyMeta, body.isAcceptableOrUnknown(data['body']!, _bodyMeta));
+    } else if (isInserting) {
+      context.missing(_bodyMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PatientAlarm map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PatientAlarm(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      userName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_name'])!,
+      title: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      body: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}body'])!,
+    );
+  }
+
+  @override
+  $PatientAlarmsTable createAlias(String alias) {
+    return $PatientAlarmsTable(attachedDatabase, alias);
+  }
+}
+
+class PatientAlarm extends DataClass implements Insertable<PatientAlarm> {
+  final int id;
+  final String userName;
+  final String title;
+  final String body;
+  const PatientAlarm(
+      {required this.id,
+      required this.userName,
+      required this.title,
+      required this.body});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['user_name'] = Variable<String>(userName);
+    map['title'] = Variable<String>(title);
+    map['body'] = Variable<String>(body);
+    return map;
+  }
+
+  PatientAlarmsCompanion toCompanion(bool nullToAbsent) {
+    return PatientAlarmsCompanion(
+      id: Value(id),
+      userName: Value(userName),
+      title: Value(title),
+      body: Value(body),
+    );
+  }
+
+  factory PatientAlarm.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PatientAlarm(
+      id: serializer.fromJson<int>(json['id']),
+      userName: serializer.fromJson<String>(json['userName']),
+      title: serializer.fromJson<String>(json['title']),
+      body: serializer.fromJson<String>(json['body']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userName': serializer.toJson<String>(userName),
+      'title': serializer.toJson<String>(title),
+      'body': serializer.toJson<String>(body),
+    };
+  }
+
+  PatientAlarm copyWith(
+          {int? id, String? userName, String? title, String? body}) =>
+      PatientAlarm(
+        id: id ?? this.id,
+        userName: userName ?? this.userName,
+        title: title ?? this.title,
+        body: body ?? this.body,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PatientAlarm(')
+          ..write('id: $id, ')
+          ..write('userName: $userName, ')
+          ..write('title: $title, ')
+          ..write('body: $body')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, userName, title, body);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PatientAlarm &&
+          other.id == this.id &&
+          other.userName == this.userName &&
+          other.title == this.title &&
+          other.body == this.body);
+}
+
+class PatientAlarmsCompanion extends UpdateCompanion<PatientAlarm> {
+  final Value<int> id;
+  final Value<String> userName;
+  final Value<String> title;
+  final Value<String> body;
+  const PatientAlarmsCompanion({
+    this.id = const Value.absent(),
+    this.userName = const Value.absent(),
+    this.title = const Value.absent(),
+    this.body = const Value.absent(),
+  });
+  PatientAlarmsCompanion.insert({
+    this.id = const Value.absent(),
+    required String userName,
+    required String title,
+    required String body,
+  })  : userName = Value(userName),
+        title = Value(title),
+        body = Value(body);
+  static Insertable<PatientAlarm> custom({
+    Expression<int>? id,
+    Expression<String>? userName,
+    Expression<String>? title,
+    Expression<String>? body,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userName != null) 'user_name': userName,
+      if (title != null) 'title': title,
+      if (body != null) 'body': body,
+    });
+  }
+
+  PatientAlarmsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? userName,
+      Value<String>? title,
+      Value<String>? body}) {
+    return PatientAlarmsCompanion(
+      id: id ?? this.id,
+      userName: userName ?? this.userName,
+      title: title ?? this.title,
+      body: body ?? this.body,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userName.present) {
+      map['user_name'] = Variable<String>(userName.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PatientAlarmsCompanion(')
+          ..write('id: $id, ')
+          ..write('userName: $userName, ')
+          ..write('title: $title, ')
+          ..write('body: $body')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   late final $AlarmsTable alarms = $AlarmsTable(this);
@@ -3542,6 +3789,7 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   late final $DoctorsTable doctors = $DoctorsTable(this);
   late final $HealthChecksTable healthChecks = $HealthChecksTable(this);
   late final $DoctorAlarmsTable doctorAlarms = $DoctorAlarmsTable(this);
+  late final $PatientAlarmsTable patientAlarms = $PatientAlarmsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3554,6 +3802,7 @@ abstract class _$MyDatabase extends GeneratedDatabase {
         patients,
         doctors,
         healthChecks,
-        doctorAlarms
+        doctorAlarms,
+        patientAlarms
       ];
 }

@@ -47,8 +47,16 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
   }
 
   void _fetchQuestions(String selectedCategory) {
-    final category = selectedCategory;
+    final category = _getEnglishCategory(selectedCategory);
     ref.read(questionViewModelProvider).fetchQuestions(category: category);
+  }
+  String _getEnglishCategory(String koreanCategory) {
+    final Map<String, String> korToEng = {
+      '전체': 'ENTIRE',
+      '노약자': 'ELDERS',
+      '임산부': 'MATERNITY',
+    };
+    return korToEng[koreanCategory] ?? 'ENTIRE';
   }
 
   @override
