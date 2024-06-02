@@ -15,6 +15,8 @@ class WebDeliverScreen extends ConsumerStatefulWidget {
 }
 
 class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
+  List<Map<String, dynamic>> prescriptionDataList = [];
+
   late String patientId;
   late String patientName;
 
@@ -210,6 +212,7 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
+
                 ElevatedButton(
                   onPressed: () async {
                     if (_selectedSymptom != null) {
@@ -223,11 +226,35 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                       medicine = " 추가 의약품 없음";
                     }
 
+                    if (_selectedPrescription != null) {
+                      print("1번째다");
+                      // 처방 내역 데이터 가져오기
+                      List<Prescription> prescriptions = await GetIt.I<MyDatabase>().getAllPrescriptions();
+                      prescriptionDataList = prescriptions.map((prescription) {
+                        return {
+                          '병의원(약국)명칭': prescription.resHospitalName,
+                          '처방 일자': prescription.resTreatDate,
+                          '의약품 명': prescription.resPrescribeDrugName,
+                          '의약품 명': prescription.resPrescribeDrugName,
+                          '처방약품 효능': prescription.resPrescribeDrugEffect,
+                          '복약일수': prescription.resPrescribeDays,
+                          '투약 횟수': prescription.resPrescribeDays,
+                          // 필요한 다른 처방 정보 추가
+                        };
+                      }).toList();
+                      print("처방내역이 선택되었습니다.");
+                      print("prescriptionDataList: $prescriptionDataList");
+                    } else {
+                      print("처방내역이 실패되었습니다.");
+                      prescriptionDataList = [];
+                    }
+
                     await FirebaseFirestore.instance
                         .collection("patientTo${_doctorController.text}")
                         .add({
                       '환자 아이디': patientId,
                       '환자 이름': patientName,
+                      '처방내역': prescriptionDataList,
                       '추가 증상': symptom,
                       '추가 의약품': medicine,
                       '상세 내용': _bodyController.text,
