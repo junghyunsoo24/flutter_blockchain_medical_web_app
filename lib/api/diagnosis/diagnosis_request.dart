@@ -252,21 +252,7 @@ class _DiagnosisRequestState extends State<DiagnosisRequest> {
                         ),
                       );
                     } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text('1차인증 실패'),
-                          content: Text('잘못 작성하였습니다. 데이터를 다시 확인해주세요.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('확인'),
-                            ),
-                          ],
-                        ),
-                      );
+
                     }
                   } else {
                     showDialog(
