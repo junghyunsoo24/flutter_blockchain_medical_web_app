@@ -10,6 +10,7 @@ class QuestionRepository {
 
 
   Future<List<Question>> fetchQuestions({String? category}) async {
+    print(category);
     final uri = Uri.parse('$baseUrl/question')
         .replace(queryParameters: {
       'category': category,
