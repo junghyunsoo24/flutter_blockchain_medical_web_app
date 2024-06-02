@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -18,6 +19,8 @@ class DiagnosisRequest extends StatefulWidget {
 }
 
 class _DiagnosisRequestState extends State<DiagnosisRequest> {
+  String? REAL_PHONE_URL = dotenv.env['REAL_PHONE_URL'];
+
   final _nameController = TextEditingController();
   final _birthdayController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -26,7 +29,7 @@ class _DiagnosisRequestState extends State<DiagnosisRequest> {
 
   Future<bool> secondCheck() async {
     final url = Uri.parse(
-        'http://$realPhoneIp/api/v1/medical-api/health-checkup-result/first-request');
+        'http://$REAL_PHONE_URL/api/v1/medical-api/health-checkup-result/first-request');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -58,7 +61,7 @@ class _DiagnosisRequestState extends State<DiagnosisRequest> {
 
   Future<bool> firstCheck() async {
     try { // 예외 처리 추가
-      final url = Uri.parse('http://$realPhoneIp/api/v1/medical-api/health-checkup-result/second-request');
+      final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/medical-api/health-checkup-result/second-request');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
