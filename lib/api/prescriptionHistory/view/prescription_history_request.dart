@@ -63,12 +63,11 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
       final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
       // final data = jsonBody['data'] as List<dynamic>;
 
-      final result = jsonBody['data']['result'] as Map<String, dynamic>;
-      final dataList = jsonBody['data']['data'] as List<dynamic>;
+      final dataList = jsonBody['data']['data']['resMediDetailList'] as List<dynamic>;
 
       for (final item in dataList) {
-        final resMediDetailList = item['resMediDetailList'] as List<dynamic>;
-        for (final prescriptionData in resMediDetailList) {
+        // final resMediDetailList = item['resMediDetailList'] as List<dynamic>;
+        for (final prescriptionData in dataList) {
           final prescription = PrescriptionsCompanion(
             resTreatDate: Value(prescriptionData['resTreatDate'] ?? ''),
             resTreatTypeDet: Value(prescriptionData['resTreatTypeDet'] ?? ''),
@@ -85,9 +84,9 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
             resHospitalName: Value(item['resHospitalName'] ?? ''),
             resTreatStartDate: Value(item['resTreatStartDate'] ?? ''),
             resTreatType: Value(item['resTreatType'] ?? ''),
-            resVisitDays: Value(item['resVisitDays'] ?? 0),
-            resPrescribeCnt: Value(item['resPrescribeCnt'] ?? 0),
-            resMedicationCnt: Value(item['resMedicationCnt'] ?? 0),
+            resVisitDays: Value(item['resVisitDays'].toString() ?? '0'),//string으로 변환필요!
+            resPrescribeCnt: Value(item['resPrescribeCnt'].toString() ?? '0'),//string으로 변환필요!
+            resMedicationCnt: Value(item['resMedicationCnt'] .toString()?? '0'),//string으로 변환필요!
             resType: Value(item['resType'] ?? ''),
           );
 
