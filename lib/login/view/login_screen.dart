@@ -129,7 +129,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ref.read(userInfoProvider).setUserId(username);
                             ref.read(userInfoProvider).setUserInfo(patient);
 
-                            GetIt.I.registerSingleton<UserInformation>(ref.read(userInfoProvider));
+                            if (!GetIt.I.isRegistered<UserInformation>()) {
+                              GetIt.I.registerSingleton<UserInformation>(ref.read(userInfoProvider));
+                            }
                             print("환자 로그인 성공!");
                             Navigator.push(
                               context,
@@ -170,7 +172,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ref.read(doctorInfoProvider).setDoctorId(username);
                             ref.read(doctorInfoProvider).setDoctorInfo(doctor);
 
-                            GetIt.I.registerSingleton<DoctorInfo>(ref.read(doctorInfoProvider));
+                            if (!GetIt.I.isRegistered<DoctorInfo>()) {
+                              GetIt.I.registerSingleton<DoctorInfo>(ref.read(doctorInfoProvider));
+                            }
+
                             print("의료진 로그인 성공!");
                             Navigator.push(
                               context,
