@@ -1076,6 +1076,11 @@ class $PrescriptionsTable extends Prescriptions
   late final GeneratedColumn<String> resType = GeneratedColumn<String>(
       'res_type', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1097,7 +1102,8 @@ class $PrescriptionsTable extends Prescriptions
         resVisitDays,
         resPrescribeCnt,
         resMedicationCnt,
-        resType
+        resType,
+        name
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1260,6 +1266,12 @@ class $PrescriptionsTable extends Prescriptions
     } else if (isInserting) {
       context.missing(_resTypeMeta);
     }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
     return context;
   }
 
@@ -1312,6 +1324,8 @@ class $PrescriptionsTable extends Prescriptions
           DriftSqlType.string, data['${effectivePrefix}res_medication_cnt'])!,
       resType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}res_type'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
     );
   }
 
@@ -1342,6 +1356,7 @@ class Prescription extends DataClass implements Insertable<Prescription> {
   final String resPrescribeCnt;
   final String resMedicationCnt;
   final String resType;
+  final String name;
   const Prescription(
       {required this.id,
       required this.resTreatDate,
@@ -1362,7 +1377,8 @@ class Prescription extends DataClass implements Insertable<Prescription> {
       required this.resVisitDays,
       required this.resPrescribeCnt,
       required this.resMedicationCnt,
-      required this.resType});
+      required this.resType,
+      required this.name});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1386,6 +1402,7 @@ class Prescription extends DataClass implements Insertable<Prescription> {
     map['res_prescribe_cnt'] = Variable<String>(resPrescribeCnt);
     map['res_medication_cnt'] = Variable<String>(resMedicationCnt);
     map['res_type'] = Variable<String>(resType);
+    map['name'] = Variable<String>(name);
     return map;
   }
 
@@ -1411,6 +1428,7 @@ class Prescription extends DataClass implements Insertable<Prescription> {
       resPrescribeCnt: Value(resPrescribeCnt),
       resMedicationCnt: Value(resMedicationCnt),
       resType: Value(resType),
+      name: Value(name),
     );
   }
 
@@ -1442,6 +1460,7 @@ class Prescription extends DataClass implements Insertable<Prescription> {
       resPrescribeCnt: serializer.fromJson<String>(json['resPrescribeCnt']),
       resMedicationCnt: serializer.fromJson<String>(json['resMedicationCnt']),
       resType: serializer.fromJson<String>(json['resType']),
+      name: serializer.fromJson<String>(json['name']),
     );
   }
   @override
@@ -1470,6 +1489,7 @@ class Prescription extends DataClass implements Insertable<Prescription> {
       'resPrescribeCnt': serializer.toJson<String>(resPrescribeCnt),
       'resMedicationCnt': serializer.toJson<String>(resMedicationCnt),
       'resType': serializer.toJson<String>(resType),
+      'name': serializer.toJson<String>(name),
     };
   }
 
@@ -1493,7 +1513,8 @@ class Prescription extends DataClass implements Insertable<Prescription> {
           String? resVisitDays,
           String? resPrescribeCnt,
           String? resMedicationCnt,
-          String? resType}) =>
+          String? resType,
+          String? name}) =>
       Prescription(
         id: id ?? this.id,
         resTreatDate: resTreatDate ?? this.resTreatDate,
@@ -1517,6 +1538,7 @@ class Prescription extends DataClass implements Insertable<Prescription> {
         resPrescribeCnt: resPrescribeCnt ?? this.resPrescribeCnt,
         resMedicationCnt: resMedicationCnt ?? this.resMedicationCnt,
         resType: resType ?? this.resType,
+        name: name ?? this.name,
       );
   @override
   String toString() {
@@ -1540,33 +1562,36 @@ class Prescription extends DataClass implements Insertable<Prescription> {
           ..write('resVisitDays: $resVisitDays, ')
           ..write('resPrescribeCnt: $resPrescribeCnt, ')
           ..write('resMedicationCnt: $resMedicationCnt, ')
-          ..write('resType: $resType')
+          ..write('resType: $resType, ')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      resTreatDate,
-      resTreatTypeDet,
-      resPrescribeCntDet,
-      resPrescribeDrugName,
-      resPrescribeDrugEffect,
-      resPrescribeDays,
-      resDrugCode,
-      resDrugImageLink,
-      resMedicationDirection,
-      resBrand,
-      resATCCode,
-      resFormula,
-      resHospitalName,
-      resTreatStartDate,
-      resTreatType,
-      resVisitDays,
-      resPrescribeCnt,
-      resMedicationCnt,
-      resType);
+  int get hashCode => Object.hashAll([
+        id,
+        resTreatDate,
+        resTreatTypeDet,
+        resPrescribeCntDet,
+        resPrescribeDrugName,
+        resPrescribeDrugEffect,
+        resPrescribeDays,
+        resDrugCode,
+        resDrugImageLink,
+        resMedicationDirection,
+        resBrand,
+        resATCCode,
+        resFormula,
+        resHospitalName,
+        resTreatStartDate,
+        resTreatType,
+        resVisitDays,
+        resPrescribeCnt,
+        resMedicationCnt,
+        resType,
+        name
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1590,7 +1615,8 @@ class Prescription extends DataClass implements Insertable<Prescription> {
           other.resVisitDays == this.resVisitDays &&
           other.resPrescribeCnt == this.resPrescribeCnt &&
           other.resMedicationCnt == this.resMedicationCnt &&
-          other.resType == this.resType);
+          other.resType == this.resType &&
+          other.name == this.name);
 }
 
 class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
@@ -1614,6 +1640,7 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
   final Value<String> resPrescribeCnt;
   final Value<String> resMedicationCnt;
   final Value<String> resType;
+  final Value<String> name;
   const PrescriptionsCompanion({
     this.id = const Value.absent(),
     this.resTreatDate = const Value.absent(),
@@ -1635,6 +1662,7 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
     this.resPrescribeCnt = const Value.absent(),
     this.resMedicationCnt = const Value.absent(),
     this.resType = const Value.absent(),
+    this.name = const Value.absent(),
   });
   PrescriptionsCompanion.insert({
     this.id = const Value.absent(),
@@ -1657,6 +1685,7 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
     required String resPrescribeCnt,
     required String resMedicationCnt,
     required String resType,
+    required String name,
   })  : resTreatDate = Value(resTreatDate),
         resTreatTypeDet = Value(resTreatTypeDet),
         resPrescribeCntDet = Value(resPrescribeCntDet),
@@ -1675,7 +1704,8 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
         resVisitDays = Value(resVisitDays),
         resPrescribeCnt = Value(resPrescribeCnt),
         resMedicationCnt = Value(resMedicationCnt),
-        resType = Value(resType);
+        resType = Value(resType),
+        name = Value(name);
   static Insertable<Prescription> custom({
     Expression<int>? id,
     Expression<String>? resTreatDate,
@@ -1697,6 +1727,7 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
     Expression<String>? resPrescribeCnt,
     Expression<String>? resMedicationCnt,
     Expression<String>? resType,
+    Expression<String>? name,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1723,6 +1754,7 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
       if (resPrescribeCnt != null) 'res_prescribe_cnt': resPrescribeCnt,
       if (resMedicationCnt != null) 'res_medication_cnt': resMedicationCnt,
       if (resType != null) 'res_type': resType,
+      if (name != null) 'name': name,
     });
   }
 
@@ -1746,7 +1778,8 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
       Value<String>? resVisitDays,
       Value<String>? resPrescribeCnt,
       Value<String>? resMedicationCnt,
-      Value<String>? resType}) {
+      Value<String>? resType,
+      Value<String>? name}) {
     return PrescriptionsCompanion(
       id: id ?? this.id,
       resTreatDate: resTreatDate ?? this.resTreatDate,
@@ -1770,6 +1803,7 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
       resPrescribeCnt: resPrescribeCnt ?? this.resPrescribeCnt,
       resMedicationCnt: resMedicationCnt ?? this.resMedicationCnt,
       resType: resType ?? this.resType,
+      name: name ?? this.name,
     );
   }
 
@@ -1839,6 +1873,9 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
     if (resType.present) {
       map['res_type'] = Variable<String>(resType.value);
     }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
     return map;
   }
 
@@ -1864,7 +1901,8 @@ class PrescriptionsCompanion extends UpdateCompanion<Prescription> {
           ..write('resVisitDays: $resVisitDays, ')
           ..write('resPrescribeCnt: $resPrescribeCnt, ')
           ..write('resMedicationCnt: $resMedicationCnt, ')
-          ..write('resType: $resType')
+          ..write('resType: $resType, ')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }

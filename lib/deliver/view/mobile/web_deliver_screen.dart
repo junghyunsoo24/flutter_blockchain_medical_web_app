@@ -23,18 +23,27 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
   final TextEditingController _doctorController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
 
+  String? _selectedPrescription;
   String? _selectedSymptom; // 선택된 증상
   String? _selectedMedicine; // 선택된 개인 의약품
 
   late List<Symptom> _symptoms = [];
   late List<PersonalMedicine> _medicines = [];
 
+
   late String symptom, medicine;
+  String prescriptionName = '';
 
   Future<void> _loadData() async {
+    // 데이터베이스에서 데이터 가져오기
     _symptoms = await GetIt.I<MyDatabase>().getAllSymptoms();
     _medicines = await GetIt.I<MyDatabase>().getAllPersonalMedicines();
-    setState(() {});
+
+    // 처방내역 가져오기 및 상태 업데이트
+    String loadedPrescriptionName = (await GetIt.I<MyDatabase>().getNameFromPrescriptions())!;
+    setState(() { // 상태 업데이트
+      prescriptionName = loadedPrescriptionName;
+    });
   }
 
   @override
@@ -93,6 +102,32 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DropdownButton<String>(
+                  value: _selectedPrescription,
+                  hint: Text('API 선택'),
+                  onChanged: (value) async {
+                    setState(() {
+                      _selectedPrescription = value;
+                    });
+                  },
+                  items: prescriptionName == '처방내역' // null 체크 불필요
+                      ? [
+                    DropdownMenuItem<String>(
+                      value: '처방내역',
+                      child: Text('처방내역'),
+                    ),
+                  ]
+                      : [], // _selectedPrescription이 null이면 빈 리스트 표시
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.blue,
+                  ),
+                  dropdownColor: Colors.white,
+                  elevation: 8,
+                  isExpanded: true,
+                ),
+                SizedBox(height: 16.0),
+
+                DropdownButton<String>(
                   value: _selectedSymptom,
                   hint: Text('증상 선택'),
                   onChanged: (value) {
@@ -117,6 +152,7 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                   isExpanded: true, // 드롭다운 너비를 화면 가득 채움
                 ),
                 SizedBox(height: 16.0),
+
                 DropdownButton<String>(
                   value: _selectedMedicine,
                   hint: Text('개인 의약품 선택'),
