@@ -26,10 +26,12 @@ class BlockchainService {
     return hashBytes.toString();
   }
 
-  Future<String> storeHashOnBlockchain(String dataHash, int sender) async {
+  Future<String> storeHashOnBlockchain(String dataHash, dynamic sender) async {
+    String senderString = sender is int ? sender.toString() : sender;
+
     var headers = {'Content-Type': 'application/json; charset=utf-8'};
     var data = {
-      "sender": sender,
+      "sender": senderString,
       "recipient": "blockchain",
       "amount": 0,
       "smart_contract": {

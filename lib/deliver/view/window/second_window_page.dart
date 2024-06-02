@@ -70,13 +70,16 @@ class SecondWindowPage extends StatelessWidget {
                             //블록체인에 저장된 해시값
 
 
-                            var isVerified = await blockchainService.verifyMedicalData(
-                                originDataHash, dataHash
-                            ); //true
-
-                            var isNotVerified = await blockchainService.verifyMedicalData(
-                                changeDataHash, dataHash
-                            ); //false
+                            bool isVerified;
+                            if (index % 2 == 0) {  // 짝수 인덱스의 리스트는 무결성이 확인되도록
+                              isVerified = await blockchainService.verifyMedicalData(
+                                  originDataHash, dataHash
+                              );
+                            } else {
+                              isVerified = await blockchainService.verifyMedicalData(
+                                  changeDataHash, dataHash
+                              );
+                            }
 
                             //직접 계산한 해시값과 블록체인에 저장된 해시값을 비교하여 같으면 true반환
 
@@ -85,7 +88,7 @@ class SecondWindowPage extends StatelessWidget {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: Text('의료 데이터 검증 결과'),
-                                content: Text(isNotVerified
+                                content: Text(isVerified
                                     ? '의료 데이터의 무결성이 확인되었습니다.'
                                     : '의료 데이터가 변조되었습니다.'),
                                 actions: [
