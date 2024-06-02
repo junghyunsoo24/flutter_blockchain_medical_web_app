@@ -228,20 +228,21 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
 
                     if (_selectedPrescription != null) {
                       print("1번째다");
+                      List<Prescription>? prescriptions = await GetIt.I<MyDatabase>().getAllPrescriptions();
                       // 처방 내역 데이터 가져오기
-                      List<Prescription> prescriptions = await GetIt.I<MyDatabase>().getAllPrescriptions();
-                      prescriptionDataList = prescriptions.map((prescription) {
-                        return {
-                          '병의원(약국)명칭': prescription.resHospitalName,
-                          '처방 일자': prescription.resTreatDate,
-                          '의약품 명': prescription.resPrescribeDrugName,
-                          '의약품 명': prescription.resPrescribeDrugName,
-                          '처방약품 효능': prescription.resPrescribeDrugEffect,
-                          '복약일수': prescription.resPrescribeDays,
-                          '투약 횟수': prescription.resPrescribeDays,
+                      Prescription firstPrescription = prescriptions.first; // 첫 번째 처방 가져오기
+
+                      prescriptionDataList = [ // 리스트로 감싸서 단일 항목 저장
+                        {
+                          '병의원(약국)명칭': firstPrescription.resHospitalName,
+                          '처방 일자': firstPrescription.resTreatDate,
+                          '의약품 명': firstPrescription.resPrescribeDrugName,
+                          '처방약품 효능': firstPrescription.resPrescribeDrugEffect,
+                          '복약일수': firstPrescription.resPrescribeDays,
+                          '투약 횟수': firstPrescription.resPrescribeDays,
                           // 필요한 다른 처방 정보 추가
-                        };
-                      }).toList();
+                        }
+                      ];
                       print("처방내역이 선택되었습니다.");
                       print("prescriptionDataList: $prescriptionDataList");
                     } else {
