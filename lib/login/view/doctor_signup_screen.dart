@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../data.dart';
@@ -18,11 +19,13 @@ class DoctorSignupScreen extends StatefulWidget {
 }
 
 class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
+  String? WINDOW_URL = dotenv.env['WINDOW_URL'];
+
   final _formKey = GlobalKey<FormState>();
   String? _userID, _userPW, _name, _field, _hospital, _introduction;
 
   Future<bool> submitDoctorInfo() async {
-    final url = Uri.parse('http://$webIp/api/v1/doctor/sign-up');
+    final url = Uri.parse('http://$WINDOW_URL/api/v1/doctor/sign-up');
     print(url);
     final response = await http.post(
       url,
