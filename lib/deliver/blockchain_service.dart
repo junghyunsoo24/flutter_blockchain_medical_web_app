@@ -14,20 +14,18 @@ class BlockchainService {
 
   String? _baseUrl;
 
-  Future<void> _loadBaseUrl() async {
-    await dotenv.load();
-    _baseUrl = 'http://${dotenv.env['FIRST_BLOCK_URL']}';
-  }
-
   Future<void> registerNodes() async {
-    var headers = {'Content-Type': 'application/json; charset=utf-8'};
-    var data1 = {'nodes': 'http://$SECOND_BLOCK_URL'};
-    var data2 = {'nodes': 'http://$THIRD_BLOCK_URL'};
 
-    await _loadBaseUrl();
-    await http.post(Uri.parse('$_baseUrl/nodes/register'),
+    var headers = {'Content-Type': 'application/json; charset=utf-8'};
+    var data1 = {'nodes': SECOND_BLOCK_URL};
+    var data2 = {'nodes': THIRD_BLOCK_URL};
+
+    print(FIRST_BLOCK_URL);
+    print("haha");
+
+    await http.post(Uri.parse('$FIRST_BLOCK_URL/nodes/register'),
         headers: headers, body: jsonEncode(data1));
-    await http.post(Uri.parse('$_baseUrl/nodes/register'),
+    await http.post(Uri.parse('$FIRST_BLOCK_URL/nodes/register'),
         headers: headers, body: jsonEncode(data2));
   }
 
@@ -50,16 +48,16 @@ class BlockchainService {
       }
     };
 
-    var response = await http.post(Uri.parse('$_baseUrl/transactions/new'),
+    var response = await http.post(Uri.parse('$FIRST_BLOCK_URL/transactions/new'),
         headers: headers, body: jsonEncode(data));
     var contractAddress = jsonDecode(response.body)['contract_address'];
 
-    await http.get(Uri.parse('$_baseUrl/mine'));
+    await http.get(Uri.parse('$FIRST_BLOCK_URL/mine'));
     return contractAddress;
   }
 
   Future<String> getHashFromBlockchain(String contractAddress) async {
-    var response = await http.get(Uri.parse('$_baseUrl/chain'));
+    var response = await http.get(Uri.parse('$FIRST_BLOCK_URL/chain'));
     var resJson = jsonDecode(response.body);
     for (var block in resJson['chain']) {
       for (var tx in block['transactions']) {

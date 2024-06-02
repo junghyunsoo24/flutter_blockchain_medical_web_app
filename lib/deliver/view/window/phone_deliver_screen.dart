@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/doctor_info.dart';
 
 import '../../../database/drift_database.dart';
 import '../../../login/view/login_screen.dart';
@@ -17,19 +18,27 @@ class PhoneDeliverScreen extends ConsumerStatefulWidget {
 }
 
 class _PhoneDeliverScreenState extends ConsumerState<PhoneDeliverScreen> {
-  final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection('patientToDoctor').snapshots();
+  late String doctorId;
+  late String doctorName;
   bool _isInitialLoadComplete = false;
 
+  final TextEditingController _patientController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
-
-  late String doctorName;
 
   @override
   void initState(){
     super.initState();
 
     GetIt.I<FlutterLocalNotification>().init();
+
+    final doctorInfo = GetIt.I<DoctorInfo>(); // GetIt에서 UserInfo 객체 가져오기
+    String doctorId = doctorInfo.userId;
+    String doctorName = doctorInfo.name;
+    print(doctorId);
+    print(doctorName);
+
+    final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection("patientTo${doctorId}").snapshots();
 
     _messagesStream.listen((querySnapshot) {
       if (_isInitialLoadComplete) {
@@ -47,8 +56,9 @@ class _PhoneDeliverScreenState extends ConsumerState<PhoneDeliverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final doctorInfo = ref.read(doctorInfoProvider);
-    doctorName = doctorInfo.name;
+    final doctorInfo = GetIt.I<DoctorInfo>(); // GetIt에서 UserInfo 객체 가져오기
+    String doctorId = doctorInfo.userId;
+    String doctorName = doctorInfo.name;
 
     return Scaffold(
       appBar: AppBar(
@@ -58,6 +68,10 @@ class _PhoneDeliverScreenState extends ConsumerState<PhoneDeliverScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            TextField(
+              controller: _patientController,
+              decoration: InputDecoration(labelText: '데이터 보낼 환자 아이디'),
+            ),
             TextField(
               controller: _titleController,
               decoration: InputDecoration(labelText: '제목'),
@@ -70,13 +84,14 @@ class _PhoneDeliverScreenState extends ConsumerState<PhoneDeliverScreen> {
             ElevatedButton(
               onPressed: () async {
                 // Firestore에 데이터 추가
-                await FirebaseFirestore.instance.collection('doctorToPatient').add({
+                await FirebaseFirestore.instance.collection("doctorTo${_patientController.text}").add({
+                  '전문의 아이디': doctorId,
                   '전문의 이름': doctorName,
                   '제목': _titleController.text,
                   '내용': _bodyController.text,
                 });
 
-                // 데이터 추가 후, 필드 초기화
+                _patientController.clear();
                 _titleController.clear();
                 _bodyController.clear();
                 // 선택적으로 성공 메시지 표시나 다른 화면으로의 이동 로직 추가

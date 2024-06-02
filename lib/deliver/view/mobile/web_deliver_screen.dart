@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/user_info.dart';
 import '../../../database/drift_database.dart';
 import '../../../login/view/login_screen.dart';
 import '../../notification.dart';
@@ -13,10 +15,12 @@ class WebDeliverScreen extends ConsumerStatefulWidget {
 }
 
 class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
-  final Stream<QuerySnapshot> _messagesStream =
-  FirebaseFirestore.instance.collection('doctorToPatient').snapshots();
+  late String patientId;
+  late String patientName;
+
   bool _isInitialLoadComplete = false;
 
+  final TextEditingController _doctorController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
 
   String? _selectedSymptom; // 선택된 증상
@@ -24,7 +28,6 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
 
   late List<Symptom> _symptoms = [];
   late List<PersonalMedicine> _medicines = [];
-  late String userName;
 
   late String symptom, medicine;
 
@@ -41,13 +44,18 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
 
     GetIt.I<FlutterLocalNotification>().init();
 
-    final userInfo = ref.read(userInfoProvider);
-    userName = userInfo.name;
+    final patientInfo = GetIt.I<UserInformation>(); // GetIt에서 UserInfo 객체 가져오기
+    String patientId = patientInfo.userId;
+    String patientName = patientInfo.name;
+    print(patientId);
+    print(patientName);
+
+    final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection("doctorTo${patientId}").snapshots();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       GetIt.I<FlutterLocalNotification>().showNotification({
         'title': '환자 추가 정보',
-        'body': '$userName, $symptom, $medicine, ${_bodyController.text}'
+        'body': '$patientId, $symptom, $medicine, ${_bodyController.text}'
       });
     });
 
@@ -68,8 +76,9 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userInfo = ref.read(userInfoProvider);
-    userName = userInfo.name;
+    final patientInfo = GetIt.I<UserInformation>(); // GetIt에서 UserInfo 객체 가져오기
+    String patientId = patientInfo.userId;
+    String patientName = patientInfo.name;
 
     return Scaffold(
         appBar: AppBar(
@@ -134,6 +143,22 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                 ),
                 SizedBox(height: 16.0),
                 TextField(
+                  controller: _doctorController,
+                  decoration: InputDecoration(
+                    labelText: '데이터 보낼 의료진 아이디',
+                    labelStyle: TextStyle(
+                      color: Colors.blue, // 텍스트필드 라벨 색상 변경
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0), // 텍스트필드 모서리 둥글게
+                      borderSide: BorderSide(
+                        color: Colors.blue, // 텍스트필드 테두리 색상 변경
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
                   controller: _bodyController,
                   decoration: InputDecoration(
                     labelText: '상세 내용',
@@ -163,9 +188,10 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                     }
 
                     await FirebaseFirestore.instance
-                        .collection('patientToDoctor')
+                        .collection("patientTo${_doctorController.text}")
                         .add({
-                      '환자 이름': userName,
+                      '환자 아이디': patientId,
+                      '환자 이름': patientName,
                       '추가 증상': symptom,
                       '추가 의약품': medicine,
                       '상세 내용': _bodyController.text,

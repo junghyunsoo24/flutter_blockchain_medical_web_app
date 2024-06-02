@@ -18,7 +18,7 @@ import '../component/custom_text_form.field.dart';
 import 'package:http/http.dart' as http;
 import '../model/user_info.dart';
 
-final userInfoProvider = ChangeNotifierProvider((ref) => UserInfo());
+final userInfoProvider = ChangeNotifierProvider((ref) => UserInformation());
 final doctorInfoProvider = ChangeNotifierProvider((ref) => DoctorInfo());
 final myDatabaseProvider = Provider<MyDatabase>((ref) {
   return MyDatabase();
@@ -128,6 +128,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           if (patient != null) {
                             ref.read(userInfoProvider).setUserId(username);
                             ref.read(userInfoProvider).setUserInfo(patient);
+
+                            GetIt.I.registerSingleton<UserInformation>(ref.read(userInfoProvider));
                             print("환자 로그인 성공!");
                             Navigator.push(
                               context,
@@ -167,6 +169,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           if (doctor != null) {
                             ref.read(doctorInfoProvider).setDoctorId(username);
                             ref.read(doctorInfoProvider).setDoctorInfo(doctor);
+
+                            GetIt.I.registerSingleton<DoctorInfo>(ref.read(doctorInfoProvider));
                             print("의료진 로그인 성공!");
                             Navigator.push(
                               context,
