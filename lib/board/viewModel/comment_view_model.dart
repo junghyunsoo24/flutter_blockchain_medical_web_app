@@ -24,6 +24,8 @@ class CommentViewModel extends ChangeNotifier {
   }
 
   Future<void> addComment(int questionId, String content, String userId) async {
+    print("userId");
+    print(userId);
     try {
       final newComment = await _commentRepository.addComment(questionId, content, userId);
       _comments.add(newComment); // 새로운 댓글을 _comments 리스트에 추가

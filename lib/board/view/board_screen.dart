@@ -14,6 +14,17 @@ class BoardScreen extends ConsumerWidget {
   final Question? question;
   const BoardScreen({super.key, this.question});
 
+  String _getEnglishCategory(String koreanCategory) {
+    print("여기");
+    print(koreanCategory);
+    final Map<String, String> korToEng = {
+      '전체': 'ENTIRE',
+      '노약자': 'ELDERS',
+      '임산부': 'MATERNITY',
+    };
+    return korToEng[koreanCategory] ?? 'ENTIRE';
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     print(question);
@@ -23,13 +34,16 @@ class BoardScreen extends ConsumerWidget {
     void _navigateToBoardListScreen() {
       print("ㅎㅎㅎ");
       print(viewModel.selectedCategory);
+      final category = _getEnglishCategory(viewModel.selectedCategory);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => BoardListScreen(category: viewModel.selectedCategory),
+          builder: (context) => BoardListScreen(category: category),
         ),
       );
     }
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('게시물 등록'),
