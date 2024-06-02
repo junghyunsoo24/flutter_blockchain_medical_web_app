@@ -61,9 +61,12 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
-      final data = jsonBody['data'] as List<dynamic>;
+      // final data = jsonBody['data'] as List<dynamic>;
 
-      for (final item in data) {
+      final result = jsonBody['data']['result'] as Map<String, dynamic>;
+      final dataList = jsonBody['data']['data'] as List<dynamic>;
+
+      for (final item in dataList) {
         final resMediDetailList = item['resMediDetailList'] as List<dynamic>;
         for (final prescriptionData in resMediDetailList) {
           final prescription = PrescriptionsCompanion(
