@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
@@ -7,16 +8,26 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/login/model/user_in
 import '../data.dart';
 
 class BlockchainService {
-  static const String baseUrl = 'http://$firstBlockchainIp';
+  String? FIRST_BLOCK_URL = dotenv.env['FIRST_BLOCK_URL'];
+  String? SECOND_BLOCK_URL = dotenv.env['SECOND_BLOCK_URL'];
+  String? THIRD_BLOCK_URL = dotenv.env['THIRD_BLOCK_URL'];
+
+  String? _baseUrl;
+
+  Future<void> _loadBaseUrl() async {
+    await dotenv.load();
+    _baseUrl = 'http://${dotenv.env['FIRST_BLOCK_URL']}';
+  }
 
   Future<void> registerNodes() async {
     var headers = {'Content-Type': 'application/json; charset=utf-8'};
-    var data1 = {'nodes': 'http://$secondBlockchainIp'};
-    var data2 = {'nodes': 'http://$thirdBlockchainIp'};
+    var data1 = {'nodes': 'http://$SECOND_BLOCK_URL'};
+    var data2 = {'nodes': 'http://$THIRD_BLOCK_URL'};
 
-    await http.post(Uri.parse('$baseUrl/nodes/register'),
+    await _loadBaseUrl();
+    await http.post(Uri.parse('$_baseUrl/nodes/register'),
         headers: headers, body: jsonEncode(data1));
-    await http.post(Uri.parse('$baseUrl/nodes/register'),
+    await http.post(Uri.parse('$_baseUrl/nodes/register'),
         headers: headers, body: jsonEncode(data2));
   }
 
@@ -26,10 +37,12 @@ class BlockchainService {
     return hashBytes.toString();
   }
 
-  Future<String> storeHashOnBlockchain(String dataHash, int sender) async {
+  Future<String> storeHashOnBlockchain(String dataHash, dynamic sender) async {
+    String senderString = sender is int ? sender.toString() : sender;
+
     var headers = {'Content-Type': 'application/json; charset=utf-8'};
     var data = {
-      "sender": sender,
+      "sender": senderString,
       "recipient": "blockchain",
       "amount": 0,
       "smart_contract": {
@@ -37,16 +50,16 @@ class BlockchainService {
       }
     };
 
-    var response = await http.post(Uri.parse('$baseUrl/transactions/new'),
+    var response = await http.post(Uri.parse('$_baseUrl/transactions/new'),
         headers: headers, body: jsonEncode(data));
     var contractAddress = jsonDecode(response.body)['contract_address'];
 
-    await http.get(Uri.parse('$baseUrl/mine'));
+    await http.get(Uri.parse('$_baseUrl/mine'));
     return contractAddress;
   }
 
   Future<String> getHashFromBlockchain(String contractAddress) async {
-    var response = await http.get(Uri.parse('$baseUrl/chain'));
+    var response = await http.get(Uri.parse('$_baseUrl/chain'));
     var resJson = jsonDecode(response.body);
     for (var block in resJson['chain']) {
       for (var tx in block['transactions']) {

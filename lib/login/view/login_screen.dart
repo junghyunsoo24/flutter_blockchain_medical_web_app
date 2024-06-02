@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
@@ -33,12 +34,14 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  String? REAL_PHONE_URL = dotenv.env['REAL_PHONE_URL'];
+
   String username = '';
   String password = '';
   bool isMobile = true;
 
   Future<bool> doctorLogin() async {
-    final url = Uri.parse('http://$webIp/api/v1/sign-in');
+    final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/sign-in');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -59,7 +62,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<bool> patientLogin() async {
-    final url = Uri.parse('http://$realPhoneIp/api/v1/sign-in');
+    final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/sign-in');
     print(url);
     final response = await http.post(
       url,

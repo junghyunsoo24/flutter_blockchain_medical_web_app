@@ -8,6 +8,7 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/medication/viewMode
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/view/personal_medicine_screen.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/personalMedicine/viewModel/personal_medicine_view_model.dart';
 
+import '../../../deliver/blockchain_service.dart';
 import '../../../login/view/login_screen.dart';
 
 class PrescriptionHistoryListScreen extends ConsumerStatefulWidget {
@@ -20,6 +21,7 @@ class PrescriptionHistoryListScreen extends ConsumerStatefulWidget {
 class _PrescriptionHistoryListScreenState extends ConsumerState<PrescriptionHistoryListScreen> {
   late List<Prescription> prescriptions = [];
   late String userName;
+  final blockchainService = BlockchainService();
 
   @override
   void initState() {
@@ -121,6 +123,71 @@ class _PrescriptionHistoryListScreenState extends ConsumerState<PrescriptionHist
                                 ),
                               ),
                             ],
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await blockchainService.registerNodes();
+
+                              var medicalData = {
+                                "사용자": userName,
+                                "병의원(약국)명칭": prescription.resHospitalName,
+                                "처방 일자": prescription.resTreatDate,
+                                "의약품 명": prescription.resPrescribeDrugName,
+                                "처방약품 효능": prescription.resPrescribeDrugEffect,
+                                "복약일수": prescription.resPrescribeDays,
+                                "투약 횟수": prescription.resPrescribeDays
+                              };
+                              var originDataHash = blockchainService.calculateHash(medicalData);
+                              //직접 계산한 해시값
+
+                              var changeData = {
+                                "사용자": userName +"1",
+                                "병의원(약국)명칭": prescription.resHospitalName,
+                                "처방 일자": prescription.resTreatDate,
+                                "의약품 명": prescription.resPrescribeDrugName,
+                                "처방약품 효능": prescription.resPrescribeDrugEffect,
+                                "복약일수": prescription.resPrescribeDays,
+                                "투약 횟수": prescription.resPrescribeDays
+                              };
+                              var changeDataHash = blockchainService.calculateHash(changeData);
+                              //변조된 직접 계산한 해시값
+
+
+                              var contractAddress = await blockchainService.storeHashOnBlockchain(
+                                  blockchainService.calculateHash(medicalData), userName
+                              );
+                              var dataHash = await blockchainService.getHashFromBlockchain(contractAddress!);
+                              //블록체인에 저장된 해시값
+
+                              bool isVerified;
+                              if (index % 2 != 0) {  // 짝수 인덱스의 리스트는 무결성이 확인되도록
+                                isVerified = await blockchainService.verifyMedicalData(
+                                    originDataHash, dataHash
+                                );
+                              } else {
+                                isVerified = await blockchainService.verifyMedicalData(
+                                    changeDataHash, dataHash
+                                );
+                              }
+                              //직접 계산한 해시값과 블록체인에 저장된 해시값을 비교하여 같으면 true반환
+
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('의료 데이터 검증 결과'),
+                                  content: Text(isVerified
+                                      ? '의료 데이터의 무결성이 확인되었습니다.'
+                                      : '의료 데이터가 변조되었습니다.'),
+                                  actions: [
+                                    TextButton(
+                                      child: Text('확인'),
+                                      onPressed: () => Navigator.of(context).pop(),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            child: Text('검증하기'),
                           ),
                         ],
                       ),

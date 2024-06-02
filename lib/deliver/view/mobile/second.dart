@@ -69,15 +69,16 @@ class SecondPage extends StatelessWidget {
                             //블록체인에 저장된 해시값
 
 
-
-                            var isVerified = await blockchainService.verifyMedicalData(
-                                originDataHash, dataHash
-                            ); //true
-
-                            var isNotVerified = await blockchainService.verifyMedicalData(
-                                changeDataHash, dataHash
-                            ); //false
-
+                            bool isVerified;
+                            if (index % 2 == 0) {  // 짝수 인덱스의 리스트는 무결성이 확인되도록
+                              isVerified = await blockchainService.verifyMedicalData(
+                                  originDataHash, dataHash
+                              );
+                            } else {
+                              isVerified = await blockchainService.verifyMedicalData(
+                                  changeDataHash, dataHash
+                              );
+                            }
 
                             showDialog(
                               context: context,
