@@ -19,13 +19,13 @@ class DoctorSignupScreen extends StatefulWidget {
 }
 
 class _DoctorSignupScreenState extends State<DoctorSignupScreen> {
-  String? WINDOW_URL = dotenv.env['WINDOW_URL'];
+  String? BASE_URL = dotenv.env['BASE_URL'];
 
   final _formKey = GlobalKey<FormState>();
   String? _userID, _userPW, _name, _field, _hospital, _introduction;
 
   Future<bool> submitDoctorInfo() async {
-    final url = Uri.parse('http://$WINDOW_URL/api/v1/doctor/sign-up');
+    final url = Uri.parse('$BASE_URL/doctor/sign-up');
     print(url);
     final response = await http.post(
       url,

@@ -17,7 +17,7 @@ class ProfileScreen extends ConsumerWidget {
     final userInfo = ref.watch(userInfoProvider);
     final userName = userInfo.name;
     final userBirthday = userInfo.birthday;
-    final userGender = userInfo.gender;
+    final userGender = userInfo.gender == 0 ? "남" : "여";
     final userHeight = userInfo.height;
     final userWeight = userInfo.weight;
     return Scaffold(

@@ -34,14 +34,14 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  String? REAL_PHONE_URL = dotenv.env['REAL_PHONE_URL'];
+  String? BASE_URL = dotenv.env['BASE_URL'];
 
   String username = '';
   String password = '';
   bool isMobile = true;
 
   Future<bool> doctorLogin() async {
-    final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/sign-in');
+    final url = Uri.parse('$BASE_URL/sign-in');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -62,7 +62,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<bool> patientLogin() async {
-    final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/sign-in');
+    final url = Uri.parse('$BASE_URL/sign-in');
     print(url);
     final response = await http.post(
       url,
@@ -129,7 +129,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ref.read(userInfoProvider).setUserId(username);
                             ref.read(userInfoProvider).setUserInfo(patient);
 
-                            GetIt.I.registerSingleton<UserInformation>(ref.read(userInfoProvider));
+                            if (!GetIt.I.isRegistered<UserInformation>()) {
+                              GetIt.I.registerSingleton<UserInformation>(ref.read(userInfoProvider));
+                            }
                             print("환자 로그인 성공!");
                             Navigator.push(
                               context,
@@ -170,7 +172,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ref.read(doctorInfoProvider).setDoctorId(username);
                             ref.read(doctorInfoProvider).setDoctorInfo(doctor);
 
-                            GetIt.I.registerSingleton<DoctorInfo>(ref.read(doctorInfoProvider));
+                            if (!GetIt.I.isRegistered<DoctorInfo>()) {
+                              GetIt.I.registerSingleton<DoctorInfo>(ref.read(doctorInfoProvider));
+                            }
+
                             print("의료진 로그인 성공!");
                             Navigator.push(
                               context,

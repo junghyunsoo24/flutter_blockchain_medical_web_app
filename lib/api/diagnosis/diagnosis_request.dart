@@ -19,7 +19,7 @@ class DiagnosisRequest extends StatefulWidget {
 }
 
 class _DiagnosisRequestState extends State<DiagnosisRequest> {
-  String? REAL_PHONE_URL = dotenv.env['REAL_PHONE_URL'];
+  String? BASE_URL = dotenv.env['BASE_URL'];
 
   final _nameController = TextEditingController();
   final _birthdayController = TextEditingController();
@@ -29,7 +29,7 @@ class _DiagnosisRequestState extends State<DiagnosisRequest> {
 
   Future<bool> secondCheck() async {
     final url = Uri.parse(
-        'http://$REAL_PHONE_URL/api/v1/medical-api/health-checkup-result/first-request');
+        '$BASE_URL/medical-api/health-checkup-result/first-request:8080');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -61,7 +61,7 @@ class _DiagnosisRequestState extends State<DiagnosisRequest> {
 
   Future<bool> firstCheck() async {
     try { // 예외 처리 추가
-      final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/medical-api/health-checkup-result/second-request');
+      final url = Uri.parse('$BASE_URL/medical-api/health-checkup-result/second-request');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -252,21 +252,7 @@ class _DiagnosisRequestState extends State<DiagnosisRequest> {
                         ),
                       );
                     } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text('1차인증 실패'),
-                          content: Text('잘못 작성하였습니다. 데이터를 다시 확인해주세요.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('확인'),
-                            ),
-                          ],
-                        ),
-                      );
+
                     }
                   } else {
                     showDialog(

@@ -19,7 +19,7 @@ class HealthCheckRequest extends StatefulWidget {
 }
 
 class _HealthCheckRequestState extends State<HealthCheckRequest> {
-  String? REAL_PHONE_URL = dotenv.env['REAL_PHONE_URL'];
+  String? BASE_URL = dotenv.env['BASE_URL'];
 
   final _nameController = TextEditingController();
   final _birthdayController = TextEditingController();
@@ -29,7 +29,7 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
 
   Future<bool> firstCheck() async {
     final url = Uri.parse(
-        'http://$REAL_PHONE_URL/api/v1/medical-api/health-checkup-result/first-request');
+        '$BASE_URL/medical-api/health-checkup-result/first-request');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -61,7 +61,7 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
 
   Future<bool> secondCheck() async {
     try { // 예외 처리 추가
-      final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/medical-api/health-checkup-result/second-request');
+      final url = Uri.parse('$BASE_URL/medical-api/health-checkup-result/second-request');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
