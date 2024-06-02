@@ -103,7 +103,7 @@ class _BoardListScreenState extends ConsumerState<BoardListScreen> {
   }
 
   @override
-  Widget _buildQuestionList(QuestionViewModel viewModel, UserInfo userInfo) {
+  Widget _buildQuestionList(QuestionViewModel viewModel, UserInformation userInfo) {
     if (viewModel.questions.isEmpty) {
       return Center(
         child: Text(

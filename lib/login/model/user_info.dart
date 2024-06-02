@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../../database/drift_database.dart';
-class UserInfo extends ChangeNotifier {
+class UserInformation extends ChangeNotifier {
   String _userId = '';
   String _name = '';
   String _birthday = '';
@@ -18,6 +18,11 @@ class UserInfo extends ChangeNotifier {
 
   void setUserId(String userId) {
     _userId = userId;
+    notifyListeners();
+  }
+
+  void setUserName(String userName) {
+    _name = userName;
     notifyListeners();
   }
 

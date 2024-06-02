@@ -104,7 +104,7 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
     );
   }
 
-  Widget _buildEmergencyList(EmergencyViewModel viewModel, UserInfo userInfo) {
+  Widget _buildEmergencyList(EmergencyViewModel viewModel, UserInformation userInfo) {
     if (viewModel.emergency == null || viewModel.emergency!.content.isEmpty) {
       return Center(
         child: Column(
@@ -142,7 +142,7 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
   }
 
 
-  Widget _buildEmergencyItem(Emergency emergency, UserInfo userInfo) {
+  Widget _buildEmergencyItem(Emergency emergency, UserInformation userInfo) {
     return Stack(
       children: [
         GestureDetector(
@@ -195,7 +195,7 @@ class _EmergencyListScreenState extends ConsumerState<EmergencyListScreen> {
     );
   }
 
-  void _showDeleteDialog(Emergency emergency, UserInfo userInfo) {
+  void _showDeleteDialog(Emergency emergency, UserInformation userInfo) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

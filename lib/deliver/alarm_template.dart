@@ -10,7 +10,7 @@ const String alarmtTemplate = r'''
   </visual>
   <actions>
     <action
-      activationType="background"
+      activationType="forground"
       arguments="dismiss"
       content="확인"
     />

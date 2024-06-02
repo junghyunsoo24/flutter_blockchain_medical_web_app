@@ -85,7 +85,7 @@ class _EmergencyDataHistoryScreenState extends ConsumerState<EmergencyDataHistor
     );
   }
 
-  Widget _buildEmergencyList(EmergencyViewModel viewModel, UserInfo userInfo) {
+  Widget _buildEmergencyList(EmergencyViewModel viewModel, UserInformation userInfo) {
     if (viewModel.emergencyData.isEmpty) {
       return Center(
         child: Column(
@@ -114,7 +114,7 @@ class _EmergencyDataHistoryScreenState extends ConsumerState<EmergencyDataHistor
       );
     }
   }
-  Widget _buildEmergencyItem(Emergency emergency, UserInfo userInfo) {
+  Widget _buildEmergencyItem(Emergency emergency, UserInformation userInfo) {
     return Stack(
       children: [
         GestureDetector(
