@@ -18,7 +18,7 @@ class PrescriptionHistoryRequest extends StatefulWidget {
 }
 
 class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest> {
-  String? REAL_PHONE_URL = dotenv.env['REAL_PHONE_URL'];
+  String? BASE_URL = dotenv.env['BASE_URL'];
 
   final _nameController = TextEditingController();
   final _birthdayController = TextEditingController();
@@ -28,7 +28,7 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
   bool _isLoading = false;
   Future<bool> firstCheck() async {
     final url = Uri.parse(
-        'http://$REAL_PHONE_URL/api/v1/medical-api/treatment-information/first-request');
+        '$BASE_URL/medical-api/treatment-information/first-request');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -48,7 +48,7 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
     }
   }
   Future<bool> secondCheck() async {
-    final url = Uri.parse('$REAL_PHONE_URL/medical-api/treatment-information/second-request');
+    final url = Uri.parse('$BASE_URL/medical-api/treatment-information/second-request');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},

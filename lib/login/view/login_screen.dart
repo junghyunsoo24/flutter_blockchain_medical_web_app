@@ -34,14 +34,14 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  String? REAL_PHONE_URL = dotenv.env['REAL_PHONE_URL'];
+  String? BASE_URL = dotenv.env['BASE_URL'];
 
   String username = '';
   String password = '';
   bool isMobile = true;
 
   Future<bool> doctorLogin() async {
-    final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/sign-in');
+    final url = Uri.parse('$BASE_URL/sign-in');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -62,7 +62,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<bool> patientLogin() async {
-    final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/sign-in');
+    final url = Uri.parse('$BASE_URL/sign-in');
     print(url);
     final response = await http.post(
       url,
