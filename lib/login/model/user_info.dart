@@ -26,6 +26,17 @@ class UserInformation extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateUserInfo({
+    String? name,
+    double? height,
+    double? weight,
+  }) {
+    if (name != null) _name = name;
+    if (height != null) _height = height;
+    if (weight != null) _weight = weight;
+    notifyListeners(); // 변경 사항 알림
+  }
+
   void setUserInfo(Patient patient) {
     _userId = patient.userID;
     _name = patient.name;
