@@ -48,9 +48,17 @@ class MyDatabase extends _$MyDatabase {
     return existingPrescription != null;
   }
 
+
   //patientAlarm
   Future<void> addPatientAlarm(PatientAlarmsCompanion data) async {
     await into(patientAlarms).insert(data);
+  }
+  Future<List<DoctorAlarm>> getTopFiveDoctorAlarms() async {
+    return await (select(doctorAlarms)..limit(3)).get();
+  }
+
+  Future<List<DoctorAlarm>> getAllDoctorAlarms() async {
+    return await select(doctorAlarms).get();
   }
 
   //doctorAlarm
