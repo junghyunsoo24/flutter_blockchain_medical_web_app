@@ -38,7 +38,38 @@ class FlutterLocalNotification {
       String medicine = payload['추가 의약품'] ?? '정보 없음';
       String symptom = payload['추가 증상'] ?? '정보 없음';
       String detail = payload['상세 내용'] ?? '정보 없음';
+      List<dynamic> prescriptionDataList = payload['처방내역'];
 
+      // 처방 내역 데이터 처리 (첫 번째 처방만 사용)
+      if (prescriptionDataList.isNotEmpty) {
+        Map<String, dynamic> firstPrescription = prescriptionDataList[0];
+        await GetIt.I<MyDatabase>().addDoctorAlarm(DoctorAlarmsCompanion(
+          userName: Value(userName),
+          medicine: Value(medicine),
+          symptom: Value(symptom),
+          detail: Value(detail),
+          resHospitalName: Value(firstPrescription['병의원(약국)명칭'] ?? '정보 없음'),
+          resTreatDate: Value(firstPrescription['처방 일자'] ?? '정보 없음'),
+          resPrescribeDrugName: Value(firstPrescription['의약품 명'] ?? '정보 없음'),
+          resPrescribeDrugEffect: Value(firstPrescription['처방약품 효능'] ?? '정보 없음'),
+          resPrescribeDays: Value(firstPrescription['투약일수'] ?? '정보 없음'),
+        ));
+      }
+      else {
+        await GetIt.I<MyDatabase>().addDoctorAlarm(DoctorAlarmsCompanion(
+            userName: Value(userName),
+            medicine: Value(medicine),
+            symptom: Value(symptom),
+            detail: Value(detail),
+            resHospitalName: Value('정보 없음'),
+            resTreatDate: Value('정보 없음'),
+            resPrescribeDrugName: Value('정보 없음'),
+            resPrescribeDrugEffect: Value('정보 없음'),
+            resPrescribeDays: Value('정보 없음')
+        ));
+      }
+
+      // 알림 템플릿 업데이트 및 알림 표시
       String updatedTemplate = alarmtTemplate
           .replaceAll('userName', userName)
           .replaceAll('medicine', medicine)
@@ -46,13 +77,6 @@ class FlutterLocalNotification {
           .replaceAll('detail', detail);
 
       GetIt.I<WindowsNotification>().showNotificationCustomTemplate(NotificationMessage.fromCustomTemplate("test1", group: "jj"), updatedTemplate);
-
-      await GetIt.I<MyDatabase>().addDoctorAlarm(DoctorAlarmsCompanion(
-        userName: Value(userName),
-        medicine: Value(medicine),
-        symptom: Value(symptom),
-        detail: Value(detail),
-      ));
     }
 
     else if(Platform.isAndroid){

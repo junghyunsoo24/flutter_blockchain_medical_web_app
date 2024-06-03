@@ -63,19 +63,32 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
 
     final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection("doctorTo${patientId}").snapshots();
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      GetIt.I<FlutterLocalNotification>().showNotification({
-        'title': '환자 추가 정보',
-        'body': '$patientId, $symptom, $medicine, ${_bodyController.text}'
-      });
-    });
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   GetIt.I<FlutterLocalNotification>().showNotification({
+    //     'title': '환자 추가 정보',
+    //     'body': '$patientId, $symptom, $medicine, ${_bodyController.text}'
+    //   });
+    // });
 
     _messagesStream.listen((querySnapshot) {
       if (_isInitialLoadComplete) {
         for (var change in querySnapshot.docChanges) {
           if (change.type == DocumentChangeType.added) {
-            Map<String, dynamic> data =
-            change.doc.data() as Map<String, dynamic>;
+            // Firestore에서 가져온 데이터를 Map으로 변환
+            Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
+
+            // 처방 내역 데이터 처리 (처방 내역 필드가 리스트인 경우에만 처리)
+            if (data.containsKey('처방내역') && data['처방내역'] is List) {
+              print("haha");
+              List<dynamic> prescriptionDataList = data['처방내역'];
+
+              // 첫 번째 처방 정보 추출 (처방 내역이 있을 경우)
+              if (prescriptionDataList.isNotEmpty) {
+                Map<String, dynamic> firstPrescription = prescriptionDataList[0];
+                data.addAll(firstPrescription); // 데이터에 첫 번째 처방 정보 추가
+              }
+            }
+
             GetIt.I<FlutterLocalNotification>().showNotification(data);
           }
         }
@@ -238,8 +251,7 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                           '처방 일자': firstPrescription.resTreatDate,
                           '의약품 명': firstPrescription.resPrescribeDrugName,
                           '처방약품 효능': firstPrescription.resPrescribeDrugEffect,
-                          '복약일수': firstPrescription.resPrescribeDays,
-                          '투약 횟수': firstPrescription.resPrescribeDays,
+                          '투약일수': firstPrescription.resPrescribeDays,
                           // 필요한 다른 처방 정보 추가
                         }
                       ];

@@ -6,4 +6,10 @@ class DoctorAlarms extends Table {
   TextColumn get medicine => text()();
   TextColumn get symptom => text()();
   TextColumn get detail => text()();
+
+  TextColumn get resHospitalName => text()();
+  TextColumn get resTreatDate => text()();
+  TextColumn get resPrescribeDrugName => text()();
+  TextColumn get resPrescribeDrugEffect => text()();
+  TextColumn get resPrescribeDays => text()();
 }

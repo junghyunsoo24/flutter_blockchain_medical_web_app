@@ -6,6 +6,13 @@ const String alarmtTemplate = r'''
       <text>추가 증상: symptom</text> 
       <text>추가 의약품: medicine</text>
       <text>상세 내용: detail</text>
+      <text>---------------------</text>
+      <text>처방 내역:</text>
+      <text>병의원(약국): resHospitalName</text>
+      <text>처방 일자: resTreatDate</text>
+      <text>의약품 명: resPrescribeDrugName</text>
+      <text>처방약품 효능: resPrescribeDrugEffect</text>
+      <text>투약일수: resPrescribeDays</text>
     </binding>
   </visual>
   <actions>

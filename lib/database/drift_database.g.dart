@@ -3319,9 +3319,49 @@ class $DoctorAlarmsTable extends DoctorAlarms
   late final GeneratedColumn<String> detail = GeneratedColumn<String>(
       'detail', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resHospitalNameMeta =
+      const VerificationMeta('resHospitalName');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, userName, medicine, symptom, detail];
+  late final GeneratedColumn<String> resHospitalName = GeneratedColumn<String>(
+      'res_hospital_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resTreatDateMeta =
+      const VerificationMeta('resTreatDate');
+  @override
+  late final GeneratedColumn<String> resTreatDate = GeneratedColumn<String>(
+      'res_treat_date', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resPrescribeDrugNameMeta =
+      const VerificationMeta('resPrescribeDrugName');
+  @override
+  late final GeneratedColumn<String> resPrescribeDrugName =
+      GeneratedColumn<String>('res_prescribe_drug_name', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resPrescribeDrugEffectMeta =
+      const VerificationMeta('resPrescribeDrugEffect');
+  @override
+  late final GeneratedColumn<String> resPrescribeDrugEffect =
+      GeneratedColumn<String>('res_prescribe_drug_effect', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _resPrescribeDaysMeta =
+      const VerificationMeta('resPrescribeDays');
+  @override
+  late final GeneratedColumn<String> resPrescribeDays = GeneratedColumn<String>(
+      'res_prescribe_days', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        userName,
+        medicine,
+        symptom,
+        detail,
+        resHospitalName,
+        resTreatDate,
+        resPrescribeDrugName,
+        resPrescribeDrugEffect,
+        resPrescribeDays
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -3359,6 +3399,46 @@ class $DoctorAlarmsTable extends DoctorAlarms
     } else if (isInserting) {
       context.missing(_detailMeta);
     }
+    if (data.containsKey('res_hospital_name')) {
+      context.handle(
+          _resHospitalNameMeta,
+          resHospitalName.isAcceptableOrUnknown(
+              data['res_hospital_name']!, _resHospitalNameMeta));
+    } else if (isInserting) {
+      context.missing(_resHospitalNameMeta);
+    }
+    if (data.containsKey('res_treat_date')) {
+      context.handle(
+          _resTreatDateMeta,
+          resTreatDate.isAcceptableOrUnknown(
+              data['res_treat_date']!, _resTreatDateMeta));
+    } else if (isInserting) {
+      context.missing(_resTreatDateMeta);
+    }
+    if (data.containsKey('res_prescribe_drug_name')) {
+      context.handle(
+          _resPrescribeDrugNameMeta,
+          resPrescribeDrugName.isAcceptableOrUnknown(
+              data['res_prescribe_drug_name']!, _resPrescribeDrugNameMeta));
+    } else if (isInserting) {
+      context.missing(_resPrescribeDrugNameMeta);
+    }
+    if (data.containsKey('res_prescribe_drug_effect')) {
+      context.handle(
+          _resPrescribeDrugEffectMeta,
+          resPrescribeDrugEffect.isAcceptableOrUnknown(
+              data['res_prescribe_drug_effect']!, _resPrescribeDrugEffectMeta));
+    } else if (isInserting) {
+      context.missing(_resPrescribeDrugEffectMeta);
+    }
+    if (data.containsKey('res_prescribe_days')) {
+      context.handle(
+          _resPrescribeDaysMeta,
+          resPrescribeDays.isAcceptableOrUnknown(
+              data['res_prescribe_days']!, _resPrescribeDaysMeta));
+    } else if (isInserting) {
+      context.missing(_resPrescribeDaysMeta);
+    }
     return context;
   }
 
@@ -3378,6 +3458,18 @@ class $DoctorAlarmsTable extends DoctorAlarms
           .read(DriftSqlType.string, data['${effectivePrefix}symptom'])!,
       detail: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}detail'])!,
+      resHospitalName: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_hospital_name'])!,
+      resTreatDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}res_treat_date'])!,
+      resPrescribeDrugName: attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}res_prescribe_drug_name'])!,
+      resPrescribeDrugEffect: attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}res_prescribe_drug_effect'])!,
+      resPrescribeDays: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}res_prescribe_days'])!,
     );
   }
 
@@ -3393,12 +3485,22 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
   final String medicine;
   final String symptom;
   final String detail;
+  final String resHospitalName;
+  final String resTreatDate;
+  final String resPrescribeDrugName;
+  final String resPrescribeDrugEffect;
+  final String resPrescribeDays;
   const DoctorAlarm(
       {required this.id,
       required this.userName,
       required this.medicine,
       required this.symptom,
-      required this.detail});
+      required this.detail,
+      required this.resHospitalName,
+      required this.resTreatDate,
+      required this.resPrescribeDrugName,
+      required this.resPrescribeDrugEffect,
+      required this.resPrescribeDays});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -3407,6 +3509,11 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
     map['medicine'] = Variable<String>(medicine);
     map['symptom'] = Variable<String>(symptom);
     map['detail'] = Variable<String>(detail);
+    map['res_hospital_name'] = Variable<String>(resHospitalName);
+    map['res_treat_date'] = Variable<String>(resTreatDate);
+    map['res_prescribe_drug_name'] = Variable<String>(resPrescribeDrugName);
+    map['res_prescribe_drug_effect'] = Variable<String>(resPrescribeDrugEffect);
+    map['res_prescribe_days'] = Variable<String>(resPrescribeDays);
     return map;
   }
 
@@ -3417,6 +3524,11 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
       medicine: Value(medicine),
       symptom: Value(symptom),
       detail: Value(detail),
+      resHospitalName: Value(resHospitalName),
+      resTreatDate: Value(resTreatDate),
+      resPrescribeDrugName: Value(resPrescribeDrugName),
+      resPrescribeDrugEffect: Value(resPrescribeDrugEffect),
+      resPrescribeDays: Value(resPrescribeDays),
     );
   }
 
@@ -3429,6 +3541,13 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
       medicine: serializer.fromJson<String>(json['medicine']),
       symptom: serializer.fromJson<String>(json['symptom']),
       detail: serializer.fromJson<String>(json['detail']),
+      resHospitalName: serializer.fromJson<String>(json['resHospitalName']),
+      resTreatDate: serializer.fromJson<String>(json['resTreatDate']),
+      resPrescribeDrugName:
+          serializer.fromJson<String>(json['resPrescribeDrugName']),
+      resPrescribeDrugEffect:
+          serializer.fromJson<String>(json['resPrescribeDrugEffect']),
+      resPrescribeDays: serializer.fromJson<String>(json['resPrescribeDays']),
     );
   }
   @override
@@ -3440,6 +3559,12 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
       'medicine': serializer.toJson<String>(medicine),
       'symptom': serializer.toJson<String>(symptom),
       'detail': serializer.toJson<String>(detail),
+      'resHospitalName': serializer.toJson<String>(resHospitalName),
+      'resTreatDate': serializer.toJson<String>(resTreatDate),
+      'resPrescribeDrugName': serializer.toJson<String>(resPrescribeDrugName),
+      'resPrescribeDrugEffect':
+          serializer.toJson<String>(resPrescribeDrugEffect),
+      'resPrescribeDays': serializer.toJson<String>(resPrescribeDays),
     };
   }
 
@@ -3448,13 +3573,24 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
           String? userName,
           String? medicine,
           String? symptom,
-          String? detail}) =>
+          String? detail,
+          String? resHospitalName,
+          String? resTreatDate,
+          String? resPrescribeDrugName,
+          String? resPrescribeDrugEffect,
+          String? resPrescribeDays}) =>
       DoctorAlarm(
         id: id ?? this.id,
         userName: userName ?? this.userName,
         medicine: medicine ?? this.medicine,
         symptom: symptom ?? this.symptom,
         detail: detail ?? this.detail,
+        resHospitalName: resHospitalName ?? this.resHospitalName,
+        resTreatDate: resTreatDate ?? this.resTreatDate,
+        resPrescribeDrugName: resPrescribeDrugName ?? this.resPrescribeDrugName,
+        resPrescribeDrugEffect:
+            resPrescribeDrugEffect ?? this.resPrescribeDrugEffect,
+        resPrescribeDays: resPrescribeDays ?? this.resPrescribeDays,
       );
   @override
   String toString() {
@@ -3463,13 +3599,28 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
           ..write('userName: $userName, ')
           ..write('medicine: $medicine, ')
           ..write('symptom: $symptom, ')
-          ..write('detail: $detail')
+          ..write('detail: $detail, ')
+          ..write('resHospitalName: $resHospitalName, ')
+          ..write('resTreatDate: $resTreatDate, ')
+          ..write('resPrescribeDrugName: $resPrescribeDrugName, ')
+          ..write('resPrescribeDrugEffect: $resPrescribeDrugEffect, ')
+          ..write('resPrescribeDays: $resPrescribeDays')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, userName, medicine, symptom, detail);
+  int get hashCode => Object.hash(
+      id,
+      userName,
+      medicine,
+      symptom,
+      detail,
+      resHospitalName,
+      resTreatDate,
+      resPrescribeDrugName,
+      resPrescribeDrugEffect,
+      resPrescribeDays);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3478,7 +3629,12 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
           other.userName == this.userName &&
           other.medicine == this.medicine &&
           other.symptom == this.symptom &&
-          other.detail == this.detail);
+          other.detail == this.detail &&
+          other.resHospitalName == this.resHospitalName &&
+          other.resTreatDate == this.resTreatDate &&
+          other.resPrescribeDrugName == this.resPrescribeDrugName &&
+          other.resPrescribeDrugEffect == this.resPrescribeDrugEffect &&
+          other.resPrescribeDays == this.resPrescribeDays);
 }
 
 class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
@@ -3487,12 +3643,22 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
   final Value<String> medicine;
   final Value<String> symptom;
   final Value<String> detail;
+  final Value<String> resHospitalName;
+  final Value<String> resTreatDate;
+  final Value<String> resPrescribeDrugName;
+  final Value<String> resPrescribeDrugEffect;
+  final Value<String> resPrescribeDays;
   const DoctorAlarmsCompanion({
     this.id = const Value.absent(),
     this.userName = const Value.absent(),
     this.medicine = const Value.absent(),
     this.symptom = const Value.absent(),
     this.detail = const Value.absent(),
+    this.resHospitalName = const Value.absent(),
+    this.resTreatDate = const Value.absent(),
+    this.resPrescribeDrugName = const Value.absent(),
+    this.resPrescribeDrugEffect = const Value.absent(),
+    this.resPrescribeDays = const Value.absent(),
   });
   DoctorAlarmsCompanion.insert({
     this.id = const Value.absent(),
@@ -3500,16 +3666,31 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
     required String medicine,
     required String symptom,
     required String detail,
+    required String resHospitalName,
+    required String resTreatDate,
+    required String resPrescribeDrugName,
+    required String resPrescribeDrugEffect,
+    required String resPrescribeDays,
   })  : userName = Value(userName),
         medicine = Value(medicine),
         symptom = Value(symptom),
-        detail = Value(detail);
+        detail = Value(detail),
+        resHospitalName = Value(resHospitalName),
+        resTreatDate = Value(resTreatDate),
+        resPrescribeDrugName = Value(resPrescribeDrugName),
+        resPrescribeDrugEffect = Value(resPrescribeDrugEffect),
+        resPrescribeDays = Value(resPrescribeDays);
   static Insertable<DoctorAlarm> custom({
     Expression<int>? id,
     Expression<String>? userName,
     Expression<String>? medicine,
     Expression<String>? symptom,
     Expression<String>? detail,
+    Expression<String>? resHospitalName,
+    Expression<String>? resTreatDate,
+    Expression<String>? resPrescribeDrugName,
+    Expression<String>? resPrescribeDrugEffect,
+    Expression<String>? resPrescribeDays,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3517,6 +3698,13 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
       if (medicine != null) 'medicine': medicine,
       if (symptom != null) 'symptom': symptom,
       if (detail != null) 'detail': detail,
+      if (resHospitalName != null) 'res_hospital_name': resHospitalName,
+      if (resTreatDate != null) 'res_treat_date': resTreatDate,
+      if (resPrescribeDrugName != null)
+        'res_prescribe_drug_name': resPrescribeDrugName,
+      if (resPrescribeDrugEffect != null)
+        'res_prescribe_drug_effect': resPrescribeDrugEffect,
+      if (resPrescribeDays != null) 'res_prescribe_days': resPrescribeDays,
     });
   }
 
@@ -3525,13 +3713,24 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
       Value<String>? userName,
       Value<String>? medicine,
       Value<String>? symptom,
-      Value<String>? detail}) {
+      Value<String>? detail,
+      Value<String>? resHospitalName,
+      Value<String>? resTreatDate,
+      Value<String>? resPrescribeDrugName,
+      Value<String>? resPrescribeDrugEffect,
+      Value<String>? resPrescribeDays}) {
     return DoctorAlarmsCompanion(
       id: id ?? this.id,
       userName: userName ?? this.userName,
       medicine: medicine ?? this.medicine,
       symptom: symptom ?? this.symptom,
       detail: detail ?? this.detail,
+      resHospitalName: resHospitalName ?? this.resHospitalName,
+      resTreatDate: resTreatDate ?? this.resTreatDate,
+      resPrescribeDrugName: resPrescribeDrugName ?? this.resPrescribeDrugName,
+      resPrescribeDrugEffect:
+          resPrescribeDrugEffect ?? this.resPrescribeDrugEffect,
+      resPrescribeDays: resPrescribeDays ?? this.resPrescribeDays,
     );
   }
 
@@ -3553,6 +3752,23 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
     if (detail.present) {
       map['detail'] = Variable<String>(detail.value);
     }
+    if (resHospitalName.present) {
+      map['res_hospital_name'] = Variable<String>(resHospitalName.value);
+    }
+    if (resTreatDate.present) {
+      map['res_treat_date'] = Variable<String>(resTreatDate.value);
+    }
+    if (resPrescribeDrugName.present) {
+      map['res_prescribe_drug_name'] =
+          Variable<String>(resPrescribeDrugName.value);
+    }
+    if (resPrescribeDrugEffect.present) {
+      map['res_prescribe_drug_effect'] =
+          Variable<String>(resPrescribeDrugEffect.value);
+    }
+    if (resPrescribeDays.present) {
+      map['res_prescribe_days'] = Variable<String>(resPrescribeDays.value);
+    }
     return map;
   }
 
@@ -3563,7 +3779,12 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
           ..write('userName: $userName, ')
           ..write('medicine: $medicine, ')
           ..write('symptom: $symptom, ')
-          ..write('detail: $detail')
+          ..write('detail: $detail, ')
+          ..write('resHospitalName: $resHospitalName, ')
+          ..write('resTreatDate: $resTreatDate, ')
+          ..write('resPrescribeDrugName: $resPrescribeDrugName, ')
+          ..write('resPrescribeDrugEffect: $resPrescribeDrugEffect, ')
+          ..write('resPrescribeDays: $resPrescribeDays')
           ..write(')'))
         .toString();
   }
