@@ -16,96 +16,111 @@ class SecondPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('알림 정보 페이지'),
       ),
-      body: Center(
-        child: FutureBuilder<List<PatientAlarm>>(
-          future: GetIt.I<MyDatabase>().select(GetIt.I<MyDatabase>().patientAlarms).get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No data found');
-            } else {
-              final alarms = snapshot.data!;
-              return ListView.builder(
-                itemCount: alarms.length,
-                itemBuilder: (context, index) {
-                  final alarm = alarms[index];
-                  return ListTile(
-                    title: Text('사용자 이름: ${alarm.userName}'),
-                    subtitle: Column(
+      body: FutureBuilder<List<PatientAlarm>>(
+        future: GetIt.I<MyDatabase>().select(GetIt.I<MyDatabase>().patientAlarms).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Text('No data found');
+          } else {
+            final alarms = snapshot.data!;
+            return ListView.builder(
+              itemCount: alarms.length,
+              itemBuilder: (context, index) {
+                final alarm = alarms[index];
+
+                return Card( // ListTile 대신 Card 위젯 사용
+                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 4, // 그림자 효과 추가
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('제목: ${alarm.title}'),
+                        ListTile( // 사용자 정보를 ListTile로 표시
+                          leading: Icon(Icons.account_circle), // 사용자 아이콘 추가
+                          title: Text('${alarm.userName} 님', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Divider(), // 구분선 추가
+                        Text('제목: ${alarm.title}', style: TextStyle(fontSize: 18)),
+                        SizedBox(height: 8), // 제목과 내용 사이 간격 조절
                         Text('내용: ${alarm.body}'),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await blockchainService.registerNodes();
+                        SizedBox(height: 16),
+                        Center( // 버튼을 가운데 정렬
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              await blockchainService.registerNodes();
 
-                            var medicalData = {
-                              "doctor_id": alarm.id,
-                              "name": alarm.userName,
-                              "title": alarm.title,
-                              "body": alarm.body
-                            };
-                            var originDataHash = blockchainService.calculateHash(medicalData);
-                            //직접 계산한 해시값
+                              var medicalData = {
+                                "doctor_id": alarm.id,
+                                "name": alarm.userName,
+                                "title": alarm.title,
+                                "body": alarm.body
+                              };
+                              var originDataHash = blockchainService.calculateHash(medicalData);
+                              //직접 계산한 해시값
 
-                            var changeData = {
-                              "doctor_id": alarm.id + 1,
-                              "name": alarm.userName,
-                              "title": alarm.title,
-                              "body": alarm.body
-                            };
-                            var changeDataHash = blockchainService.calculateHash(changeData);
-                            //변조된 직접 계산한 해시값
-
-
-                            var contractAddress = await blockchainService.storeHashOnBlockchain(
-                                blockchainService.calculateHash(medicalData), alarm.id
-                            );
-                            var dataHash = await blockchainService.getHashFromBlockchain(contractAddress!);
-                            //블록체인에 저장된 해시값
+                              var changeData = {
+                                "doctor_id": alarm.id + 1,
+                                "name": alarm.userName,
+                                "title": alarm.title,
+                                "body": alarm.body
+                              };
+                              var changeDataHash = blockchainService.calculateHash(changeData);
+                              //변조된 직접 계산한 해시값
 
 
-                            bool isVerified;
-                            if (index % 2 == 0) {  // 짝수 인덱스의 리스트는 무결성이 확인되도록
-                              isVerified = await blockchainService.verifyMedicalData(
-                                  originDataHash, dataHash
+                              var contractAddress = await blockchainService.storeHashOnBlockchain(
+                                  blockchainService.calculateHash(medicalData), alarm.id
                               );
-                            } else {
-                              isVerified = await blockchainService.verifyMedicalData(
-                                  changeDataHash, dataHash
-                              );
-                            }
+                              var dataHash = await blockchainService.getHashFromBlockchain(contractAddress!);
+                              //블록체인에 저장된 해시값
 
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: Text('의료 데이터 검증 결과'),
-                                content: Text(isVerified
-                                    ? '의료 데이터의 무결성이 확인되었습니다.'
-                                    : '의료 데이터가 변조되었습니다.'),
-                                actions: [
-                                  TextButton(
-                                    child: Text('확인'),
-                                    onPressed: () => Navigator.of(context).pop(),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          child: Text('검증하기'),
+
+                              bool isVerified;
+                              if (index % 2 == 0) {  // 짝수 인덱스의 리스트는 무결성이 확인되도록
+                                isVerified = await blockchainService.verifyMedicalData(
+                                    originDataHash, dataHash
+                                );
+                              } else {
+                                isVerified = await blockchainService.verifyMedicalData(
+                                    changeDataHash, dataHash
+                                );
+                              }
+
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('의료 데이터 검증 결과'),
+                                  content: Text(isVerified
+                                      ? '의료 데이터의 무결성이 확인되었습니다.'
+                                      : '의료 데이터가 변조되었습니다.'),
+                                  actions: [
+                                    TextButton(
+                                      child: Text('확인'),
+                                      onPressed: () => Navigator.of(context).pop(),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue, // 버튼 색상 변경
+                            ),
+                            child: Text('검증하기', style: TextStyle(color: Colors.white)), // 텍스트 색상 흰색
+                          ),
                         ),
                       ],
                     ),
-                  );
-                },
-              );
-            }
-          },
-        ),
+                  ),
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }

@@ -74,21 +74,7 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
       if (_isInitialLoadComplete) {
         for (var change in querySnapshot.docChanges) {
           if (change.type == DocumentChangeType.added) {
-            // Firestore에서 가져온 데이터를 Map으로 변환
             Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
-
-            // 처방 내역 데이터 처리 (처방 내역 필드가 리스트인 경우에만 처리)
-            if (data.containsKey('처방내역') && data['처방내역'] is List) {
-              print("haha");
-              List<dynamic> prescriptionDataList = data['처방내역'];
-
-              // 첫 번째 처방 정보 추출 (처방 내역이 있을 경우)
-              if (prescriptionDataList.isNotEmpty) {
-                Map<String, dynamic> firstPrescription = prescriptionDataList[0];
-                data.addAll(firstPrescription); // 데이터에 첫 번째 처방 정보 추가
-              }
-            }
-
             GetIt.I<FlutterLocalNotification>().showNotification(data);
           }
         }

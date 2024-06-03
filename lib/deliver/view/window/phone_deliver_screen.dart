@@ -37,10 +37,11 @@ class _PhoneDeliverScreenState extends ConsumerState<PhoneDeliverScreen> {
     String doctorName = doctorInfo.name;
     print(doctorId);
     print(doctorName);
+    print("haha");
 
-    final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection("patientTo${doctorId}").snapshots();
+    final Stream<QuerySnapshot> _messagesWndowStream = FirebaseFirestore.instance.collection("patientTo${doctorId}").snapshots();
 
-    _messagesStream.listen((querySnapshot) {
+    _messagesWndowStream.listen((querySnapshot) {
       if (_isInitialLoadComplete) {
         for (var change in querySnapshot.docChanges) {
           if (change.type == DocumentChangeType.added) {

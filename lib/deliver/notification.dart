@@ -13,7 +13,6 @@ import 'dart:io';
 class FlutterLocalNotification {
   Future<void> init() async {
     if(Platform.isAndroid){
-      print('나는야 핸드폰');
       const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
       final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
 
@@ -24,26 +23,29 @@ class FlutterLocalNotification {
           });
     }
     else if(Platform.isWindows){
-      print('나는야 데스크톱');
       await GetIt.I<WindowsNotification>().initNotificationCallBack((s) {
         onSelectWindowNotification();
-
       });
     }
   }
 
   Future<void> showNotification(Map<String, dynamic> payload) async {
     if (Platform.isWindows) {
+      print("!!!!!!!!!!!");
+      String patientId = payload['환자 아이디'] ?? '정보 없음';
       String userName = payload['환자 이름'] ?? '정보 없음';
       String medicine = payload['추가 의약품'] ?? '정보 없음';
       String symptom = payload['추가 증상'] ?? '정보 없음';
       String detail = payload['상세 내용'] ?? '정보 없음';
       List<dynamic> prescriptionDataList = payload['처방내역'];
+      print(patientId);
+      print(userName);
 
       // 처방 내역 데이터 처리 (첫 번째 처방만 사용)
       if (prescriptionDataList.isNotEmpty) {
         Map<String, dynamic> firstPrescription = prescriptionDataList[0];
         await GetIt.I<MyDatabase>().addDoctorAlarm(DoctorAlarmsCompanion(
+          patientId: Value(patientId),
           userName: Value(userName),
           medicine: Value(medicine),
           symptom: Value(symptom),
@@ -57,6 +59,7 @@ class FlutterLocalNotification {
       }
       else {
         await GetIt.I<MyDatabase>().addDoctorAlarm(DoctorAlarmsCompanion(
+            patientId: Value(patientId),
             userName: Value(userName),
             medicine: Value(medicine),
             symptom: Value(symptom),
