@@ -22,4 +22,5 @@ class Prescriptions extends Table {
   TextColumn get resPrescribeCnt => text()(); // 처방횟수
   TextColumn get resMedicationCnt => text()(); //	투약(요양)횟수
   TextColumn get resType => text()(); // 구분
+  TextColumn get name => text()();
 }

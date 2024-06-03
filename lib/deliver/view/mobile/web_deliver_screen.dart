@@ -15,6 +15,8 @@ class WebDeliverScreen extends ConsumerStatefulWidget {
 }
 
 class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
+  List<Map<String, dynamic>> prescriptionDataList = [];
+
   late String patientId;
   late String patientName;
 
@@ -23,18 +25,27 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
   final TextEditingController _doctorController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
 
+  String? _selectedPrescription;
   String? _selectedSymptom; // 선택된 증상
   String? _selectedMedicine; // 선택된 개인 의약품
 
   late List<Symptom> _symptoms = [];
   late List<PersonalMedicine> _medicines = [];
 
+
   late String symptom, medicine;
+  String prescriptionName = '';
 
   Future<void> _loadData() async {
+    // 데이터베이스에서 데이터 가져오기
     _symptoms = await GetIt.I<MyDatabase>().getAllSymptoms();
     _medicines = await GetIt.I<MyDatabase>().getAllPersonalMedicines();
-    setState(() {});
+
+    // 처방내역 가져오기 및 상태 업데이트
+    String loadedPrescriptionName = (await GetIt.I<MyDatabase>().getNameFromPrescriptions())!;
+    setState(() { // 상태 업데이트
+      prescriptionName = loadedPrescriptionName;
+    });
   }
 
   @override
@@ -52,19 +63,32 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
 
     final Stream<QuerySnapshot> _messagesStream = FirebaseFirestore.instance.collection("doctorTo${patientId}").snapshots();
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      GetIt.I<FlutterLocalNotification>().showNotification({
-        'title': '환자 추가 정보',
-        'body': '$patientId, $symptom, $medicine, ${_bodyController.text}'
-      });
-    });
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   GetIt.I<FlutterLocalNotification>().showNotification({
+    //     'title': '환자 추가 정보',
+    //     'body': '$patientId, $symptom, $medicine, ${_bodyController.text}'
+    //   });
+    // });
 
     _messagesStream.listen((querySnapshot) {
       if (_isInitialLoadComplete) {
         for (var change in querySnapshot.docChanges) {
           if (change.type == DocumentChangeType.added) {
-            Map<String, dynamic> data =
-            change.doc.data() as Map<String, dynamic>;
+            // Firestore에서 가져온 데이터를 Map으로 변환
+            Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
+
+            // 처방 내역 데이터 처리 (처방 내역 필드가 리스트인 경우에만 처리)
+            if (data.containsKey('처방내역') && data['처방내역'] is List) {
+              print("haha");
+              List<dynamic> prescriptionDataList = data['처방내역'];
+
+              // 첫 번째 처방 정보 추출 (처방 내역이 있을 경우)
+              if (prescriptionDataList.isNotEmpty) {
+                Map<String, dynamic> firstPrescription = prescriptionDataList[0];
+                data.addAll(firstPrescription); // 데이터에 첫 번째 처방 정보 추가
+              }
+            }
+
             GetIt.I<FlutterLocalNotification>().showNotification(data);
           }
         }
@@ -93,6 +117,32 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DropdownButton<String>(
+                  value: _selectedPrescription,
+                  hint: Text('API 선택'),
+                  onChanged: (value) async {
+                    setState(() {
+                      _selectedPrescription = value;
+                    });
+                  },
+                  items: prescriptionName == '처방내역' // null 체크 불필요
+                      ? [
+                    DropdownMenuItem<String>(
+                      value: '처방내역',
+                      child: Text('처방내역'),
+                    ),
+                  ]
+                      : [], // _selectedPrescription이 null이면 빈 리스트 표시
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.blue,
+                  ),
+                  dropdownColor: Colors.white,
+                  elevation: 8,
+                  isExpanded: true,
+                ),
+                SizedBox(height: 16.0),
+
+                DropdownButton<String>(
                   value: _selectedSymptom,
                   hint: Text('증상 선택'),
                   onChanged: (value) {
@@ -117,6 +167,7 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                   isExpanded: true, // 드롭다운 너비를 화면 가득 채움
                 ),
                 SizedBox(height: 16.0),
+
                 DropdownButton<String>(
                   value: _selectedMedicine,
                   hint: Text('개인 의약품 선택'),
@@ -174,6 +225,7 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
+
                 ElevatedButton(
                   onPressed: () async {
                     if (_selectedSymptom != null) {
@@ -187,11 +239,35 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                       medicine = " 추가 의약품 없음";
                     }
 
+                    if (_selectedPrescription != null) {
+                      print("1번째다");
+                      List<Prescription>? prescriptions = await GetIt.I<MyDatabase>().getAllPrescriptions();
+                      // 처방 내역 데이터 가져오기
+                      Prescription firstPrescription = prescriptions.first; // 첫 번째 처방 가져오기
+
+                      prescriptionDataList = [ // 리스트로 감싸서 단일 항목 저장
+                        {
+                          '병의원(약국)명칭': firstPrescription.resHospitalName,
+                          '처방 일자': firstPrescription.resTreatDate,
+                          '의약품 명': firstPrescription.resPrescribeDrugName,
+                          '처방약품 효능': firstPrescription.resPrescribeDrugEffect,
+                          '투약일수': firstPrescription.resPrescribeDays,
+                          // 필요한 다른 처방 정보 추가
+                        }
+                      ];
+                      print("처방내역이 선택되었습니다.");
+                      print("prescriptionDataList: $prescriptionDataList");
+                    } else {
+                      print("처방내역이 실패되었습니다.");
+                      prescriptionDataList = [];
+                    }
+
                     await FirebaseFirestore.instance
                         .collection("patientTo${_doctorController.text}")
                         .add({
                       '환자 아이디': patientId,
                       '환자 이름': patientName,
+                      '처방내역': prescriptionDataList,
                       '추가 증상': symptom,
                       '추가 의약품': medicine,
                       '상세 내용': _bodyController.text,

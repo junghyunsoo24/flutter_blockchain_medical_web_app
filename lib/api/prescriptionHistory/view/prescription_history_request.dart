@@ -89,6 +89,7 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
             resPrescribeCnt: Value(item['resPrescribeCnt'].toString() ?? '0'),//string으로 변환필요!
             resMedicationCnt: Value(item['resMedicationCnt'] .toString()?? '0'),//string으로 변환필요!
             resType: Value(item['resType'] ?? ''),
+            name: Value("처방내역"),
           );
 
 

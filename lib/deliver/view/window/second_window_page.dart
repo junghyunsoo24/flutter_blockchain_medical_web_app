@@ -40,6 +40,11 @@ class SecondWindowPage extends StatelessWidget {
                         Text('약물: ${alarm.medicine}'),
                         Text('증상: ${alarm.symptom}'),
                         Text('세부 정보: ${alarm.detail}'),
+                        Text('병의원(약국)명칭: ${alarm.resHospitalName}'),
+                        Text('처방 일자: ${alarm.resTreatDate}'),
+                        Text('의약품 명: ${alarm.resPrescribeDrugName}'),
+                        Text('처방약품 효능: ${alarm.resPrescribeDrugEffect}'),
+                        Text('투약일수: ${alarm.resPrescribeDays}'),
                         ElevatedButton(
                           onPressed: () async {
                             await blockchainService.registerNodes();
