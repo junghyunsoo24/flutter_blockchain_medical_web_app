@@ -9,8 +9,8 @@ import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/my_comme
 
 import '../login/view/login_screen.dart';
 
-class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class PatientProfileScreen extends ConsumerWidget {
+  const PatientProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
