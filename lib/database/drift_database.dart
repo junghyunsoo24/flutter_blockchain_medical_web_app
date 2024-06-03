@@ -74,9 +74,8 @@ class MyDatabase extends _$MyDatabase {
   Future<void> addPatient(PatientsCompanion data) async {
     await into(patients).insert(data);
   }
-  Future<void> updatePatient(Patient patient) async {
-    await update(patients)
-        .replace(patient);
+  Future<int> updatePatient(Patient updatedPatient) {
+    return (update(patients)..where((p) => p.id.equals(updatedPatient.id))).write(updatedPatient);
   }
   Future<Patient?> getPatientByUserIdAndPassword(String userId, String password) async {
     final query = select(patients)

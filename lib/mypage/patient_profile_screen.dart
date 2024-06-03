@@ -1,16 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/view/alarm_list_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_category_list_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/board_list_screen.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/my_board_list.dart';
-import 'package:portfolio_flutter_blockchain_medical_web_app/board/view/my_comment_list.dart';
-
+import 'package:portfolio_flutter_blockchain_medical_web_app/mypage/patient_edit_profile_screen.dart';
+import '../board/view/my_board_list.dart';
+import '../board/view/my_comment_list.dart';
 import '../login/view/login_screen.dart';
 
-class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class PatientProfileScreen extends ConsumerWidget {
+  const PatientProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -91,8 +88,8 @@ class ProfileScreen extends ConsumerWidget {
                     GestureDetector(
                       onTap: (){
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context)=>MyCommentList())
+                            context,
+                            MaterialPageRoute(builder: (context)=>MyCommentList())
                         );
                       },
                       child: Row(
@@ -119,6 +116,26 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 ),
               ),
+
+              SizedBox(height: 16),
+              Container(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PatientEditProfileScreen()),
+                    );
+                  },
+                  icon: Icon(Icons.edit), // 편집 아이콘 추가
+                  label: Text('개인정보 수정'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green[50], // 버튼 배경색을 연한 녹색으로 변경
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+
             ],
           ),
         ),
@@ -126,23 +143,3 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 }
-
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-//
-// class ProfileScreen extends ConsumerWidget {
-//   const ProfileScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     return Center(
-//       child: ElevatedButton(
-//         onPressed: (){
-//           Navigator.pop(context);
-//         },
-//         child: const Text('로그 아웃'),
-//       ),
-//     );
-//   }
-// }
