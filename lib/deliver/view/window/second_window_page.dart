@@ -33,10 +33,11 @@ class SecondWindowPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final alarm = alarms[index];
                   return ListTile(
-                    title: Text('보낸 환자 이름: ${alarm.userName}'),
+                    title: Text('보낸 환자 아이디: ${alarm.patientId}'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text('보낸 환자 이름: ${alarm.userName}'),
                         Text('약물: ${alarm.medicine}'),
                         Text('증상: ${alarm.symptom}'),
                         Text('세부 정보: ${alarm.detail}'),
