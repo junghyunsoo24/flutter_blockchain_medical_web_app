@@ -57,6 +57,20 @@ class _PrescriptionHistoryListScreenState extends ConsumerState<PrescriptionHist
                 separatorBuilder: (context, index) => SizedBox(height: 16.0),
                 itemBuilder: (context, index) {
                   Prescription prescription = prescriptions[index];
+                  var medicalData = {
+                    "사용자": userName,
+                    "병의원(약국)명칭": prescription.resHospitalName,
+                    "처방 일자": prescription.resTreatDate,
+                    "의약품 명": prescription.resPrescribeDrugName,
+                    "처방약품 효능": prescription.resPrescribeDrugEffect,
+                    "복약일수": prescription.resPrescribeDays,
+                    "투약 횟수": prescription.resPrescribeDays
+                  };
+                  var originDataHash = blockchainService.calculateHash(medicalData);
+                  //직접 계산한 해시값
+                  print("============================================");
+                  print('사용자 ID: $userName, 원본 해시값: $originDataHash');
+
                   return Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -128,48 +142,14 @@ class _PrescriptionHistoryListScreenState extends ConsumerState<PrescriptionHist
                             onPressed: () async {
                               await blockchainService.registerNodes();
 
-                              var medicalData = {
-                                "사용자": userName,
-                                "병의원(약국)명칭": prescription.resHospitalName,
-                                "처방 일자": prescription.resTreatDate,
-                                "의약품 명": prescription.resPrescribeDrugName,
-                                "처방약품 효능": prescription.resPrescribeDrugEffect,
-                                "복약일수": prescription.resPrescribeDays,
-                                "투약 횟수": prescription.resPrescribeDays
-                              };
-                              var originDataHash = blockchainService.calculateHash(medicalData);
-                              //직접 계산한 해시값
-
-                              var changeData = {
-                                "사용자": userName +"1",
-                                "병의원(약국)명칭": prescription.resHospitalName,
-                                "처방 일자": prescription.resTreatDate,
-                                "의약품 명": prescription.resPrescribeDrugName,
-                                "처방약품 효능": prescription.resPrescribeDrugEffect,
-                                "복약일수": prescription.resPrescribeDays,
-                                "투약 횟수": prescription.resPrescribeDays
-                              };
-                              var changeDataHash = blockchainService.calculateHash(changeData);
-                              //변조된 직접 계산한 해시값
-
-
-                              var contractAddress = await blockchainService.storeHashOnBlockchain(
-                                  blockchainService.calculateHash(medicalData), userName
-                              );
+                              var contractAddress = await blockchainService.storeHashOnBlockchain(blockchainService.calculateHash(medicalData), userName);
                               var dataHash = await blockchainService.getHashFromBlockchain(contractAddress!);
                               //블록체인에 저장된 해시값
 
-                              bool isVerified;
-                              if (index % 2 != 0) {  // 짝수 인덱스의 리스트는 무결성이 확인되도록
-                                isVerified = await blockchainService.verifyMedicalData(
-                                    originDataHash, dataHash
-                                );
-                              } else {
-                                isVerified = await blockchainService.verifyMedicalData(
-                                    changeDataHash, dataHash
-                                );
-                              }
-                              //직접 계산한 해시값과 블록체인에 저장된 해시값을 비교하여 같으면 true반환
+                              // 3. 해시값을 비교하여 결과값 보여주기
+                              bool isVerified = await blockchainService.verifyMedicalData(originDataHash, dataHash);
+                              print("============================================");
+                              print('받아온 해시값: $dataHash');
 
                               showDialog(
                                 context: context,
