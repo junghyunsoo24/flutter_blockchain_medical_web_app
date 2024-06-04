@@ -45,7 +45,7 @@ class DoctorHomeScreen extends ConsumerWidget {
                             ),
                             Expanded(
                               child: Text(
-                                '나의 환자',
+                                '전송받은 기록 이력',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ),
