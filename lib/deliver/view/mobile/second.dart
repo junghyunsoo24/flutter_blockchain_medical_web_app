@@ -32,6 +32,16 @@ class SecondPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final alarm = alarms[index];
 
+                var medicalData = {
+                  "doctor_id": alarm.id,
+                  "name": alarm.userName,
+                  "title": alarm.title,
+                  "body": alarm.body
+                };
+                var originDataHash = blockchainService.calculateHash(medicalData);
+                print("============================================");
+                print('알람 ID: ${alarm.id}, 원본 해시값: $originDataHash');
+
                 return Card( // ListTile 대신 Card 위젯 사용
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   elevation: 4, // 그림자 효과 추가
@@ -54,50 +64,28 @@ class SecondPage extends StatelessWidget {
                             onPressed: () async {
                               await blockchainService.registerNodes();
 
-                              var medicalData = {
-                                "doctor_id": alarm.id,
-                                "name": alarm.userName,
-                                "title": alarm.title,
-                                "body": alarm.body
-                              };
-                              var originDataHash = blockchainService.calculateHash(medicalData);
-                              //직접 계산한 해시값
-
-                              var changeData = {
-                                "doctor_id": alarm.id + 1,
-                                "name": alarm.userName,
-                                "title": alarm.title,
-                                "body": alarm.body
-                              };
-                              var changeDataHash = blockchainService.calculateHash(changeData);
-                              //변조된 직접 계산한 해시값
-
-
-                              var contractAddress = await blockchainService.storeHashOnBlockchain(
-                                  blockchainService.calculateHash(medicalData), alarm.id
-                              );
+                              var contractAddress = await blockchainService.storeHashOnBlockchain(blockchainService.calculateHash(medicalData), alarm.id);
                               var dataHash = await blockchainService.getHashFromBlockchain(contractAddress!);
                               //블록체인에 저장된 해시값
 
 
-                              bool isVerified;
-                              if (index % 2 == 0) {  // 짝수 인덱스의 리스트는 무결성이 확인되도록
-                                isVerified = await blockchainService.verifyMedicalData(
-                                    originDataHash, dataHash
-                                );
-                              } else {
-                                isVerified = await blockchainService.verifyMedicalData(
-                                    changeDataHash, dataHash
-                                );
-                              }
+                              // 3. 해시값을 비교하여 결과값 보여주기
+                              bool isVerified = await blockchainService.verifyMedicalData(originDataHash, dataHash);
 
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: Text('의료 데이터 검증 결과'),
-                                  content: Text(isVerified
-                                      ? '의료 데이터의 무결성이 확인되었습니다.'
-                                      : '의료 데이터가 변조되었습니다.'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 16),
+                                      Text(isVerified
+                                          ? '의료 데이터의 무결성이 확인되었습니다.'
+                                          : '의료 데이터가 변조되었습니다.'),
+                                    ],
+                                  ),
                                   actions: [
                                     TextButton(
                                       child: Text('확인'),

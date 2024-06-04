@@ -18,7 +18,7 @@ class PatientList extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('전체 환자 목록'),
+        title: Text('전송받은 기록 이력'),
       ),
       body: Container(// 밝은 회색 배경
         child: FutureBuilder<List<DoctorAlarm>>(

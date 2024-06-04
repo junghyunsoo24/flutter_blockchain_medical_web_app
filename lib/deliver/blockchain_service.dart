@@ -20,9 +20,6 @@ class BlockchainService {
     var data1 = {'nodes': SECOND_BLOCK_URL};
     var data2 = {'nodes': THIRD_BLOCK_URL};
 
-    print(FIRST_BLOCK_URL);
-    print("haha");
-
     await http.post(Uri.parse('$FIRST_BLOCK_URL/nodes/register'),
         headers: headers, body: jsonEncode(data1));
     await http.post(Uri.parse('$FIRST_BLOCK_URL/nodes/register'),

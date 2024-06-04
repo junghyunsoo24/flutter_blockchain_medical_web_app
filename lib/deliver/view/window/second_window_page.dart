@@ -31,6 +31,16 @@ class SecondWindowPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final alarm = alarms[index];
 
+                var medicalData = {
+                  "patient_id": alarm.id,
+                  "name": alarm.userName,
+                  "diagnosis": alarm.symptom,
+                  "treatment": alarm.medicine
+                };
+                var originDataHash = blockchainService.calculateHash(medicalData);
+                print("============================================");
+                print('알람 ID: ${alarm.id}, 원본 해시값: $originDataHash');
+
                 return Card(
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   elevation: 4,
@@ -71,45 +81,11 @@ class SecondWindowPage extends StatelessWidget {
                             onPressed: () async {
                               await blockchainService.registerNodes();
 
-                              var medicalData = {
-                                "patient_id": alarm.id,
-                                "name": alarm.userName,
-                                "diagnosis": alarm.symptom,
-                                "treatment": alarm.medicine
-                              };
-                              var originDataHash = blockchainService.calculateHash(medicalData);
-                              //직접 계산한 해시값
-
-                              var changeData = {
-                                "patient_id": alarm.id + 1,
-                                "name": alarm.userName,
-                                "diagnosis": alarm.symptom,
-                                "treatment": alarm.medicine
-                              };
-                              var changeDataHash = blockchainService.calculateHash(changeData);
-                              //변조된 직접 계산한 해시값
-
-
-                              var contractAddress = await blockchainService.storeHashOnBlockchain(
-                                  blockchainService.calculateHash(medicalData), alarm.id
-                              );
+                              var contractAddress = await blockchainService.storeHashOnBlockchain(blockchainService.calculateHash(medicalData), alarm.id);
                               var dataHash = await blockchainService.getHashFromBlockchain(contractAddress!);
                               //블록체인에 저장된 해시값
 
-
-                              bool isVerified;
-                              if (index % 2 != 0) {  // 짝수 인덱스의 리스트는 무결성이 확인되도록
-                                isVerified = await blockchainService.verifyMedicalData(
-                                    originDataHash, dataHash
-                                );
-                              } else {
-                                isVerified = await blockchainService.verifyMedicalData(
-                                    changeDataHash, dataHash
-                                );
-                              }
-
-                              //직접 계산한 해시값과 블록체인에 저장된 해시값을 비교하여 같으면 true반환
-
+                              bool isVerified = await blockchainService.verifyMedicalData(originDataHash, dataHash);
 
                               showDialog(
                                 context: context,
