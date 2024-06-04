@@ -26,7 +26,7 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
   final _phoneController = TextEditingController();
   String? _selectedProvider; // 선택된 통신사 저장
   //final _prescriptionRequestViewModel = PrescriptionRequestViewModel();
-
+  bool _isLoading = false;
   Future<bool> firstCheck() async {
     final url = Uri.parse(
         '$BASE_URL/medical-api/health-checkup-result/first-request');
@@ -117,19 +117,22 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
         throw Exception('서버 요청 실패 (상태 코드: ${response.statusCode})'); // 일반적인 오류 처리
       }
     } catch (e) { // 예외 발생 시 다이얼로그 표시
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('API측 오류'),
-          content: Text("API측이 현재 제공하지 않습니다."),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('확인'),
-            ),
-          ],
-        ),
-      );
+      if (context.mounted) {
+        Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('API측 오류'),
+            content: Text("지금은 해당 기능을 이용할 수 없습니다. 추후 다시 시도해 주세요."),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('확인'),
+              ),
+            ],
+          ),
+        );
+      }
       return false;
     }
   }
@@ -231,25 +234,94 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
                     if (firstSuccess) {
                       showDialog(
                         context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text('1차인증 성공'),
-                          content: Text('카카오 지갑 인증 후 확인버튼 눌러주세요.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () async{
-                                Navigator.of(context).pop();
-                                bool secondSuccess = await secondCheck();
-                                if (secondSuccess) {
-                                  print("디비에 저장하엿습니다.");
-                                  Navigator.of(outerContext).pop();
-                                } else {
+                        builder: (context) =>
+                            AlertDialog(
+                              title: Text('1차인증 성공'),
+                              content: Text('카카오 지갑 인증 후 확인버튼 눌러주세요.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) => AlertDialog(
+                                        title: Row(
+                                          children: [
+                                            CircularProgressIndicator(),
+                                            SizedBox(width: 16.0),
+                                            Expanded(
+                                              child: Text('요청 처리 중입니다.'),
+                                            ),
+                                          ],
+                                        ),
+                                        content: Text('잠시만 기다려주세요.'),
+                                      ),
+                                    );
+                                    try {
+                                      bool secondSuccess = await secondCheck();
 
-                                }
-                              },
-                              child: Text('확인'),
+                                      // context가 아직 유효한지 확인
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
+                                      }
+
+                                      if (secondSuccess) {
+                                        print("디비에 저장하였습니다.");
+                                        Navigator.pushReplacement(
+                                          outerContext,
+                                          MaterialPageRoute(
+                                            builder: (context) => HealthCheckScreen(),
+                                          ),
+                                        );
+                                      } else {
+                                        // context가 아직 유효한지 확인
+                                        if (context.mounted) {
+                                          showDialog( // API측 오류 다이얼로그 표시
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: Text('API측 오류'),
+                                              content: Text(
+                                                  "지금은 해당 기능을 이용할 수 없습니다. 추후 다시 시도해 주세요."),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => Navigator.of(context).pop(),
+                                                  child: Text('확인'),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      }
+                                    } catch (e) { // 예외 발생 시 로딩 다이얼로그 닫고 에러 다이얼로그 표시
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: Text('오류'),
+                                            content: Text(e.toString()), // 에러 메시지 표시
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.of(context).pop(),
+                                                child: Text('확인'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                    }
+                                  },
+                                  child: Text('확인'),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
                       );
                     } else {
                       showDialog(
