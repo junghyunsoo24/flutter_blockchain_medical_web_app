@@ -82,7 +82,7 @@ class BoardCategoryListScreen extends ConsumerWidget {
                         Icon(Icons.elderly_rounded, color: Colors.blueAccent, size: 35),
                         SizedBox(width: 8),
                         Text(
-                          '노년층 게시판',
+                          '노약자 게시판',
                           style: TextStyle(
                             fontFamily: 'NotoSans',
                             fontWeight: FontWeight.w700,

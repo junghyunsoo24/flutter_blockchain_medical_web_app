@@ -12,20 +12,20 @@ class QuestionRepository {
   Future<List<Question>> fetchQuestions({String? category}) async {
     print(category);
 
-    final uri;
-    if(category == 'ENTIRE'){
-      uri = Uri.parse('$baseUrl/question');
-    }
-    else {
-      uri = Uri.parse('$baseUrl/question')
-          .replace(queryParameters: {
-        'category': category,
-      });
-    }
-    // final uri = Uri.parse('$baseUrl/question')
-    //     .replace(queryParameters: {
-    //   'category': category,
-    // });
+    // final uri;
+    // if(category == 'ENTIRE'){
+    //   uri = Uri.parse('$baseUrl/question');
+    // }
+    // else {
+    //   uri = Uri.parse('$baseUrl/question')
+    //       .replace(queryParameters: {
+    //     'category': category,
+    //   });
+    // }
+    final uri = Uri.parse('$baseUrl/question')
+        .replace(queryParameters: {
+      'category': category,
+    });
 
     print(uri);
     final response = await http.get(uri);
