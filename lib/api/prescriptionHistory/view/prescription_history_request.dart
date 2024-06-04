@@ -48,7 +48,11 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
     }
   }
   Future<bool> secondCheck() async {
+
     final url = Uri.parse('$BASE_URL/medical-api/treatment-information/second-request');
+
+    print("url");
+    print(url);
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -63,12 +67,18 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
       // final data = jsonBody['data'] as List<dynamic>;
+      print("jsonBody");
+      print(jsonBody);
+      final result = jsonBody['data']['result'] as Map<String, dynamic>;
+      final dataList = jsonBody['data']['data'] as List<dynamic>;
 
-      final dataList = jsonBody['data']['data']['resMediDetailList'] as List<dynamic>;
-
+      print("dataList");
+      print(dataList);
       for (final item in dataList) {
-        // final resMediDetailList = item['resMediDetailList'] as List<dynamic>;
-        for (final prescriptionData in dataList) {
+        final resMediDetailList = item['resMediDetailList'] as List<dynamic>;
+        print("resMediDetailList");
+        print(resMediDetailList);
+        for (final prescriptionData in resMediDetailList) {
           final prescription = PrescriptionsCompanion(
             resTreatDate: Value(prescriptionData['resTreatDate'] ?? ''),
             resTreatTypeDet: Value(prescriptionData['resTreatTypeDet'] ?? ''),
@@ -85,9 +95,9 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
             resHospitalName: Value(item['resHospitalName'] ?? ''),
             resTreatStartDate: Value(item['resTreatStartDate'] ?? ''),
             resTreatType: Value(item['resTreatType'] ?? ''),
-            resVisitDays: Value(item['resVisitDays'].toString() ?? '0'),//string으로 변환필요!
-            resPrescribeCnt: Value(item['resPrescribeCnt'].toString() ?? '0'),//string으로 변환필요!
-            resMedicationCnt: Value(item['resMedicationCnt'] .toString()?? '0'),//string으로 변환필요!
+            resVisitDays: Value(item['resVisitDays'] ?? 0),
+            resPrescribeCnt: Value(item['resPrescribeCnt'] ?? 0),
+            resMedicationCnt: Value(item['resMedicationCnt'] ?? 0),
             resType: Value(item['resType'] ?? ''),
             name: Value("처방내역"),
           );
@@ -123,7 +133,8 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
     }
   }
 
-    @override
+
+  @override
     Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
