@@ -71,7 +71,8 @@ class SecondPage extends StatelessWidget {
 
                               // 3. 해시값을 비교하여 결과값 보여주기
                               bool isVerified = await blockchainService.verifyMedicalData(originDataHash, dataHash);
-
+                              print("============================================");
+                              print('받아온 해시값: $dataHash');
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
