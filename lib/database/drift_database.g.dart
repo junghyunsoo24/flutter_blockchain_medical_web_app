@@ -3296,6 +3296,12 @@ class $DoctorAlarmsTable extends DoctorAlarms
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _patientIdMeta =
+      const VerificationMeta('patientId');
+  @override
+  late final GeneratedColumn<String> patientId = GeneratedColumn<String>(
+      'patient_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _userNameMeta =
       const VerificationMeta('userName');
   @override
@@ -3352,6 +3358,7 @@ class $DoctorAlarmsTable extends DoctorAlarms
   @override
   List<GeneratedColumn> get $columns => [
         id,
+        patientId,
         userName,
         medicine,
         symptom,
@@ -3374,6 +3381,12 @@ class $DoctorAlarmsTable extends DoctorAlarms
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('patient_id')) {
+      context.handle(_patientIdMeta,
+          patientId.isAcceptableOrUnknown(data['patient_id']!, _patientIdMeta));
+    } else if (isInserting) {
+      context.missing(_patientIdMeta);
     }
     if (data.containsKey('user_name')) {
       context.handle(_userNameMeta,
@@ -3450,6 +3463,8 @@ class $DoctorAlarmsTable extends DoctorAlarms
     return DoctorAlarm(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      patientId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}patient_id'])!,
       userName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}user_name'])!,
       medicine: attachedDatabase.typeMapping
@@ -3481,6 +3496,7 @@ class $DoctorAlarmsTable extends DoctorAlarms
 
 class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
   final int id;
+  final String patientId;
   final String userName;
   final String medicine;
   final String symptom;
@@ -3492,6 +3508,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
   final String resPrescribeDays;
   const DoctorAlarm(
       {required this.id,
+      required this.patientId,
       required this.userName,
       required this.medicine,
       required this.symptom,
@@ -3505,6 +3522,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['patient_id'] = Variable<String>(patientId);
     map['user_name'] = Variable<String>(userName);
     map['medicine'] = Variable<String>(medicine);
     map['symptom'] = Variable<String>(symptom);
@@ -3520,6 +3538,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
   DoctorAlarmsCompanion toCompanion(bool nullToAbsent) {
     return DoctorAlarmsCompanion(
       id: Value(id),
+      patientId: Value(patientId),
       userName: Value(userName),
       medicine: Value(medicine),
       symptom: Value(symptom),
@@ -3537,6 +3556,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DoctorAlarm(
       id: serializer.fromJson<int>(json['id']),
+      patientId: serializer.fromJson<String>(json['patientId']),
       userName: serializer.fromJson<String>(json['userName']),
       medicine: serializer.fromJson<String>(json['medicine']),
       symptom: serializer.fromJson<String>(json['symptom']),
@@ -3555,6 +3575,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'patientId': serializer.toJson<String>(patientId),
       'userName': serializer.toJson<String>(userName),
       'medicine': serializer.toJson<String>(medicine),
       'symptom': serializer.toJson<String>(symptom),
@@ -3570,6 +3591,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
 
   DoctorAlarm copyWith(
           {int? id,
+          String? patientId,
           String? userName,
           String? medicine,
           String? symptom,
@@ -3581,6 +3603,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
           String? resPrescribeDays}) =>
       DoctorAlarm(
         id: id ?? this.id,
+        patientId: patientId ?? this.patientId,
         userName: userName ?? this.userName,
         medicine: medicine ?? this.medicine,
         symptom: symptom ?? this.symptom,
@@ -3596,6 +3619,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
   String toString() {
     return (StringBuffer('DoctorAlarm(')
           ..write('id: $id, ')
+          ..write('patientId: $patientId, ')
           ..write('userName: $userName, ')
           ..write('medicine: $medicine, ')
           ..write('symptom: $symptom, ')
@@ -3612,6 +3636,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
   @override
   int get hashCode => Object.hash(
       id,
+      patientId,
       userName,
       medicine,
       symptom,
@@ -3626,6 +3651,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
       identical(this, other) ||
       (other is DoctorAlarm &&
           other.id == this.id &&
+          other.patientId == this.patientId &&
           other.userName == this.userName &&
           other.medicine == this.medicine &&
           other.symptom == this.symptom &&
@@ -3639,6 +3665,7 @@ class DoctorAlarm extends DataClass implements Insertable<DoctorAlarm> {
 
 class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
   final Value<int> id;
+  final Value<String> patientId;
   final Value<String> userName;
   final Value<String> medicine;
   final Value<String> symptom;
@@ -3650,6 +3677,7 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
   final Value<String> resPrescribeDays;
   const DoctorAlarmsCompanion({
     this.id = const Value.absent(),
+    this.patientId = const Value.absent(),
     this.userName = const Value.absent(),
     this.medicine = const Value.absent(),
     this.symptom = const Value.absent(),
@@ -3662,6 +3690,7 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
   });
   DoctorAlarmsCompanion.insert({
     this.id = const Value.absent(),
+    required String patientId,
     required String userName,
     required String medicine,
     required String symptom,
@@ -3671,7 +3700,8 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
     required String resPrescribeDrugName,
     required String resPrescribeDrugEffect,
     required String resPrescribeDays,
-  })  : userName = Value(userName),
+  })  : patientId = Value(patientId),
+        userName = Value(userName),
         medicine = Value(medicine),
         symptom = Value(symptom),
         detail = Value(detail),
@@ -3682,6 +3712,7 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
         resPrescribeDays = Value(resPrescribeDays);
   static Insertable<DoctorAlarm> custom({
     Expression<int>? id,
+    Expression<String>? patientId,
     Expression<String>? userName,
     Expression<String>? medicine,
     Expression<String>? symptom,
@@ -3694,6 +3725,7 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (patientId != null) 'patient_id': patientId,
       if (userName != null) 'user_name': userName,
       if (medicine != null) 'medicine': medicine,
       if (symptom != null) 'symptom': symptom,
@@ -3710,6 +3742,7 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
 
   DoctorAlarmsCompanion copyWith(
       {Value<int>? id,
+      Value<String>? patientId,
       Value<String>? userName,
       Value<String>? medicine,
       Value<String>? symptom,
@@ -3721,6 +3754,7 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
       Value<String>? resPrescribeDays}) {
     return DoctorAlarmsCompanion(
       id: id ?? this.id,
+      patientId: patientId ?? this.patientId,
       userName: userName ?? this.userName,
       medicine: medicine ?? this.medicine,
       symptom: symptom ?? this.symptom,
@@ -3739,6 +3773,9 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (patientId.present) {
+      map['patient_id'] = Variable<String>(patientId.value);
     }
     if (userName.present) {
       map['user_name'] = Variable<String>(userName.value);
@@ -3776,6 +3813,7 @@ class DoctorAlarmsCompanion extends UpdateCompanion<DoctorAlarm> {
   String toString() {
     return (StringBuffer('DoctorAlarmsCompanion(')
           ..write('id: $id, ')
+          ..write('patientId: $patientId, ')
           ..write('userName: $userName, ')
           ..write('medicine: $medicine, ')
           ..write('symptom: $symptom, ')

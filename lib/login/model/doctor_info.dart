@@ -19,6 +19,24 @@ class DoctorInfo extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setDoctorName(String doctorName) {
+    _name = doctorName;
+    notifyListeners();
+  }
+
+  void updateDoctorInfo({
+    String? name,
+    String? field,
+    String? hospital,
+    String? introduction,
+  }) {
+    if (name != null) _name = name;
+    if (field != null) _field = field;
+    if (hospital != null) _hospital = hospital;
+    if (introduction != null) _introduction = introduction;
+    notifyListeners(); // 변경 사항 알림
+  }
+
   void setDoctorInfo(Doctor doctor) {
     _userId = doctor.userID;
     _name = doctor.name;
@@ -27,4 +45,6 @@ class DoctorInfo extends ChangeNotifier {
     _introduction = doctor.introduction;
     notifyListeners();
   }
+
+
 }

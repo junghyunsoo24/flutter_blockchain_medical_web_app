@@ -103,35 +103,40 @@ class PatientProfileScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
-              Container(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.logout), // 로그아웃 아이콘 추가
-                  label: Text('로그아웃'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.lightBlue[50], // 버튼 배경색을 빨간색으로 변경
-                  ),
-                ),
-              ),
 
               SizedBox(height: 16),
               Container(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PatientEditProfileScreen()),
-                    );
-                  },
-                  icon: Icon(Icons.edit), // 편집 아이콘 추가
-                  label: Text('개인정보 수정'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green[50], // 버튼 배경색을 연한 녹색으로 변경
-                  ),
+                child: Row( // Row 위젯 추가
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // 버튼 사이 공간 최대로
+                  children: [
+                    Expanded( // 버튼을 화면 너비에 맞게 확장
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => PatientEditProfileScreen()),
+                          );
+                        },
+                        icon: Icon(Icons.edit),
+                        label: Text('개인정보 수정'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green[50],
+                        ),
+                      ),
+                    ),
+                    Expanded( // 버튼을 화면 너비에 맞게 확장
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.logout),
+                        label: Text('로그아웃'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.lightBlue[50],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 16),

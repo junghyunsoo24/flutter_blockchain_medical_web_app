@@ -1,27 +1,30 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
+import 'package:portfolio_flutter_blockchain_medical_web_app/home/view/patient_list_screen.dart';
+import '../../database/drift_database.dart';
 import '../../deliver/view/window/phone_deliver_screen.dart';
 
+final alarmProvider = FutureProvider<List<DoctorAlarm>>((ref) async {
+  return await GetIt.I<MyDatabase>().getTopFiveDoctorAlarms();
+});
 class DoctorHomeScreen extends ConsumerWidget {
   const DoctorHomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    AsyncValue<List<DoctorAlarm>> alarms = ref.watch(alarmProvider);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(5.0), // 상하좌우 여백 설정
+          margin: EdgeInsets.all(5.0),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.white, // 테두리 색상 설정
-              width: 2, // 테두리 두께 설정
-            ),
-            borderRadius: BorderRadius.circular(20), // 모서리 둥글기 설정
-            // color: Color(0xFFE1F5FE)
+            border: Border.all(color: Colors.white, width: 2),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Padding(
-            padding: EdgeInsets.all(3.0), // 내부 여백 설정
+            padding: EdgeInsets.all(3.0),
             child: Column(
               children: <Widget>[
                 SizedBox(
@@ -32,31 +35,54 @@ class DoctorHomeScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     margin: EdgeInsets.all(5.0),
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child:
-                              Icon(Icons.medication_liquid, color: Colors.red),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(Icons.medication_liquid, color: Colors.red),
+                            ),
+                            Expanded(
+                              child: Text(
+                                '나의 환자',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => PatientList()),
+                                );
+                              },
+                              icon: Icon(Icons.arrow_forward),
+                            ),
+                          ],
                         ),
                         Expanded(
-                          child: ExpandableText(
-                            '나의 환자',
-                            expandText: '더보기',
-                            maxLines: 2,
-                            linkColor: Colors.blueAccent,
+                          child: FutureBuilder<List<DoctorAlarm>>(
+                            future: GetIt.I<MyDatabase>().getTopFiveDoctorAlarms(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError || !snapshot.hasData) {
+                                return Text('No data available');
+                              } else {
+                                return ListView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    final alarm = snapshot.data![index];
+                                    return ListTile(
+                                      title: Text(alarm.userName),
+                                      subtitle: Text('증상: ${alarm.symptom}'),
+                                      trailing: Text('약물: ${alarm.medicine}'),
+                                    );
+                                  },
+                                );
+                              }
+                            },
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           PrescriptionHistoryListScreen()),
-                            // );
-                          },
-                          icon: Icon(Icons.arrow_forward),
                         ),
                       ],
                     ),
@@ -126,3 +152,5 @@ class DoctorHomeScreen extends ConsumerWidget {
     );
   }
 }
+
+
