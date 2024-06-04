@@ -18,7 +18,7 @@ class PrescriptionHistoryRequest extends StatefulWidget {
 }
 
 class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest> {
-  String? REAL_PHONE_URL = dotenv.env['REAL_PHONE_URL'];
+  String? BASE_URL = dotenv.env['BASE_URL'];
 
   final _nameController = TextEditingController();
   final _birthdayController = TextEditingController();
@@ -28,7 +28,7 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
   bool _isLoading = false;
   Future<bool> firstCheck() async {
     final url = Uri.parse(
-        'http://$REAL_PHONE_URL/api/v1/medical-api/treatment-information/first-request');
+        '$BASE_URL/medical-api/treatment-information/first-request');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -48,7 +48,11 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
     }
   }
   Future<bool> secondCheck() async {
-    final url = Uri.parse('http://$REAL_PHONE_URL/api/v1/medical-api/treatment-information/first-request');
+
+    final url = Uri.parse('$BASE_URL/medical-api/treatment-information/second-request');
+
+    print("url");
+    print(url);
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -63,12 +67,17 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
       // final data = jsonBody['data'] as List<dynamic>;
-
+      print("jsonBody");
+      print(jsonBody);
       final result = jsonBody['data']['result'] as Map<String, dynamic>;
       final dataList = jsonBody['data']['data'] as List<dynamic>;
 
+      print("dataList");
+      print(dataList);
       for (final item in dataList) {
         final resMediDetailList = item['resMediDetailList'] as List<dynamic>;
+        print("resMediDetailList");
+        print(resMediDetailList);
         for (final prescriptionData in resMediDetailList) {
           final prescription = PrescriptionsCompanion(
             resTreatDate: Value(prescriptionData['resTreatDate'] ?? ''),
@@ -90,6 +99,7 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
             resPrescribeCnt: Value(item['resPrescribeCnt'] ?? 0),
             resMedicationCnt: Value(item['resMedicationCnt'] ?? 0),
             resType: Value(item['resType'] ?? ''),
+            name: Value("처방내역"),
           );
 
 

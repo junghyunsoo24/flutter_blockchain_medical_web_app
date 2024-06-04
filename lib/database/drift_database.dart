@@ -24,6 +24,16 @@ part 'drift_database.g.dart';
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
+  Future<String?> getNameFromPrescriptions() async {
+    final query = select(prescriptions)..where((p) => p.name.equals("처방내역")); // 쿼리 변수 분리
+    final results = await query.get(); // get() 메서드를 통해 결과 가져오기
+    if (results.isNotEmpty) {
+      final firstPrescription = results.first;
+      print(firstPrescription.name);// 첫 번째 결과 가져오기
+      return firstPrescription.name;
+    }
+    return null; // 결과가 없거나 타입이 맞지 않는 경우 null 반환
+  }
   Future<void> addPrescriptions(PrescriptionsCompanion data) async {
     await into(prescriptions).insert(data);
   }
@@ -64,9 +74,8 @@ class MyDatabase extends _$MyDatabase {
   Future<void> addPatient(PatientsCompanion data) async {
     await into(patients).insert(data);
   }
-  Future<void> updatePatient(Patient patient) async {
-    await update(patients)
-        .replace(patient);
+  Future<int> updatePatient(Patient updatedPatient) {
+    return (update(patients)..where((p) => p.id.equals(updatedPatient.id))).write(updatedPatient);
   }
   Future<Patient?> getPatientByUserIdAndPassword(String userId, String password) async {
     final query = select(patients)
@@ -82,12 +91,6 @@ class MyDatabase extends _$MyDatabase {
     final result = await query.getSingleOrNull(); // 결과를 가져옴 (없으면 null)
     return result != null; // 결과가 있으면 true, 없으면 false 반환
   }
-
-  // Future<Patient?> getPatientByUserIdAndPassword(String userId, String password) async {
-  //   final query = select(patients)
-  //     ..where((tbl) => tbl.userID.equals(userId) & tbl.userPW.equals(password));
-  //   return query.getSingleOrNull();
-  // }
 
   //doctor
   Future<void> addDoctor(DoctorsCompanion data) async {

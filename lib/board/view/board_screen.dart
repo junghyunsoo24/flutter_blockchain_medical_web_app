@@ -121,7 +121,9 @@ class BoardScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('추가정보를 입력하려면, 우측 버튼을 누르세요.'),
+                  Expanded( // 텍스트 위젯을 Expanded로 감싸기
+                    child: Text('추가정보를 입력하려면, 우측 버튼을 누르세요.'),
+                  ),
                   Switch(
                     value: viewModel.showPersonalDataFields,
                     onChanged: (value) {

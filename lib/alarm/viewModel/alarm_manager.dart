@@ -81,17 +81,17 @@ class AlarmManager {
       importance: Importance.max,
       priority: Priority.high,
       showWhen: true,
-      actions: [
-        AndroidNotificationAction(
-          'confirm',
-          '복용 완료',
-        ),
-
-        // AndroidNotificationAction(
-        //   'cancel',
-        //   '복용 취소',
-        // ),
-      ],
+      // actions: [
+      //   AndroidNotificationAction(
+      //     'confirm',
+      //     '복용 완료',
+      //   ),
+      //
+      //   // AndroidNotificationAction(
+      //   //   'cancel',
+      //   //   '복용 취소',
+      //   // ),
+      // ],
     );
 
     final notificationDetails = NotificationDetails(
