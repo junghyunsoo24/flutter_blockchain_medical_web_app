@@ -119,5 +119,3 @@
 * 환자의 의료 API 불러오기
   
 ![image](https://github.com/junghyunsoo24/portfolio-teenager-emotion-prevent-app-teenagers/assets/117528532/644ca5ea-4816-4692-9847-779d65d40b6b)
-
-
