@@ -68,7 +68,7 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
     await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+        ?.requestNotificationsPermission();
   }
 
   Future<void> _loadAlarms() async {

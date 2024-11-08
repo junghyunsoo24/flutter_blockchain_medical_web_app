@@ -138,7 +138,7 @@ class _SymptomScreenState extends State<SymptomScreen> {
                   child: Text("저장", style: Theme
                       .of(context)
                       .textTheme
-                      .button),
+                      .labelLarge),
                 ),
               ],
             ),

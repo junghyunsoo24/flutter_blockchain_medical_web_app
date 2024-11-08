@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "842075101905",
-    "project_id": "medical-block-app",
-    "storage_bucket": "medical-block-app.appspot.com"
+    "project_number": "393481378538",
+    "project_id": "medical-block-app-c8f02",
+    "storage_bucket": "medical-block-app-c8f02.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:842075101905:android:4ad532582a84e9005943f0",
+        "mobilesdk_app_id": "1:393481378538:android:d1eb470baf88da7c9e9593",
         "android_client_info": {
           "package_name": "com.example.portfolio_flutter_blockchain_medical_web_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyASRnVAiAfDVJ5qDBlyiaBk1UJEbC-zCqw"
+          "current_key": "AIzaSyAY1pT3t04PRN0hQtrWGy_1ONt1KjGgRIk"
         }
       ],
       "services": {

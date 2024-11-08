@@ -31,15 +31,12 @@ class FlutterLocalNotification {
 
   Future<void> showNotification(Map<String, dynamic> payload) async {
     if (Platform.isWindows) {
-      print("!!!!!!!!!!!");
       String patientId = payload['환자 아이디'] ?? '정보 없음';
       String userName = payload['환자 이름'] ?? '정보 없음';
       String medicine = payload['추가 의약품'] ?? '정보 없음';
       String symptom = payload['추가 증상'] ?? '정보 없음';
       String detail = payload['상세 내용'] ?? '정보 없음';
       List<dynamic> prescriptionDataList = payload['처방내역'];
-      print(patientId);
-      print(userName);
 
       // 처방 내역 데이터 처리 (첫 번째 처방만 사용)
       if (prescriptionDataList.isNotEmpty) {
@@ -102,7 +99,6 @@ class FlutterLocalNotification {
         notificationDetails,
         payload: payloadString,
       );
-
     }
   }
 

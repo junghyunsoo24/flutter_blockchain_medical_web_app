@@ -48,91 +48,59 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
     }
   }
 
-  DateTime? _parseDateString(String? dateString) {
-    if (dateString == null) return null;
-    try {
-      DateTime dateTime = DateTime.parse("${dateString.substring(4)}-${dateString.substring(0, 2)}-${dateString.substring(2, 4)}");
-      return dateTime;
-    } catch (e) {
-      print('Invalid date format: $e');
-      return null;
-    }
-  }
-
   Future<bool> secondCheck() async {
-    try { // 예외 처리 추가
-      final url = Uri.parse('$BASE_URL/medical-api/health-checkup-result/second-request');
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'identity': _birthdayController.text,
-          'userName': _nameController.text,
-          'phoneNo': _phoneController.text,
-          'telecom': _selectedProvider,
-        }),
-      );
+    final url = Uri.parse('$BASE_URL/medical-api/health-checkup-result/second-request');
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
-        if ((jsonBody['result']['extraMessage'] == "") && (jsonBody['result']['message'] == "성공")) {
-          final data = jsonBody['data'];
-          final resResultList = data['resResultList'][0];
-          final resPreviewList = data['resPreviewList'][0];
+    print("url");
+    print(url);
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'identity': _birthdayController.text,
+        'userName': _nameController.text,
+        'phoneNo': _phoneController.text,
+        'telecom': _selectedProvider,
+      }),
+    );
 
-          if ((resPreviewList['resCheckupDate'] != "") &&  (!await GetIt.I<MyDatabase>().isSameCheckupDateExists(resResultList['resCheckupDate']))) {
-            await GetIt.I<MyDatabase>().addHealthCheck(HealthChecksCompanion(
-              resOrganizationName: Value(resResultList['resOrganizationName']),
-              resCheckupDate: Value(DateTime.parse(resResultList['resCheckupDate'])),
-              resHeight: Value(double.tryParse(resPreviewList['resHeight']) ?? 0.0),
-              resWeight: Value(double.tryParse(resPreviewList['resWeight']) ?? 0.0),
-              resWaist: Value(double.tryParse(resPreviewList['resWaist']) ?? 0.0),
-              resBMI: Value(double.tryParse(resPreviewList['resBMI']) ?? 0.0),
-              resSight: Value(resPreviewList['resSight']),
-              resHearing: Value(resPreviewList['resHearing']),
-              resBloodPressure: Value(resPreviewList['resBloodPressure']),
-              resFastingBloodSuger: Value(double.tryParse(resPreviewList['resFastingBloodSuger']) ?? 0.0),
-              resTotalCholesterol: Value(resPreviewList['resTotalCholesterol']),
-            ));
-            print('건강검진을 디비에 처음 저장합니다.');
-            return true;
-          } else {
-            print("이미 같은날짜에 건강검진을 디비에 저장하였습니다.");
-            return false;
-          }
-        } else if (jsonBody['result']['message'] == "이미 응답이 완료된 요청입니다.") {
-          print('이미 응답이 완료된 요청입니다.');
-          return false;
-        } else if (jsonBody['result']['message'] ==
-            "동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.") {
-          print('동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.');
-          return false;
-        } else {
-          print('API 요청 처리가 정상 진행 중입니다. 추가 정보를 입력하세요.');
-          return false;
-        }
-      } else if (response.statusCode == 500) { // 500 에러 처리
-        throw Exception('서버 오류 발생 (500)');
-      } else {
-        throw Exception('서버 요청 실패 (상태 코드: ${response.statusCode})'); // 일반적인 오류 처리
-      }
-    } catch (e) { // 예외 발생 시 다이얼로그 표시
-      if (context.mounted) {
-        Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('API측 오류'),
-            content: Text("지금은 해당 기능을 이용할 수 없습니다. 추후 다시 시도해 주세요."),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('확인'),
-              ),
-            ],
-          ),
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
+      final dataList = jsonBody['data']['data']['resPreviewList'] as List<dynamic>;
+
+      for (final item in dataList) {
+        final healthCheckData = HealthChecksCompanion(
+          resOrganizationName: Value(jsonBody['data']['data']['resResultList'][0]['resOrganizationName']),
+          resCheckupDate: Value(DateTime.parse("2021-" + item['resCheckupDate'].substring(0, 2) + "-" + item['resCheckupDate'].substring(2))),
+          resHeight: Value(double.parse(item['resHeight'])),
+          resWeight: Value(double.parse(item['resWeight'])),
+          resWaist: Value(double.parse(item['resWaist'])),
+          resBMI: Value(double.parse(item['resBMI'])),
+          resSight: Value(item['resSight']),
+          resHearing: Value(item['resHearing']),
+          resBloodPressure: Value(item['resBloodPressure']),
+          resFastingBloodSuger: Value(double.parse(item['resFastingBloodSuger'])),
+          resTotalCholesterol: Value(item['resTotalCholesterol'] .toString()?? '0'),
         );
+
+        await GetIt.I<MyDatabase>().addHealthCheck(healthCheckData);
       }
+      return true;
+    } else if (response.statusCode == 400) {
+      final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
+      final message = jsonBody['result']['message'];
+      if (message == "이미 응답이 완료된 요청입니다.") {
+        print('이미 응답이 완료된 요청입니다.');
+        return false;
+      } else if (message == "동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.") {
+        print('동일한 요청이 처리되는 중입니다. 중복 요청은 허용되지 않습니다. 잠시 후 다시 시도해주세요.');
+        return false;
+      } else {
+        print('API 요청 처리가 정상 진행 중입니다. 추가 정보를 입력하세요.');
+        return false;
+      }
+    } else {
+      print('서버에 요청이 오지 않았습니다.');
       return false;
     }
   }
@@ -142,7 +110,7 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
     return Scaffold(
       appBar: AppBar(
         title:
-            Text('건강검진 내역 불러오기', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('처방 내역 불러오기', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -229,7 +197,13 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
               ElevatedButton(
                 onPressed: () async {
                   final outerContext = context;
-                  if (_nameController.text.isNotEmpty && _birthdayController.text.isNotEmpty && _phoneController.text.isNotEmpty && _selectedProvider != null) {
+                  if (_nameController.text.isNotEmpty &&
+                      _birthdayController.text.isNotEmpty &&
+                      _phoneController.text.isNotEmpty &&
+                      _selectedProvider != null) {
+                    setState(() {
+                      _isLoading = true;
+                    });
                     bool firstSuccess = await firstCheck();
                     if (firstSuccess) {
                       showDialog(
@@ -258,61 +232,16 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
                                         content: Text('잠시만 기다려주세요.'),
                                       ),
                                     );
-                                    try {
-                                      bool secondSuccess = await secondCheck();
-
-                                      // context가 아직 유효한지 확인
-                                      if (context.mounted) {
-                                        Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
-                                      }
-
-                                      if (secondSuccess) {
-                                        print("디비에 저장하였습니다.");
-                                        Navigator.pushReplacement(
-                                          outerContext,
-                                          MaterialPageRoute(
-                                            builder: (context) => HealthCheckScreen(),
-                                          ),
-                                        );
-                                      } else {
-                                        // context가 아직 유효한지 확인
-                                        if (context.mounted) {
-                                          showDialog( // API측 오류 다이얼로그 표시
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                              title: Text('API측 오류'),
-                                              content: Text(
-                                                  "지금은 해당 기능을 이용할 수 없습니다. 추후 다시 시도해 주세요."),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () => Navigator.of(context).pop(),
-                                                  child: Text('확인'),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        }
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
-                                      }
-                                    } catch (e) { // 예외 발생 시 로딩 다이얼로그 닫고 에러 다이얼로그 표시
-                                      if (context.mounted) {
-                                        Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: Text('오류'),
-                                            content: Text(e.toString()), // 에러 메시지 표시
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.of(context).pop(),
-                                                child: Text('확인'),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }
+                                    bool secondSuccess = await secondCheck();
+                                    if (secondSuccess) {
+                                      print("디비에 저장하였습니다.");
+                                      Navigator.pushReplacement(
+                                        outerContext,
+                                        MaterialPageRoute(
+                                          builder: (context) => HealthCheckScreen(),
+                                        ),
+                                      );
+                                    } else {
                                       setState(() {
                                         _isLoading = false;
                                       });
@@ -326,35 +255,40 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
                     } else {
                       showDialog(
                         context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text('1차인증 실패'),
-                          content: Text('잘못 작성하였습니다. 데이터를 다시 확인해주세요.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('확인'),
+                        builder: (context) =>
+                            AlertDialog(
+                              title: Text('1차인증 실패'),
+                              content: Text('잘못 작성하였습니다. 데이터를 다시 확인해주세요.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('확인'),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
                       );
                     }
                   } else {
+                    setState(() {
+                      _isLoading = false;
+                    });
                     showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text('입력 오류'),
-                        content: Text('모든 필드를 입력하고 통신사를 선택해 주세요.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('확인'),
+                      builder: (context) =>
+                          AlertDialog(
+                            title: Text('입력 오류'),
+                            content: Text('모든 필드를 입력하고 통신사를 선택해 주세요.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('확인'),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
                     );
                   }
                 },
@@ -363,7 +297,11 @@ class _HealthCheckRequestState extends State<HealthCheckRequest> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                child: Text('요청하기'),
+                child: _isLoading
+                    ? CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                )
+                    : Text('요청하기'),
               ),
             ],
           ),

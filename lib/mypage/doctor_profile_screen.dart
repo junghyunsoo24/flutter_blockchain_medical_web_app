@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/alarm/view/alarm_list_screen.dart';
@@ -104,7 +104,7 @@ class DoctorProfileScreen extends ConsumerWidget {
                         icon: Icon(Icons.edit),
                         label: Text('개인정보 수정'),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.green[50],
+                          backgroundColor: Colors.green[50],
                         ),
                       ),
                     ),
@@ -116,7 +116,7 @@ class DoctorProfileScreen extends ConsumerWidget {
                         icon: Icon(Icons.logout),
                         label: Text('로그아웃'),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.lightBlue[50],
+                          backgroundColor: Colors.lightBlue[50],
                         ),
                       ),
                     ),

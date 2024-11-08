@@ -41,49 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB-1_lLqec7YdAwSQnIqLOxqRfP8006F1M',
-    appId: '1:842075101905:web:03619e3da0b6afb55943f0',
-    messagingSenderId: '842075101905',
-    projectId: 'medical-block-app',
-    authDomain: 'medical-block-app.firebaseapp.com',
-    storageBucket: 'medical-block-app.appspot.com',
-    measurementId: 'G-RY53Q3L2SP',
+    apiKey: 'AIzaSyD8hu30rQyATIBmPLUzrJerFSuXu_DHBps',
+    appId: '1:393481378538:web:d6c4d5c8d86f2d829e9593',
+    messagingSenderId: '393481378538',
+    projectId: 'medical-block-app-c8f02',
+    authDomain: 'medical-block-app-c8f02.firebaseapp.com',
+    storageBucket: 'medical-block-app-c8f02.appspot.com',
+    measurementId: 'G-0MN8PTLKF8',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyASRnVAiAfDVJ5qDBlyiaBk1UJEbC-zCqw',
-    appId: '1:842075101905:android:4ad532582a84e9005943f0',
-    messagingSenderId: '842075101905',
-    projectId: 'medical-block-app',
-    storageBucket: 'medical-block-app.appspot.com',
+    apiKey: 'AIzaSyAY1pT3t04PRN0hQtrWGy_1ONt1KjGgRIk',
+    appId: '1:393481378538:android:d1eb470baf88da7c9e9593',
+    messagingSenderId: '393481378538',
+    projectId: 'medical-block-app-c8f02',
+    storageBucket: 'medical-block-app-c8f02.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDo7rZaYjQlK8vf1NRQGdF6Wrmaz-5IRro',
-    appId: '1:842075101905:ios:37b34fd38b95d81b5943f0',
-    messagingSenderId: '842075101905',
-    projectId: 'medical-block-app',
-    storageBucket: 'medical-block-app.appspot.com',
+    apiKey: 'AIzaSyCYBU9LQFBpBwbHC2PxjvMefSsji89PmLo',
+    appId: '1:393481378538:ios:10ad93cf36a6e5ec9e9593',
+    messagingSenderId: '393481378538',
+    projectId: 'medical-block-app-c8f02',
+    storageBucket: 'medical-block-app-c8f02.appspot.com',
     iosBundleId: 'com.example.portfolioFlutterBlockchainMedicalWebApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDo7rZaYjQlK8vf1NRQGdF6Wrmaz-5IRro',
-    appId: '1:842075101905:ios:37b34fd38b95d81b5943f0',
-    messagingSenderId: '842075101905',
-    projectId: 'medical-block-app',
-    storageBucket: 'medical-block-app.appspot.com',
+    apiKey: 'AIzaSyCYBU9LQFBpBwbHC2PxjvMefSsji89PmLo',
+    appId: '1:393481378538:ios:10ad93cf36a6e5ec9e9593',
+    messagingSenderId: '393481378538',
+    projectId: 'medical-block-app-c8f02',
+    storageBucket: 'medical-block-app-c8f02.appspot.com',
     iosBundleId: 'com.example.portfolioFlutterBlockchainMedicalWebApp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyB-1_lLqec7YdAwSQnIqLOxqRfP8006F1M',
-    appId: '1:842075101905:web:c280a5b5b62c53fe5943f0',
-    messagingSenderId: '842075101905',
-    projectId: 'medical-block-app',
-    authDomain: 'medical-block-app.firebaseapp.com',
-    storageBucket: 'medical-block-app.appspot.com',
-    measurementId: 'G-PYMHYJNE1N',
+    apiKey: 'AIzaSyD8hu30rQyATIBmPLUzrJerFSuXu_DHBps',
+    appId: '1:393481378538:web:99e28656b9abdd819e9593',
+    messagingSenderId: '393481378538',
+    projectId: 'medical-block-app-c8f02',
+    authDomain: 'medical-block-app-c8f02.firebaseapp.com',
+    storageBucket: 'medical-block-app-c8f02.appspot.com',
+    measurementId: 'G-1Z3VX2N33V',
   );
 
 }

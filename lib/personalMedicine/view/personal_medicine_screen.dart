@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:portfolio_flutter_blockchain_medical_web_app/database/drift_database.dart';
@@ -154,7 +153,7 @@ class _PersonalMedicineScreen extends State<PersonalMedicineScreen> {
                   child: Text("저장", style: Theme
                       .of(context)
                       .textTheme
-                      .button),
+                      .labelLarge),
                 ),
               ],
             ),

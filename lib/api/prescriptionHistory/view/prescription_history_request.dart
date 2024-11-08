@@ -47,8 +47,9 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
       return false;
     }
   }
-  Future<bool> secondCheck() async {
 
+
+  Future<bool> secondCheck() async {
     final url = Uri.parse('$BASE_URL/medical-api/treatment-information/second-request');
 
     print("url");
@@ -64,64 +65,12 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
       }),
     );
 
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
-    //   // final data = jsonBody['data'] as List<dynamic>;
-    //
-    //   final dataList = jsonBody['data']['data']['resMediDetailList'] as List<dynamic>;
-    //
-    //   for (final item in dataList) {
-    //     // final resMediDetailList = item['resMediDetailList'] as List<dynamic>;
-    //     for (final prescriptionData in dataList) {
-    //       final prescription = PrescriptionsCompanion(
-    //         resTreatDate: Value(prescriptionData['resTreatDate'] ?? ''),
-    //         resTreatTypeDet: Value(prescriptionData['resTreatTypeDet'] ?? ''),
-    //         resPrescribeCntDet: Value(prescriptionData['resPrescribeCntDet'] ?? ''),
-    //         resPrescribeDrugName: Value(prescriptionData['resPrescribeDrugName'] ?? ''),
-    //         resPrescribeDrugEffect: Value(prescriptionData['resPrescribeDrugEffect'] ?? ''),
-    //         resPrescribeDays: Value(prescriptionData['resPrescribeDays'] ?? ''),
-    //         resDrugCode: Value(prescriptionData['resDrugCode'] ?? ''),
-    //         resDrugImageLink: Value(prescriptionData['resDrugImageLink'] ?? ''),
-    //         resMedicationDirection: Value(prescriptionData['resMedicationDirection'] ?? ''),
-    //         resBrand: Value(prescriptionData['resBrand'] ?? ''),
-    //         resATCCode: Value(prescriptionData['resATCCode'] ?? ''),
-    //         resFormula: Value(prescriptionData['resFormula'] ?? ''),
-    //         resHospitalName: Value(item['resHospitalName'] ?? ''),
-    //         resTreatStartDate: Value(item['resTreatStartDate'] ?? ''),
-    //         resTreatType: Value(item['resTreatType'] ?? ''),
-    //         resVisitDays: Value(item['resVisitDays'].toString() ?? '0'),//string으로 변환필요!
-    //         resPrescribeCnt: Value(item['resPrescribeCnt'].toString() ?? '0'),//string으로 변환필요!
-    //         resMedicationCnt: Value(item['resMedicationCnt'] .toString()?? '0'),//string으로 변환필요!
-    //         resType: Value(item['resType'] ?? ''),
-    //         name: Value("처방내역"),
-    //       );
-    //
-    //
-    //       if (!await GetIt.I<MyDatabase>().isSameExistsPrescriptions(prescription)) {
-    //         await GetIt.I<MyDatabase>().addPrescriptions(prescription);
-    //         print('처방전 데이터를 SQLite에 저장했습니다.');
-    //       } else {
-    //         print('이미 같은 처방전 데이터가 SQLite에 존재합니다.');
-    //       }
-    //     }
-    //   }
-    //   return true;
-
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
-      // final data = jsonBody['data'] as List<dynamic>;
-      print("jsonBody");
-      print(jsonBody);
-      final result = jsonBody['data']['result'] as Map<String, dynamic>;
-      final dataList = jsonBody['data']['data'] as List<dynamic>;
+      final dataList = jsonBody['data']['data']['resMediDetailList'] as List<dynamic>;
 
-      print("dataList");
-      print(dataList);
       for (final item in dataList) {
-        final resMediDetailList = item['resMediDetailList'] as List<dynamic>;
-        print("resMediDetailList");
-        print(resMediDetailList);
-        for (final prescriptionData in resMediDetailList) {
+        for (final prescriptionData in dataList) {
           final prescription = PrescriptionsCompanion(
             resTreatDate: Value(prescriptionData['resTreatDate'] ?? ''),
             resTreatTypeDet: Value(prescriptionData['resTreatTypeDet'] ?? ''),
@@ -138,13 +87,12 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
             resHospitalName: Value(item['resHospitalName'] ?? ''),
             resTreatStartDate: Value(item['resTreatStartDate'] ?? ''),
             resTreatType: Value(item['resTreatType'] ?? ''),
-            resVisitDays: Value(item['resVisitDays'] ?? 0),
-            resPrescribeCnt: Value(item['resPrescribeCnt'] ?? 0),
-            resMedicationCnt: Value(item['resMedicationCnt'] ?? 0),
+            resVisitDays: Value(item['resVisitDays'].toString() ?? '0'),//string으로 변환필요!
+            resPrescribeCnt: Value(item['resPrescribeCnt'].toString() ?? '0'),//string으로 변환필요!
+            resMedicationCnt: Value(item['resMedicationCnt'] .toString()?? '0'),//string으로 변환필요!
             resType: Value(item['resType'] ?? ''),
             name: Value("처방내역"),
           );
-
 
           if (!await GetIt.I<MyDatabase>().isSameExistsPrescriptions(prescription)) {
             await GetIt.I<MyDatabase>().addPrescriptions(prescription);
@@ -154,7 +102,6 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
           }
         }
       }
-
       return true;
     } else if (response.statusCode == 400) {
       final Map<String, dynamic> jsonBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -174,7 +121,6 @@ class _PrescriptionHistoryRequestState extends State<PrescriptionHistoryRequest>
       return false;
     }
   }
-
 
   @override
     Widget build(BuildContext context) {
