@@ -15,25 +15,28 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     final userInfo = ref.watch(userInfoProvider);
     final userName = userInfo.name;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(5.0),
+          margin: EdgeInsets.all(screenWidth * 0.02),
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.white,
-              width: 2,
+              width: screenWidth * 0.005,
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(screenWidth * 0.03),
           ),
           child: Padding(
-            padding: EdgeInsets.all(3.0),
+            padding: EdgeInsets.all(screenWidth * 0.01),
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 150,
+                  height: screenHeight * 0.23,
                   child: Row(
                     children: [
                       Expanded(
@@ -47,9 +50,9 @@ class HomeScreen extends ConsumerWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.lightBlueAccent),
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(screenWidth * 0.03),
                             ),
-                            margin: EdgeInsets.all(5.0),
+                            margin: EdgeInsets.all(screenWidth * 0.01),
                             child: Stack(
                               children: [
                                 Center(
@@ -58,7 +61,7 @@ class HomeScreen extends ConsumerWidget {
                                     children: [
                                       Text(
                                         '추가 증상',
-                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.033),
                                       ),
                                       // SizedBox(height: 8.0),
                                       // Text(
@@ -71,8 +74,8 @@ class HomeScreen extends ConsumerWidget {
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.sick_rounded, color: Colors.red, size: 40),
+                                    padding: EdgeInsets.all(screenWidth * 0.01),
+                                    child: Icon(Icons.sick_rounded, color: Colors.red, size: screenWidth * 0.1),
                                   ),
                                 ),
                               ],
@@ -92,9 +95,9 @@ class HomeScreen extends ConsumerWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.lightBlueAccent),
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(screenWidth * 0.03),
                             ),
-                            margin: EdgeInsets.all(5.0),
+                            margin: EdgeInsets.all(screenWidth * 0.01),
                             child: Stack(
                               children: [
                                 Center(
@@ -103,7 +106,7 @@ class HomeScreen extends ConsumerWidget {
                                     children: [
                                       Text(
                                         '긴급데이터',
-                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.033),
                                       ),
                                       // SizedBox(height: 8.0),
                                       // Text(
@@ -116,8 +119,8 @@ class HomeScreen extends ConsumerWidget {
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.emergency_share, color: Colors.red, size: 40),
+                                    padding: EdgeInsets.all(screenWidth * 0.01),
+                                    child: Icon(Icons.emergency_share, color: Colors.red, size: screenWidth * 0.1),
                                   ),
                                 ),
                               ],
@@ -136,9 +139,9 @@ class HomeScreen extends ConsumerWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.lightBlueAccent),
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(screenWidth * 0.03),
                             ),
-                            margin: EdgeInsets.all(5.0),
+                            margin: EdgeInsets.all(screenWidth * 0.01),
                             child: Stack(
                               children: [
                                 Center(
@@ -147,7 +150,7 @@ class HomeScreen extends ConsumerWidget {
                                     children: [
                                       Text(
                                         '개인구매 의약품',
-                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)
+                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.033)
                                       ),
                                       // SizedBox(height: 8.0),
                                       // Text(
@@ -160,8 +163,8 @@ class HomeScreen extends ConsumerWidget {
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.medication_liquid, color: Colors.red, size: 40),
+                                    padding: EdgeInsets.all(screenWidth * 0.01),
+                                    child: Icon(Icons.medication_liquid, color: Colors.red, size: screenWidth * 0.1),
                                   ),
                                 ),
                               ],
@@ -173,18 +176,18 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                   child: Text(
                     '의료진에게 $userName님의 데이터를 전송하세요!',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: screenWidth * 0.027,
                       fontWeight: FontWeight.normal,
                       color: Colors.grey,
                     ),
                   ),
                 ),// 두 영역 사이의 간격
                 SizedBox(
-                  height: 70,
+                  height: screenHeight * 0.12,
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -195,9 +198,9 @@ class HomeScreen extends ConsumerWidget {
                           Colors.blue,
                         ],
                       ),
-                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(screenWidth * 0.03)),
                     ),
-                    margin: EdgeInsets.all(5.0),
+                    margin: EdgeInsets.all(screenWidth * 0.01),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -213,6 +216,7 @@ class HomeScreen extends ConsumerWidget {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
+                                fontSize: screenWidth * 0.035
                               ),
                             ),
                           ],
@@ -240,11 +244,11 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 SizedBox(height: 5),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                   child: Text(
                     '건강 서비스',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: screenWidth * 0.04,
                       fontWeight: FontWeight.bold,
                       color: Colors.blue,
                     ),
@@ -255,7 +259,7 @@ class HomeScreen extends ConsumerWidget {
                     // height: 150,
                     // viewportFraction: 0.9,
                     // enableInfiniteScroll: false,
-                    height: 150.0,
+                    height: screenHeight * 0.24,
                     enlargeCenterPage: true,
                     autoPlay: true,
                     aspectRatio: 16 / 9,
@@ -275,9 +279,9 @@ class HomeScreen extends ConsumerWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.lightBlueAccent),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(screenWidth * 0.03),
                         ),
-                        margin: EdgeInsets.all(5.0),
+                        margin: EdgeInsets.all(screenWidth * 0.01),
                         child: Stack(
                           children: [
                             Center(
@@ -286,12 +290,11 @@ class HomeScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     '처방 내역',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.05),
                                   ),
-                                  SizedBox(height: 8.0),
                                   Text(
                                     '건강보험공단에서 제공하는 데이터입니다.',
-                                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                                    style: TextStyle(fontSize: screenWidth * 0.03, color: Colors.grey),
                                   ),
                                 ],
                               ),
@@ -299,8 +302,8 @@ class HomeScreen extends ConsumerWidget {
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(Icons.emergency_share, color: Colors.red, size: 50,),
+                                padding: EdgeInsets.all(screenWidth * 0.01),
+                                child: Icon(Icons.emergency_share, color: Colors.red, size: screenWidth * 0.15,),
                               ),
                             )
                           ],
@@ -317,9 +320,9 @@ class HomeScreen extends ConsumerWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.lightBlueAccent),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(screenWidth * 0.03),
                         ),
-                        margin: EdgeInsets.all(5.0),
+                        margin: EdgeInsets.all(screenWidth * 0.01),
                         child: Stack(
                           children: [
                             Center(
@@ -328,12 +331,11 @@ class HomeScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     '진료내용',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.05),
                                   ),
-                                  SizedBox(height: 8.0),
                                   Text(
                                     '건강보험공단에서 제공하는 데이터입니다.',
-                                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                                    style: TextStyle(fontSize: screenWidth * 0.03, color: Colors.grey),
                                   ),
                                 ],
                               ),
@@ -341,8 +343,8 @@ class HomeScreen extends ConsumerWidget {
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(Icons.emergency_share, color: Colors.red, size: 50,),
+                                padding: EdgeInsets.all(screenWidth * 0.01),
+                                child: Icon(Icons.emergency_share, color: Colors.red, size: screenWidth * 0.15,),
                               ),
                             )
                           ],
@@ -359,9 +361,9 @@ class HomeScreen extends ConsumerWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.lightBlueAccent),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(screenWidth * 0.03),
                         ),
-                        margin: EdgeInsets.all(5.0),
+                        margin: EdgeInsets.all(screenWidth * 0.01),
                         child: Stack(
                           children: [
                             // Center(
@@ -373,12 +375,12 @@ class HomeScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     '건강검진',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.05),
                                   ),
                                   SizedBox(height: 8.0),
                                   Text(
                                     '건강검진 기록을 보여드립니다.',
-                                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                                    style: TextStyle(fontSize: screenWidth * 0.03, color: Colors.grey),
                                   ),
                                 ],
                               ),
@@ -386,8 +388,8 @@ class HomeScreen extends ConsumerWidget {
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(Icons.health_and_safety_rounded, color: Colors.red, size: 50,),
+                                padding: EdgeInsets.all(screenWidth * 0.01),
+                                child: Icon(Icons.health_and_safety_rounded, color: Colors.red, size: screenWidth * 0.15,),
                               ),
                             )
                           ],
