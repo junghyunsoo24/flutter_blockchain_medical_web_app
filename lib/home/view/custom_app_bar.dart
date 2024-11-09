@@ -7,6 +7,7 @@ import '../../deliver/view/mobile/second.dart';
 import '../../login/view/login_screen.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,49 +24,54 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
       userName = "";
     }
 
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final appBarHeight = screenHeight * 0.8;
+
     return PreferredSize(
-      preferredSize: Size.fromHeight(130.0),
+      preferredSize: Size.fromHeight(appBarHeight),
       child: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color(0xFFB9E8FF),
-                  Colors.blue,
-                ]),
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))//appBar borderRadius
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Color(0xFFB9E8FF),
+                    Colors.blue,
+                  ]),
           ),
         ),
         leading: Padding(
-          padding:  const EdgeInsets.only(top: 10.0, left: 20.0), // 상단 여백 추가
+          padding:  EdgeInsets.only(left: screenWidth * 0.03), // 상단 여백 추가
           child: CircleAvatar(
+            radius: screenWidth * 0.1,
             backgroundImage: NetworkImage('https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0='),
           ),
         ),
         title: Padding(
-          padding: const EdgeInsets.only(top: 10.0), // 상단 여백 추가,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '$userName님 환영합니다.',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17.0,
+            padding: EdgeInsets.only(
+                left: screenWidth * 0.05,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$userName님 환영합니다.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: screenWidth * 0.05,
+                  ),
                 ),
-              ),
-              Text(
-                '나만의 건강 블록에 오신 걸 환영합니다!',
-                style: TextStyle(
-                  fontSize: 13.0,
+                Text(
+                  '나만의 건강 블록에 오신 걸 환영합니다!',
+                  style: TextStyle(fontSize: screenWidth * 0.03,
+                  ),
                 ),
-              ),
-            ],
-          )
+              ],
+            )
         ),
         actions: <Widget>[
           IconButton(onPressed: (){
@@ -82,12 +88,19 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 MaterialPageRoute(builder: (context) => SecondPage(payload: data)),
               );
             }
-          }, icon: Icon(Icons.notifications_active))
+          }, icon: Icon(Icons.notifications_active,
+            size: screenWidth * 0.08,
+          ),
+          )
         ],
       ),
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(100.0);
+  Size get preferredSize {
+    final screenHeight = WidgetsBinding.instance.window.physicalSize.height /
+        WidgetsBinding.instance.window.devicePixelRatio;
+    return Size.fromHeight(screenHeight * 0.2);
+  }
 }
