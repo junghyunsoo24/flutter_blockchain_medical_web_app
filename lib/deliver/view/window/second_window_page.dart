@@ -86,8 +86,6 @@ class SecondWindowPage extends StatelessWidget {
                               //블록체인에 저장된 해시값
 
                               bool isVerified = await blockchainService.verifyMedicalData(originDataHash, dataHash);
-                              print("============================================");
-                              print('받아온 해시값: $dataHash');
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
@@ -105,7 +103,7 @@ class SecondWindowPage extends StatelessWidget {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
+                              backgroundColor: Colors.blue,
                             ),
                             child: Text('검증하기', style: TextStyle(color: Colors.white)),
                           ),

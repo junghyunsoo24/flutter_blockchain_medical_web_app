@@ -42,9 +42,9 @@ class SecondPage extends StatelessWidget {
                 print("============================================");
                 print('알람 ID: ${alarm.id}, 원본 해시값: $originDataHash');
 
-                return Card( // ListTile 대신 Card 위젯 사용
+                return Card(
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  elevation: 4, // 그림자 효과 추가
+                  elevation: 4,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -54,12 +54,12 @@ class SecondPage extends StatelessWidget {
                           leading: Icon(Icons.account_circle), // 사용자 아이콘 추가
                           title: Text('${alarm.userName} 님', style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
-                        Divider(), // 구분선 추가
+                        Divider(),
                         Text('제목: ${alarm.title}', style: TextStyle(fontSize: 18)),
-                        SizedBox(height: 8), // 제목과 내용 사이 간격 조절
+                        SizedBox(height: 8),
                         Text('내용: ${alarm.body}'),
                         SizedBox(height: 16),
-                        Center( // 버튼을 가운데 정렬
+                        Center(
                           child: ElevatedButton(
                             onPressed: () async {
                               await blockchainService.registerNodes();
@@ -97,7 +97,7 @@ class SecondPage extends StatelessWidget {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.blue, // 버튼 색상 변경
+                              backgroundColor: Colors.blue, // 버튼 색상 변경
                             ),
                             child: Text('검증하기', style: TextStyle(color: Colors.white)), // 텍스트 색상 흰색
                           ),

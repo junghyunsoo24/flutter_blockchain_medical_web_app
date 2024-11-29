@@ -37,6 +37,11 @@ class MyDatabase extends _$MyDatabase {
   Future<void> addPrescriptions(PrescriptionsCompanion data) async {
     await into(prescriptions).insert(data);
   }
+
+  Future<void> addHealthCheck(HealthChecksCompanion data) async {
+    await into(healthChecks).insert(data);
+  }
+
   Future<bool> isSameExistsPrescriptions(PrescriptionsCompanion data) async {
     final existingPrescription = await (select(prescriptions)
       ..where((p) => p.resTreatDate.equals(data.resTreatDate.value))
@@ -67,9 +72,9 @@ class MyDatabase extends _$MyDatabase {
   }
 
   //healthCheck
-  Future<void> addHealthCheck(HealthChecksCompanion data) async {
-    await into(healthChecks).insert(data);
-  }
+  // Future<void> addHealthCheck(HealthChecksCompanion data) async {
+  //   await into(healthChecks).insert(data);
+  // }
   Future<bool> isSameCheckupDateExists(String checkupDate) async {
     if (checkupDate.isEmpty) return false;
     final query = select(healthChecks)

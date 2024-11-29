@@ -110,11 +110,11 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                       _selectedPrescription = value;
                     });
                   },
-                  items: prescriptionName == '처방내역' // null 체크 불필요
+                  items: prescriptionName == '건강검진내역' // null 체크 불필요
                       ? [
                     DropdownMenuItem<String>(
-                      value: '처방내역',
-                      child: Text('처방내역'),
+                      value: '건강검진내역',
+                      child: Text('건강검진내역'),
                     ),
                   ]
                       : [], // _selectedPrescription이 null이면 빈 리스트 표시
@@ -225,22 +225,22 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                       medicine = " 추가 의약품 없음";
                     }
 
-                    if (_selectedPrescription != null) {
+                    if (_selectedPrescription == null) {
                       print("1번째다");
-                      List<Prescription>? prescriptions = await GetIt.I<MyDatabase>().getAllPrescriptions();
-                      // 처방 내역 데이터 가져오기
-                      Prescription firstPrescription = prescriptions.first; // 첫 번째 처방 가져오기
-
-                      prescriptionDataList = [ // 리스트로 감싸서 단일 항목 저장
-                        {
-                          '병의원(약국)명칭': firstPrescription.resHospitalName,
-                          '처방 일자': firstPrescription.resTreatDate,
-                          '의약품 명': firstPrescription.resPrescribeDrugName,
-                          '처방약품 효능': firstPrescription.resPrescribeDrugEffect,
-                          '투약일수': firstPrescription.resPrescribeDays,
-                          // 필요한 다른 처방 정보 추가
-                        }
-                      ];
+                      // List<Prescription>? prescriptions = await GetIt.I<MyDatabase>().getAllPrescriptions();
+                      // // 처방 내역 데이터 가져오기
+                      // Prescription firstPrescription = prescriptions.first; // 첫 번째 처방 가져오기
+                      //
+                      // prescriptionDataList = [ // 리스트로 감싸서 단일 항목 저장
+                      //   {
+                      //     '병의원(약국)명칭': firstPrescription.resHospitalName,
+                      //     '처방 일자': firstPrescription.resTreatDate,
+                      //     '의약품 명': firstPrescription.resPrescribeDrugName,
+                      //     '처방약품 효능': firstPrescription.resPrescribeDrugEffect,
+                      //     '투약일수': firstPrescription.resPrescribeDays,
+                      //     // 필요한 다른 처방 정보 추가
+                      //   }
+                      // ];
                       print("처방내역이 선택되었습니다.");
                       print("prescriptionDataList: $prescriptionDataList");
                     } else {
@@ -271,7 +271,7 @@ class _WebDeliverScreenState extends ConsumerState<WebDeliverScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue, // 버튼 색상 변경
+                    backgroundColor: Colors.blue, // 버튼 색상 변경
                     padding: EdgeInsets.symmetric(vertical: 16.0), // 버튼 패딩 조정
                   ),
                 ),

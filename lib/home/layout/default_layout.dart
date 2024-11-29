@@ -21,27 +21,36 @@ class DefaultLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
-      // appBar: renderAppBar(),
-      appBar: appBar,
-      body: child,
+      appBar: appBar ?? renderAppBar(screenWidth, screenHeight),
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.01, // 너비의 5%를 양쪽 패딩으로
+          vertical: screenHeight * 0.001, // 높이의 2%를 위아래 패딩으로
+        ),
+        child: child,
+      ),
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
     );
   }
 
-  AppBar? renderAppBar(){
+  AppBar? renderAppBar(double screenWidth, double screenHeight){
     if(title == null){
       return null;
     }else{
       return AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        toolbarHeight: kToolbarHeight * 2,
         title: Text(
           title!,
-          style: const TextStyle(
-            fontSize: 16.0,
+          style: TextStyle(
+            fontSize: screenWidth * 0.04,
             fontWeight: FontWeight.w500,
           ),
         ),
